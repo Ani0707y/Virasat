@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1757-plassey",
+    "year": "1757",
+    "chapter": "Company Ascendancy",
+    "wing": "Wing I — Mercantile Conquest",
+    "title": "Battle of Plassey on the Banks of the Bhagirathi",
+    "aspect": "classic",
+    "image": "assets/1757-plassey.jpg"
+  },
+  {
+    "id": "1765-allahabad",
+    "year": "1765",
+    "chapter": "The Diwani Charter",
+    "wing": "Wing I — Mercantile Conquest",
+    "title": "Treaty of Allahabad & Grant of Diwani Rights",
+    "aspect": "wide",
+    "image": "assets/1765-allahabad.jpg"
+  },
+  {
+    "id": "1855-santhal-hool",
+    "year": "1855",
+    "chapter": "Indigenous Uprisings",
+    "wing": "Wing II — Subaltern & Great Revolt",
+    "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool",
+    "aspect": "tall",
+    "image": "assets/1855-santhal-hool.jpg"
+  },
+  {
+    "id": "1857-kunwar-singh",
+    "year": "1857",
+    "chapter": "First War of Independence",
+    "wing": "Wing II — Subaltern & Great Revolt",
+    "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
+    "aspect": "classic",
+    "image": "assets/1857-kunwar-singh.jpg"
+  },
+  {
+    "id": "1857-delhi-front",
+    "year": "1857",
+    "chapter": "First War of Independence",
+    "wing": "Wing II — Subaltern & Great Revolt",
+    "title": "The Delhi Front at Kashmiri Gate & Red Fort",
+    "aspect": "wide",
+    "image": "assets/1857-delhi-front.jpg"
+  },
+  {
+    "id": "1905-swadeshi",
+    "year": "1905",
+    "chapter": "Swadeshi Awakening",
+    "wing": "Wing III — Mass Nationalist Awakening",
+    "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
+    "aspect": "classic",
+    "image": "assets/1905-swadeshi.jpg"
+  },
+  {
+    "id": "1930-dandi-march",
+    "year": "1930",
+    "chapter": "Civil Disobedience",
+    "wing": "Wing III — Mass Nationalist Awakening",
+    "title": "The Coastal Salt Satyagraha at Dandi",
+    "aspect": "wide",
+    "image": "assets/1930-dandi-march.jpg"
+  },
+  {
+    "id": "1942-quit-india",
+    "year": "1942",
+    "chapter": "Quit India Uprising",
+    "wing": "Wing IV — Final Surge to Sovereignty",
+    "title": "The Seven Student Martyrs at Patna Secretariat",
+    "aspect": "classic",
+    "image": "assets/1942-quit-india.jpg"
+  }
+]
