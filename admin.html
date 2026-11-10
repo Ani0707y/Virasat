@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curator Back-Office — Modern Indian History Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --basalt-bg: #0a0a0c;
+      --basalt-surface: #111115;
+      --basalt-elevated: #17171d;
+      --corten: #b85d3b;
+      --corten-hover: #cf6d48;
+      --brass: #d6b26d;
+      --brass-dim: rgba(214, 178, 109, 0.32);
+      --ivory: #ede6d6;
+      --muted: #9a968e;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --success: #4ca977;
+      --danger: #d95c50;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--basalt-bg);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(184, 93, 59, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(214, 178, 109, 0.06) 0%, transparent 50%);
+      color: var(--ivory);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      padding: 2rem clamp(1rem, 4vw, 3.5rem);
+    }
+
+    .curator-shell {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    /* Top Architectural Header */
+    .curator-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(184, 93, 59, 0.35);
+    }
+
+    .brand-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--brass);
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+      font-weight: 600;
+      color: var(--ivory);
+      letter-spacing: 0.02em;
+    }
+
+    .endpoint-badge {
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--brass);
+      background: rgba(214, 178, 109, 0.08);
+      border: 1px solid var(--brass-dim);
+      padding: 0.45rem 0.85rem;
+      border-radius: 4px;
+    }
+
+    /* Main Workspace Grid */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panels */
+    .panel {
+      background: var(--basalt-surface);
+      border: 1px solid var(--border-subtle);
+      border-top: 2px solid var(--corten);
+      padding: 1.75rem;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+    }
+
+    .panel-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-section-divider {
+      margin: 1.5rem 0 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--corten);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.76rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c5bfb4;
+      margin-bottom: 0.45rem;
+    }
+
+    .field-hint {
+      font-size: 0.7rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--muted);
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .curator-input {
+      width: 100%;
+      background: #0b0b0e;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--ivory);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem;
+      padding: 0.72rem 0.9rem;
+      border-radius: 3px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .curator-input:focus {
+      outline: none;
+      border-color: var(--brass);
+      box-shadow: 0 0 0 2px rgba(214, 178, 109, 0.15);
+    }
+
+    .toggle-pat-btn {
+      position: absolute;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--brass);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.55rem;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .toggle-pat-btn:hover {
+      background: rgba(214, 178, 109, 0.16);
+    }
+
+    /* Action Buttons */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-primary {
+      flex: 1 1 240px;
+      background: linear-gradient(135deg, var(--corten) 0%, #964427 100%);
+      color: #fff;
+      border: 1px solid rgba(240, 170, 140, 0.45);
+      padding: 0.85rem 1.35rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 24px rgba(184, 93, 59, 0.28);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: rgba(214, 178, 109, 0.08);
+      color: var(--brass);
+      border: 1px solid var(--brass-dim);
+      padding: 0.82rem 1.15rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(214, 178, 109, 0.18);
+      border-color: var(--brass);
+    }
+
+    /* Live Museum Bay Preview */
+    .preview-corridor-stage {
+      position: relative;
+      background: radial-gradient(ellipse at 50% 0%, #1d1b22 0%, #0a0a0c 78%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 2.25rem 1.5rem 1.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .preview-spotlight {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130%;
+      height: 88%;
+      background: conic-gradient(from 156deg at 50% -4%, transparent 0deg, rgba(255, 235, 190, 0.18) 24deg, transparent 48deg);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+
+    .preview-chapter {
+      position: relative;
+      z-index: 2;
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: rgba(214, 178, 109, 0.75);
+      margin-bottom: 0.75rem;
+    }
+
+    .preview-corten-frame {
+      position: relative;
+      z-index: 2;
+      padding: 10px;
+      background: linear-gradient(135deg, #c86b48 0%, #b85d3b 45%, #8a3e22 100%);
+      border: 1px solid rgba(235, 146, 108, 0.45);
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.88);
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .preview-mat {
+      padding: 10px;
+      background: #0d0c0f;
+      border: 1px solid rgba(184, 93, 59, 0.3);
+    }
+
+    .preview-aperture {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #08080a;
+      border: 1px solid rgba(214, 178, 109, 0.35);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-aperture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-placard {
+      position: relative;
+      z-index: 2;
+      margin-top: 1.15rem;
+      width: 100%;
+      max-width: 330px;
+      padding: 11px 18px 12px;
+      background: linear-gradient(135deg, #e5c683 0%, #d6b26d 45%, #b89149 85%, #ebd094 100%);
+      border: 1px solid #f2da9f;
+      text-align: center;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.8);
+    }
+
+    .preview-placard-year {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #2b1f0a;
+      margin-bottom: 3px;
+    }
+
+    .preview-placard-title {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #151109;
+      line-height: 1.3;
+    }
+
+    /* Curator Transaction & API Status Console */
+    .status-banner {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 3px;
+      font-size: 0.84rem;
+      border: 1px solid rgba(214, 178, 109, 0.3);
+      background: rgba(214, 178, 109, 0.07);
+      color: var(--ivory);
+    }
+
+    .status-banner.is-success {
+      border-color: rgba(76, 169, 119, 0.55);
+      background: rgba(76, 169, 119, 0.12);
+      color: #b8f0d0;
+    }
+
+    .status-banner.is-error {
+      border-color: rgba(217, 92, 80, 0.6);
+      background: rgba(217, 92, 80, 0.12);
+      color: #ffcac4;
+    }
+
+    .registry-list {
+      margin-top: 1.25rem;
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid var(--border-subtle);
+      background: #0b0b0e;
+      divide-y: 1px solid var(--border-subtle);
+    }
+
+    .registry-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+    }
+
+    .registry-row:last-child {
+      border-bottom: none;
+    }
+
+    .registry-year {
+      font-family: monospace;
+      color: var(--brass);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .registry-title {
+      flex: 1;
+      color: var(--ivory);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .registry-chapter {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="curator-shell">
+    <header class="curator-header">
+      <div>
+        <span class="brand-eyebrow">Back-Office Archival Terminal</span>
+        <h1 class="brand-title">Modern Indian History &mdash; Curator Dispatch</h1>
+      </div>
+      <div class="endpoint-badge">TARGET: data/timeline.json (GitHub REST API v2022-11-28)</div>
+    </header>
+
+    <div class="workspace-grid">
+      <!-- Left Column: Curator Dispatch Form -->
+      <section class="panel" aria-label="Append Exhibit Form">
+        <div class="panel-title">
+          <span>Append New Archival Exhibit</span>
+          <span style="font-size: 0.7rem; color: var(--muted); font-family: monospace;">GET &rarr; SORT &rarr; BASE64 &rarr; PUT</span>
+        </div>
+
+        <form id="curator-form" novalidate>
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label" for="github-repo">
+                <span>GitHub Repository</span>
+                <span class="field-hint">owner/repo</span>
+              </label>
+              <input
+                class="curator-input"
+                type="text"
+                id="github-repo"
+                placeholder="e.g. patna-museum/modern-india-corridor"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="github-branch">
+                <span>Target Branch &amp; Path</span>
+                <span class="field-hint">Default: main</span>
+              </label>
+              <input
+                class="curator-input"
+                type="text"
+                id="github-branch"
+                value="main"
+                placeholder="main"
+              />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="github-pat">
+              <span>GitHub Personal Access Token (PAT)</span>
+              <span class="field-hint">Requires contents:write scope</span>
+            </label>
+            <div class="input-wrap">
+              <input
+                class="curator-input"
+                type="password"
+                id="github-pat"
+                placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx or github_pat_..."
+                style="padding-right: 4.8rem;"
+                required
+              />
+              <button type="button" class="toggle-pat-btn" id="toggle-pat-btn">Show</button>
+            </div>
+          </div>
+
+          <div class="form-section-divider">Exhibit Placard &amp; Canvas Metadata</div>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label" for="exhibit-year">
+                <span>Year Stamp</span>
+                <span class="field-hint">Sorted chronologically</span>
+              </label>
+              <input
+                class="curator-input"
+                type="text"
+                id="exhibit-year"
+                value="A.D. 1857"
+                placeholder="e.g. A.D. 1857"
+                required
+              />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="exhibit-chapter">
+                <span>Chapter Tag</span>
+                <span class="field-hint">Wing / Era label</span>
+              </label>
+              <input
+                class="curator-input"
+                type="text"
+                id="exhibit-chapter"
+                value="First War of Independence"
+                placeholder="e.g. First War of Independence"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exhibit-title">
+              <span>Visual Title (Bronze Placard Line 2)</span>
+              <span class="field-hint">Concise glance-recall title</span>
+            </label>
+            <input
+              class="curator-input"
+              type="text"
+              id="exhibit-title"
+              value="Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur"
+              placeholder="e.g. Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur"
+              required
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="exhibit-image">
+              <span>Painting Image URL</span>
+              <span class="field-hint">HTTPS URL or repo asset path</span>
+            </label>
+            <input
+              class="curator-input"
+              type="url"
+              id="exhibit-image"
+              value="assets/kunwar-singh-1857.jpg"
+              placeholder="https://... or assets/kunwar-singh-1857.jpg"
+              required
+            />
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn-primary" id="commit-exhibit-btn">
+              Commit Exhibit to GitHub
+            </button>
+            <button type="button" class="btn-secondary" id="fetch-repo-btn">
+              Fetch Repo Timeline
+            </button>
+            <button type="button" class="btn-secondary" id="download-json-btn">
+              Export JSON
+            </button>
+          </div>
+        </form>
+
+        <div class="status-banner" id="status-banner" role="status" aria-live="polite">
+          Ready. Enter your GitHub Personal Access Token and repository (<code>owner/repo</code>) to commit directly to <code>data/timeline.json</code>, or test locally and export JSON.
+        </div>
+      </section>
+
+      <!-- Right Column: Live Exhibition Bay Preview & Chronological Registry -->
+      <aside class="panel" aria-label="Live Placard Preview and Timeline Registry">
+        <div class="panel-title">
+          <span>Live Corridor Bay Preview</span>
+          <span id="preview-id-badge" style="font-size: 0.7rem; color: var(--muted); font-family: monospace;">id: exhibit-1857-babu-veer</span>
+        </div>
+
+        <div class="preview-corridor-stage">
+          <div class="preview-spotlight" aria-hidden="true"></div>
+          <div class="preview-chapter" id="preview-chapter-text">First War of Independence</div>
+          <div class="preview-corten-frame">
+            <div class="preview-mat">
+              <div class="preview-aperture">
+                <img id="preview-image-el" alt="Live Exhibit Preview" src="" />
+              </div>
+            </div>
+          </div>
+          <div class="preview-placard">
+            <span class="preview-placard-year" id="preview-year-text">A.D. 1857</span>
+            <span class="preview-placard-title" id="preview-title-text">Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur</span>
+          </div>
+        </div>
+
+        <div class="form-section-divider" style="margin-top: 1.5rem;">
+          Chronological Registry (<span id="registry-count">8</span> Exhibits)
+        </div>
+        <div class="registry-list" id="registry-list"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const INITIAL_REGISTRY = [
+      {
+        "id": "exhibit-1757-plassey",
+        "year": "A.D. 1757",
+        "title": "Battle of Plassey on the Banks of the Bhagirathi",
+        "image": "assets/plassey-1757.jpg",
+        "chapter": "Company Ascendancy"
+      },
+      {
+        "id": "exhibit-1857-kunwar-singh",
+        "year": "A.D. 1857",
+        "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
+        "image": "assets/kunwar-singh-1857.jpg",
+        "chapter": "First War of Independence"
+      },
+      {
+        "id": "exhibit-1905-swadeshi",
+        "year": "A.D. 1905",
+        "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
+        "image": "assets/swadeshi-1905.jpg",
+        "chapter": "Swadeshi Awakening"
+      },
+      {
+        "id": "exhibit-1917-champaran",
+        "year": "A.D. 1917",
+        "title": "Champaran Indigo Satyagraha Under the Banyan Canopy",
+        "image": "assets/champaran-1917.jpg",
+        "chapter": "Satyagraha Dawn"
+      },
+      {
+        "id": "exhibit-1930-dandi",
+        "year": "A.D. 1930",
+        "title": "The Coastal Salt Flats of Dandi at Daybreak",
+        "image": "assets/dandi-1930.jpg",
+        "chapter": "Civil Disobedience"
+      },
+      {
+        "id": "exhibit-1942-patna-martyrs",
+        "year": "A.D. 1942",
+        "title": "The Seven Student Martyrs at Patna Secretariat",
+        "image": "assets/patna-martyrs-1942.jpg",
+        "chapter": "Quit India Uprising"
+      },
+      {
+        "id": "exhibit-1947-tryst",
+        "year": "A.D. 1947",
+        "title": "Tryst with Destiny in the Central Hall of Parliament",
+        "image": "assets/tryst-1947.jpg",
+        "chapter": "Sovereign Dawn"
+      },
+      {
+        "id": "exhibit-1950-constitution",
+        "year": "A.D. 1950",
+        "title": "The Illuminated Manuscript of the Republic Constitution",
+        "image": "assets/constitution-1950.jpg",
+        "chapter": "The Republic"
+      }
+    ];
+
+    let activeRegistry = [...INITIAL_REGISTRY];
+
+    function parseYearNumber(yearStr) {
+      if (!yearStr) return 0;
+      const match = String(yearStr).match(/(\d{3,4})/);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
+    function normalizeYearStamp(yearStr) {
+      const trimmed = String(yearStr || "").trim();
+      if (!trimmed) return "A.D. —";
+      if (/^(A\.?D\.?|B\.?C\.?)/i.test(trimmed)) {
+        return trimmed.toUpperCase();
+      }
+      return "A.D. " + trimmed;
+    }
+
+    function generateExhibitId(yearStr, titleStr) {
+      const yr = parseYearNumber(yearStr) || "0000";
+      const slug = String(titleStr || "exhibit")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 28);
+      return `exhibit-${yr}-${slug || "entry"}`;
+    }
+
+    // UTF-8 safe Base64 helpers for GitHub REST API Contents endpoint
+    function encodeUtf8Base64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function decodeUtf8Base64(b64) {
+      const clean = String(b64).replace(/\s+/g, "");
+      const binary = atob(clean);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return new TextDecoder().decode(bytes);
+    }
+
+    function makePreviewSvg(yearStr, titleStr, chapterStr) {
+      const y = normalizeYearStamp(yearStr);
+      const c = String(chapterStr || "Archival Wing").slice(0, 36);
+      const t = String(titleStr || "Untitled Exhibit").slice(0, 42);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" width="720" height="540">
+        <defs>
+          <radialGradient id="lum" cx="50%" cy="32%" r="68%">
+            <stop offset="0%" stop-color="#5c381e"/>
+            <stop offset="52%" stop-color="#221712"/>
+            <stop offset="100%" stop-color="#0a0a0c"/>
+          </radialGradient>
+        </defs>
+        <rect width="720" height="540" fill="url(#lum)"/>
+        <rect x="36" y="36" width="648" height="468" fill="none" stroke="#b85d3b" stroke-opacity="0.45" stroke-width="2"/>
+        <circle cx="360" cy="235" r="92" fill="none" stroke="#d6b26d" stroke-opacity="0.32" stroke-width="1.5"/>
+        <text x="360" y="195" text-anchor="middle" fill="#d6b26d" fill-opacity="0.65" font-family="Cinzel, serif" font-size="14" letter-spacing="5">${c.toUpperCase()}</text>
+        <text x="360" y="248" text-anchor="middle" fill="#f0d79a" font-family="Cinzel, serif" font-size="34" letter-spacing="6">${y}</text>
+        <text x="360" y="395" text-anchor="middle" fill="#ede6d6" fill-opacity="0.82" font-family="Georgia, serif" font-size="18">${t}</text>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    function setStatus(message, type = "info") {
+      const banner = document.getElementById("status-banner");
+      if (!banner) return;
+      banner.className = "status-banner";
+      if (type === "success") banner.classList.add("is-success");
+      if (type === "error") banner.classList.add("is-error");
+      banner.textContent = message;
+    }
+
+    function renderRegistryList() {
+      const listEl = document.getElementById("registry-list");
+      const countEl = document.getElementById("registry-count");
+      if (!listEl || !countEl) return;
+
+      const sorted = [...activeRegistry].sort(
+        (a, b) => parseYearNumber(a.year) - parseYearNumber(b.year)
+      );
+      countEl.textContent = String(sorted.length);
+      listEl.innerHTML = "";
+
+      sorted.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "registry-row";
+
+        const yr = document.createElement("span");
+        yr.className = "registry-year";
+        yr.textContent = normalizeYearStamp(item.year);
+
+        const ti = document.createElement("span");
+        ti.className = "registry-title";
+        ti.textContent = item.title;
+
+        const ch = document.createElement("span");
+        ch.className = "registry-chapter";
+        ch.textContent = item.chapter;
+
+        row.appendChild(yr);
+        row.appendChild(ti);
+        row.appendChild(ch);
+        listEl.appendChild(row);
+      });
+    }
+
+    function updateLivePreview() {
+      const yearVal = document.getElementById("exhibit-year").value;
+      const titleVal = document.getElementById("exhibit-title").value;
+      const imageVal = document.getElementById("exhibit-image").value.trim();
+      const chapterVal = document.getElementById("exhibit-chapter").value;
+
+      document.getElementById("preview-year-text").textContent = normalizeYearStamp(yearVal);
+      document.getElementById("preview-title-text").textContent = titleVal || "Untitled Exhibit";
+      document.getElementById("preview-chapter-text").textContent = chapterVal || "Chronological Wing";
+      document.getElementById("preview-id-badge").textContent = "id: " + generateExhibitId(yearVal, titleVal);
+
+      const previewImg = document.getElementById("preview-image-el");
+      const fallbackUri = makePreviewSvg(yearVal, titleVal, chapterVal);
+
+      if (imageVal.startsWith("http://") || imageVal.startsWith("https://") || imageVal.startsWith("data:")) {
+        previewImg.onerror = () => {
+          previewImg.src = fallbackUri;
+        };
+        previewImg.src = imageVal;
+      } else {
+        previewImg.src = fallbackUri;
+      }
+    }
+
+    async function fetchRemoteTimeline(repoInput, branchInput, patInput) {
+      const cleanRepo = repoInput.trim().replace(/^\/+|\/+$/g, "");
+      if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(cleanRepo)) {
+        throw new Error("Repository must follow the format 'owner/repo'.");
+      }
+      const branch = branchInput.trim() || "main";
+      const apiUrl = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json?ref=${encodeURIComponent(branch)}`;
+      const headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      };
+      if (patInput.trim()) {
+        headers["Authorization"] = `Bearer ${patInput.trim()}`;
+      }
+
+      const response = await fetch(apiUrl, { method: "GET", headers });
+      if (!response.ok) {
+        const errBody = await response.json().catch(() => ({}));
+        throw new Error(
+          `GitHub GET failed (${response.status}): ${errBody.message || response.statusText}`
+        );
+      }
+      const fileData = await response.json();
+      const decodedText = decodeUtf8Base64(fileData.content || "");
+      const parsedArray = JSON.parse(decodedText);
+      if (!Array.isArray(parsedArray)) {
+        throw new Error("Remote data/timeline.json does not contain a root JSON array.");
+      }
+      return {
+        sha: fileData.sha,
+        exhibits: parsedArray,
+        cleanRepo,
+        branch
+      };
+    }
+
+    async function handleCuratorCommit(e) {
+      e.preventDefault();
+
+      const repoInput = document.getElementById("github-repo").value;
+      const branchInput = document.getElementById("github-branch").value;
+      const patInput = document.getElementById("github-pat").value;
+      const yearInput = document.getElementById("exhibit-year").value;
+      const titleInput = document.getElementById("exhibit-title").value.trim();
+      const imageInput = document.getElementById("exhibit-image").value.trim();
+      const chapterInput = document.getElementById("exhibit-chapter").value.trim();
+      const commitBtn = document.getElementById("commit-exhibit-btn");
+
+      if (!yearInput.trim() || !titleInput || !imageInput || !chapterInput) {
+        setStatus("Please complete Year, Title, Image URL, and Chapter Tag before committing.", "error");
+        return;
+      }
+
+      const newExhibit = {
+        id: generateExhibitId(yearInput, titleInput),
+        year: normalizeYearStamp(yearInput),
+        title: titleInput,
+        image: imageInput,
+        chapter: chapterInput
+      };
+
+      // If PAT and Repo are provided, perform full GitHub REST API GET -> Sort -> Base64 -> PUT cycle
+      if (repoInput.trim() && patInput.trim()) {
+        commitBtn.disabled = true;
+        setStatus("1/3 Reading data/timeline.json & current SHA from GitHub REST API...", "info");
+
+        try {
+          const { sha, exhibits, cleanRepo, branch } = await fetchRemoteTimeline(
+            repoInput,
+            branchInput,
+            patInput
+          );
+
+          setStatus("2/3 Appending exhibit, sorting chronologically by year, and encoding Base64...", "info");
+
+          const filtered = exhibits.filter((item) => item.id !== newExhibit.id);
+          filtered.push(newExhibit);
+          filtered.sort((a, b) => parseYearNumber(a.year) - parseYearNumber(b.year));
+
+          const updatedJsonString = JSON.stringify(filtered, null, 2) + "\n";
+          const base64Content = encodeUtf8Base64(updatedJsonString);
+
+          setStatus("3/3 Committing updated data/timeline.json via PUT with SHA " + sha.slice(0, 7) + "...", "info");
+
+          const putUrl = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json`;
+          const putResponse = await fetch(putUrl, {
+            method: "PUT",
+            headers: {
+              "Authorization": `Bearer ${patInput.trim()}`,
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: `Curator: Append exhibit ${newExhibit.year} — ${newExhibit.title}`,
+              content: base64Content,
+              sha: sha,
+              branch: branch
+            })
+          });
+
+          if (!putResponse.ok) {
+            const errBody = await putResponse.json().catch(() => ({}));
+            throw new Error(
+              `GitHub PUT failed (${putResponse.status}): ${errBody.message || putResponse.statusText}`
+            );
+          }
+
+          const putResult = await putResponse.json();
+          activeRegistry = filtered;
+          try {
+            localStorage.setItem("bihar_museum_timeline_cache", JSON.stringify(activeRegistry));
+          } catch (storageErr) {}
+          renderRegistryList();
+
+          const newShaShort = (putResult.content && putResult.content.sha)
+            ? putResult.content.sha.slice(0, 7)
+            : "updated";
+          setStatus(
+            `Committed "${newExhibit.year} — ${newExhibit.title}" to ${cleanRepo}@${branch} (new SHA: ${newShaShort}).`,
+            "success"
+          );
+        } catch (err) {
+          setStatus(err.message || "GitHub API request failed.", "error");
+        } finally {
+          commitBtn.disabled = false;
+        }
+        return;
+      }
+
+      // Local stage fallback when testing without a live GitHub PAT
+      const filtered = activeRegistry.filter((item) => item.id !== newExhibit.id);
+      filtered.push(newExhibit);
+      filtered.sort((a, b) => parseYearNumber(a.year) - parseYearNumber(b.year));
+      activeRegistry = filtered;
+      try {
+        localStorage.setItem("bihar_museum_timeline_cache", JSON.stringify(activeRegistry));
+      } catch (storageErr) {}
+      renderRegistryList();
+      setStatus(
+        `Appended "${newExhibit.year} — ${newExhibit.title}" & sorted chronologically in local staging (${activeRegistry.length} exhibits). Provide a GitHub Repo + PAT to push via PUT, or click Export JSON.`,
+        "success"
+      );
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      try {
+        const cached = localStorage.getItem("bihar_museum_timeline_cache");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            activeRegistry = parsed;
+          }
+        }
+      } catch (e) {}
+
+      renderRegistryList();
+      updateLivePreview();
+
+      ["exhibit-year", "exhibit-title", "exhibit-image", "exhibit-chapter"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateLivePreview);
+      });
+
+      document.getElementById("toggle-pat-btn").addEventListener("click", () => {
+        const patInput = document.getElementById("github-pat");
+        const btn = document.getElementById("toggle-pat-btn");
+        if (patInput.type === "password") {
+          patInput.type = "text";
+          btn.textContent = "Hide";
+        } else {
+          patInput.type = "password";
+          btn.textContent = "Show";
+        }
+      });
+
+      document.getElementById("curator-form").addEventListener("submit", handleCuratorCommit);
+
+      document.getElementById("fetch-repo-btn").addEventListener("click", async () => {
+        const repoInput = document.getElementById("github-repo").value;
+        const branchInput = document.getElementById("github-branch").value;
+        const patInput = document.getElementById("github-pat").value;
+        if (!repoInput.trim()) {
+          setStatus("Enter a GitHub repository ('owner/repo') to fetch remote data/timeline.json.", "error");
+          return;
+        }
+        setStatus("Fetching remote data/timeline.json from GitHub REST API...", "info");
+        try {
+          const { sha, exhibits, cleanRepo, branch } = await fetchRemoteTimeline(
+            repoInput,
+            branchInput,
+            patInput
+          );
+          activeRegistry = exhibits.sort((a, b) => parseYearNumber(a.year) - parseYearNumber(b.year));
+          renderRegistryList();
+          setStatus(
+            `Loaded ${activeRegistry.length} exhibits from ${cleanRepo}@${branch} (SHA: ${sha.slice(0, 7)}).`,
+            "success"
+          );
+        } catch (err) {
+          setStatus(err.message || "Failed to fetch repository timeline.", "error");
+        }
+      });
+
+      document.getElementById("download-json-btn").addEventListener("click", () => {
+        const sorted = [...activeRegistry].sort(
+          (a, b) => parseYearNumber(a.year) - parseYearNumber(b.year)
+        );
+        const blob = new Blob([JSON.stringify(sorted, null, 2) + "\n"], {
+          type: "application/json"
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "timeline.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        setStatus("Exported sorted timeline.json (" + sorted.length + " exhibits).", "success");
+      });
+    });
+  </script>
+</body>
+</html>
