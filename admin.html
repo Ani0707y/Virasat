@@ -123,7 +123,7 @@
     .synth-title .sparkle { color: var(--gold); font-size: 1.2rem; }
 
     .key-bars-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 0.85rem;
     }
     @media (max-width: 760px) { .key-bars-grid { grid-template-columns: 1fr; } }
 
@@ -150,7 +150,7 @@
       flex-wrap: wrap; gap: 0.75rem; padding: 0.65rem 0.9rem;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-subtle); border-radius: 8px;
-      margin-bottom: 1.25rem; font-size: 0.76rem;
+      margin-bottom: 0.85rem; font-size: 0.76rem;
     }
     .repo-inputs { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .repo-label { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.72rem; }
@@ -166,20 +166,41 @@
     }
     .auto-push-toggle input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
 
+    /* Optional Curator Hint Input */
+    .hint-bar {
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .hint-input {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid rgba(214, 178, 109, 0.25);
+      border-radius: 8px;
+      color: var(--gold-bright);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      padding: 0.58rem 0.9rem;
+      outline: none;
+    }
+    .hint-input:focus { border-color: var(--gold); }
+    .hint-input::placeholder { color: rgba(237, 230, 214, 0.35); }
+
     .drop-arena {
       position: relative; border: 1px dashed rgba(255, 255, 255, 0.18);
       border-radius: 12px; background: rgba(6, 6, 8, 0.65);
-      padding: 2.2rem 1.5rem; text-align: center; cursor: pointer;
+      padding: 2.1rem 1.5rem; text-align: center; cursor: pointer;
       transition: all 0.25s ease;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.55rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
     }
     .drop-arena:hover, .drop-arena.is-dragover {
       border-color: var(--gold); background: rgba(214, 178, 109, 0.06);
       box-shadow: inset 0 0 30px rgba(214, 178, 109, 0.06);
     }
-    .drop-emoji { font-size: 2.1rem; line-height: 1; margin-bottom: 0.2rem; }
+    .drop-emoji { font-size: 2rem; line-height: 1; margin-bottom: 0.15rem; }
     .drop-headline { font-size: 0.98rem; font-weight: 700; color: #ffffff; }
-    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--text-muted); max-width: 580px; }
+    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); max-width: 580px; }
     .file-input-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
     .status-strip {
@@ -338,7 +359,7 @@
       <div class="synth-header-row">
         <div class="synth-title">
           <span class="sparkle">✦</span>
-          <span>Gemini Flash Auto-Synthesizer</span>
+          <span>Gemini Pro/Flash Auto-Synthesizer</span>
         </div>
         <label class="auto-push-toggle">
           <input type="checkbox" id="auto-commit-toggle" />
@@ -369,17 +390,27 @@
         </button>
       </div>
 
+      <!-- Optional Curator Hint Bar -->
+      <div class="hint-bar">
+        <input
+          type="text"
+          id="curator-hint"
+          class="hint-input"
+          placeholder="Optional Hint for AI (e.g. 'Kunwar Singh' or 'Santhal Hool' — helps on obscure B&amp;W prints)"
+        />
+      </div>
+
       <div class="drop-arena" id="drop-zone">
         <input type="file" id="photo-file-input" class="file-input-hidden" accept="image/*" />
         <div class="drop-emoji">🖼️</div>
         <div class="drop-headline" id="drop-headline">Click or Drag Historical Exhibit Photo Here</div>
         <div class="drop-subline">
-          Gemini Flash Vision automatically analyzes the photo, fills Year, Title, Chapter &amp; Aspect, and commits directly to GitHub.
+          Uses Gemini 2.5 + Live Google Search Grounding to accurately identify historical figures, dates &amp; chapters.
         </div>
       </div>
 
       <div class="status-strip" id="status-strip">
-        <span id="status-text">Ready. Drop an archival photo above to auto-synthesize with Gemini Flash.</span>
+        <span id="status-text">Ready. Drop an archival photo above to auto-synthesize with Gemini.</span>
         <span id="file-pill" style="color: var(--gold);"></span>
       </div>
 
@@ -625,7 +656,7 @@
           canvas.height = h;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, w, h);
-          const compressed = canvas.toDataURL("image/jpeg", 0.8);
+          const compressed = canvas.toDataURL("image/jpeg", 0.85);
           resolve(compressed.split(",")[1]);
         };
         img.onerror = () => resolve(dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl);
@@ -633,13 +664,13 @@
       });
     }
 
-    /* Dynamically discover live active Flash models for the user's Gemini API Key */
+    /* Prioritize full-power Gemini models (2.5-pro / 2.5-flash / 2.0-flash) and push lite models last */
     async function getWorkingGeminiModels(apiKey) {
-      const fallbackList = [
+      const preferredFull = [
         "gemini-2.5-flash",
-        "gemini-2.5-flash-lite",
-        "gemini-flash-latest",
-        "gemini-2.0-flash"
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
+        "gemini-flash-latest"
       ];
       try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
@@ -647,22 +678,42 @@
           const data = await res.json();
           const available = (data.models || [])
             .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes("generateContent"))
-            .map(m => m.name.replace(/^models\//, ""));
-          const flashModels = available.filter(name => name.includes("flash") && !name.includes("tts") && !name.includes("audio"));
-          if (flashModels.length > 0) {
-            const ordered = fallbackList.filter(p => flashModels.includes(p));
-            return [...new Set([...ordered, ...flashModels])];
-          }
-          if (available.length > 0) return available;
+            .map(m => m.name.replace(/^models\//, ""))
+            .filter(name => name.includes("gemini") && !name.includes("tts") && !name.includes("audio") && !name.includes("embedding"));
+
+          const fullModels = available.filter(n => !n.includes("lite"));
+          const liteModels = available.filter(n => n.includes("lite"));
+          const orderedFull = preferredFull.filter(p => fullModels.includes(p));
+          const combined = [...new Set([...orderedFull, ...fullModels, ...liteModels])];
+          if (combined.length > 0) return combined;
         }
       } catch (e) {}
-      return fallbackList;
+      return preferredFull;
+    }
+
+    async function callGeminiModel(apiKey, modelName, parts, useSearch) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const payload = { contents: [{ parts }] };
+      if (useSearch) {
+        payload.tools = [{ google_search: {} }];
+      }
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error?.message || `HTTP ${res.status}`);
+      }
+      return res.json();
     }
 
     async function runGeminiSynthesizer() {
       const rawKey = document.getElementById("gemini-api-key").value;
       const apiKey = sanitizeCredential(rawKey);
       const imgPath = document.getElementById("exhibit-image").value.trim();
+      const userHint = document.getElementById("curator-hint").value.trim();
       const resynthBtn = document.getElementById("btn-resynth");
 
       if (!apiKey) {
@@ -676,7 +727,7 @@
       }
 
       resynthBtn.disabled = true;
-      setStatus("✦ Detecting live Gemini model & analyzing artwork...", "working");
+      setStatus("✦ Analyzing artwork with Gemini + Google Search Grounding...", "working");
 
       const parts = [];
       if (uploadedFileBase64) {
@@ -686,14 +737,20 @@
         });
       }
 
+      const hintLine = userHint ? `Curator Hint / Context: "${userHint}"` : "Curator Hint: None provided.";
+      const fileRef = uploadedFileName || imgPath;
+
       parts.push({
-        text: `You are a Senior Historian and Curator for a Modern Indian History museum (1750 to 1950).
-Inspect this historical image (filename reference: "${uploadedFileName || imgPath}").
-Identify the exact historical person, battle, movement, or event in Modern Indian History.
+        text: `You are an expert Historian & Museum Curator specializing in Modern Indian History (1750–1950, Spectrum/NCERT aligned).
+Analyze this historical image carefully.
+Filename reference: "${fileRef}" (Note: if filename contains an Alamy stock ID like GJFA9B, search for that exact Alamy ID to verify the subject!).
+${hintLine}
+
+Identify the exact Indian historical figure, uprising, treaty, or movement depicted.
 Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 {
-  "year": "4-digit year, e.g. 1857",
-  "title": "Dignified museum placard title under 8 words, e.g. Babu Veer Kunwar Singh at Arrah",
+  "year": "4-digit year string, e.g. 1857",
+  "title": "Dignified museum placard title under 8 words, e.g. Babu Veer Kunwar Singh at Arrah & Jagdishpur",
   "chapter": "Short historical chapter, e.g. First War of Independence",
   "aspect": "classic or wide or tall"
 }`
@@ -704,20 +761,16 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 
       for (const modelName of models) {
         try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
-          const res = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ contents: [{ parts }] })
-          });
-
-          if (!res.ok) {
-            const errJson = await res.json().catch(() => ({}));
-            throw new Error(errJson.error?.message || `HTTP ${res.status}`);
+          let data;
+          try {
+            // Try with live Google Search grounding first
+            data = await callGeminiModel(apiKey, modelName, parts, true);
+          } catch (searchErr) {
+            // If model doesn't support google_search tool, retry without it
+            data = await callGeminiModel(apiKey, modelName, parts, false);
           }
 
-          const data = await res.json();
-          const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+          const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
           const jsonMatch = rawText.match(/\{[\s\S]*\}/);
           const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
 
