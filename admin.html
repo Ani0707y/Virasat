@@ -24,11 +24,7 @@
       --error: #f87171;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       min-height: 100vh;
@@ -42,482 +38,214 @@
 
     /* PIN Security Gate Modal (PIN: 7714) */
     .gate-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: radial-gradient(circle at 50% 45%, #111015 0%, #050507 85%);
       z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       padding: 1.5rem;
       transition: opacity 0.35s ease, visibility 0.35s ease;
     }
-    .gate-overlay.is-unlocked {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    .gate-overlay.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
     .gate-card {
-      width: 100%;
-      max-width: 370px;
+      width: 100%; max-width: 370px;
       background: var(--card-bg);
       border: 1px dashed rgba(214, 178, 109, 0.45);
-      border-radius: 12px;
-      padding: 2.4rem 2rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 1.15rem;
+      border-radius: 12px; padding: 2.4rem 2rem;
+      text-align: center; display: flex; flex-direction: column; gap: 1.15rem;
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95);
     }
     .gate-title {
-      font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      text-transform: uppercase;
+      font-family: 'Cinzel', serif; font-size: 0.9rem;
+      letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase;
     }
-    .gate-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: -0.4rem;
-    }
+    .gate-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: -0.4rem; }
     .gate-pin-input {
-      width: 100%;
-      background: var(--input-bg);
+      width: 100%; background: var(--input-bg);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 8px;
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.45rem;
-      letter-spacing: 0.45em;
-      text-align: center;
-      padding: 0.75rem;
-      outline: none;
+      border-radius: 8px; color: #fff;
+      font-family: 'JetBrains Mono', monospace; font-size: 1.45rem;
+      letter-spacing: 0.45em; text-align: center; padding: 0.75rem; outline: none;
     }
-    .gate-pin-input:focus {
-      border-color: var(--gold);
-    }
+    .gate-pin-input:focus { border-color: var(--gold); }
     .gate-btn {
-      width: 100%;
-      background: var(--gold);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      padding: 0.82rem;
-      font-family: 'Cinzel', serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s ease;
+      width: 100%; background: var(--gold); color: #000; border: none;
+      border-radius: 8px; padding: 0.82rem; font-family: 'Cinzel', serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; cursor: pointer; transition: background 0.2s ease;
     }
-    .gate-btn:hover {
-      background: var(--gold-bright);
-    }
-    .gate-error {
-      font-size: 0.75rem;
-      color: var(--error);
-      min-height: 1rem;
-    }
+    .gate-btn:hover { background: var(--gold-bright); }
+    .gate-error { font-size: 0.75rem; color: var(--error); min-height: 1rem; }
 
-    /* Main Container (NovelVerse Style) */
-    .console-shell {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 2.2rem 1.5rem 4rem;
-    }
+    /* Main Container */
+    .console-shell { max-width: 1040px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
 
-    /* Top Bar */
     .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 1.4rem;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border-subtle);
-      flex-wrap: wrap;
-      gap: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 1.4rem; margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;
     }
     .brand-heading {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: clamp(1.1rem, 2vw, 1.38rem);
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #ffffff;
+      font-size: clamp(1.1rem, 2vw, 1.38rem); font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #ffffff;
     }
-    .brand-heading .accent {
-      color: var(--gold);
-    }
-    .brand-heading .slash {
-      color: rgba(255, 255, 255, 0.35);
-      margin: 0 4px;
-    }
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
+    .brand-heading .accent { color: var(--gold); }
+    .brand-heading .slash { color: rgba(255, 255, 255, 0.35); margin: 0 4px; }
+    .top-actions { display: flex; align-items: center; gap: 0.65rem; }
     .pill-btn {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      padding: 0.48rem 1rem;
-      border-radius: 999px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem; padding: 0.48rem 1rem; border-radius: 999px;
+      text-decoration: none; cursor: pointer; transition: all 0.2s ease;
+      display: inline-flex; align-items: center; gap: 6px;
     }
     .pill-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold);
+      border-color: var(--gold); color: var(--gold);
       background: rgba(214, 178, 109, 0.08);
     }
 
-    /* Primary Synthesizer Card (NovelVerse Dashed Glow Style) */
+    /* Primary Synthesizer Card */
     .synthesizer-card {
       background: var(--card-bg);
       border: 1px dashed rgba(214, 178, 109, 0.55);
-      border-radius: 14px;
-      padding: clamp(1.4rem, 3vw, 2.2rem);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
-      margin-bottom: 1.5rem;
+      border-radius: 14px; padding: clamp(1.4rem, 3vw, 2.2rem);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75); margin-bottom: 1.5rem;
     }
-
-    /* Credentials Row */
     .synth-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
     }
     .synth-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.05rem; font-weight: 700; color: #ffffff;
     }
-    .synth-title .sparkle {
-      color: var(--gold);
-      font-size: 1.2rem;
-    }
+    .synth-title .sparkle { color: var(--gold); font-size: 1.2rem; }
 
     .key-bars-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.85rem;
-      margin-bottom: 1rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem;
     }
-    @media (max-width: 760px) {
-      .key-bars-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 760px) { .key-bars-grid { grid-template-columns: 1fr; } }
 
-    .credential-box {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
+    .credential-box { display: flex; gap: 0.5rem; align-items: center; }
     .cred-input {
-      flex: 1;
-      background: var(--input-bg);
+      flex: 1; background: var(--input-bg);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      padding: 0.65rem 0.9rem;
-      outline: none;
-      transition: border-color 0.2s ease;
+      border-radius: 8px; color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+      padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.2s ease;
     }
-    .cred-input:focus {
-      border-color: var(--gold);
-    }
+    .cred-input:focus { border-color: var(--gold); }
     .save-cred-btn {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      padding: 0.65rem 0.95rem;
-      border-radius: 8px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
+      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; padding: 0.65rem 0.95rem; border-radius: 8px;
+      cursor: pointer; white-space: nowrap; transition: all 0.2s ease;
     }
-    .save-cred-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
+    .save-cred-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-    /* Repo Config Bar */
     .repo-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      padding: 0.65rem 0.9rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.75rem; padding: 0.65rem 0.9rem;
       background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      margin-bottom: 1.25rem;
-      font-size: 0.76rem;
+      border: 1px solid var(--border-subtle); border-radius: 8px;
+      margin-bottom: 1.25rem; font-size: 0.76rem;
     }
-    .repo-inputs {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .repo-label {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-muted);
-      font-size: 0.72rem;
-    }
+    .repo-inputs { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .repo-label { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.72rem; }
     .repo-mini-input {
-      background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--gold);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      width: 170px;
+      background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+      padding: 0.35rem 0.65rem; border-radius: 6px; width: 170px;
     }
-    .repo-branch-input {
-      width: 80px;
-    }
+    .repo-branch-input { width: 80px; }
     .auto-push-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      color: #d6d1c4;
-      font-size: 0.76rem;
-      user-select: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; color: #d6d1c4; font-size: 0.76rem; user-select: none;
     }
-    .auto-push-toggle input {
-      accent-color: var(--gold);
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
-    }
+    .auto-push-toggle input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
 
-    /* Giant Dropzone (NovelVerse Style) */
     .drop-arena {
-      position: relative;
-      border: 1px dashed rgba(255, 255, 255, 0.18);
-      border-radius: 12px;
-      background: rgba(6, 6, 8, 0.65);
-      padding: 2.4rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
+      position: relative; border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 12px; background: rgba(6, 6, 8, 0.65);
+      padding: 2.2rem 1.5rem; text-align: center; cursor: pointer;
       transition: all 0.25s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.55rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.55rem;
     }
-    .drop-arena:hover,
-    .drop-arena.is-dragover {
-      border-color: var(--gold);
-      background: rgba(214, 178, 109, 0.06);
+    .drop-arena:hover, .drop-arena.is-dragover {
+      border-color: var(--gold); background: rgba(214, 178, 109, 0.06);
       box-shadow: inset 0 0 30px rgba(214, 178, 109, 0.06);
     }
-    .drop-emoji {
-      font-size: 2.1rem;
-      line-height: 1;
-      margin-bottom: 0.2rem;
-    }
-    .drop-headline {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .drop-subline {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      max-width: 580px;
-    }
-    .file-input-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
-    }
+    .drop-emoji { font-size: 2.1rem; line-height: 1; margin-bottom: 0.2rem; }
+    .drop-headline { font-size: 0.98rem; font-weight: 700; color: #ffffff; }
+    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--text-muted); max-width: 580px; }
+    .file-input-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
-    /* Status & Progress Banner */
     .status-strip {
-      margin-top: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-subtle);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: #d6d1c4;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+      margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #d6d1c4;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
-    .status-strip.is-working {
-      border-color: var(--gold);
-      color: var(--gold-bright);
-      background: rgba(214, 178, 109, 0.08);
-    }
-    .status-strip.is-success {
-      border-color: rgba(52, 211, 153, 0.45);
-      color: var(--success);
-      background: rgba(52, 211, 153, 0.08);
-    }
-    .status-strip.is-error {
-      border-color: rgba(248, 113, 113, 0.5);
-      color: var(--error);
-      background: rgba(248, 113, 113, 0.08);
-    }
+    .status-strip.is-working { border-color: var(--gold); color: var(--gold-bright); background: rgba(214, 178, 109, 0.08); }
+    .status-strip.is-success { border-color: rgba(52, 211, 153, 0.45); color: var(--success); background: rgba(52, 211, 153, 0.08); }
+    .status-strip.is-error { border-color: rgba(248, 113, 113, 0.5); color: var(--error); background: rgba(248, 113, 113, 0.08); }
 
-    /* Live Workbench Grid: Left Metadata & Ingest Button | Right Live Museum Preview */
     .workbench-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 1.5rem;
-      margin-top: 1.4rem;
-      padding-top: 1.4rem;
-      border-top: 1px solid var(--border-subtle);
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.5rem;
+      margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px solid var(--border-subtle);
     }
-    @media (max-width: 820px) {
-      .workbench-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 820px) { .workbench-grid { grid-template-columns: 1fr; } }
 
-    .meta-form-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-    }
-    .field-row-3 {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr 1.1fr;
-      gap: 0.65rem;
-    }
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
+    .meta-form-stack { display: flex; flex-direction: column; gap: 0.85rem; }
+    .field-row-3 { display: grid; grid-template-columns: 0.9fr 1.1fr 1.1fr; gap: 0.65rem; }
+    .field-group { display: flex; flex-direction: column; gap: 0.3rem; }
     .field-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted);
     }
     .field-input, .field-select {
-      width: 100%;
-      background: var(--input-bg);
+      width: 100%; background: var(--input-bg);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 7px;
-      color: #ffffff;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.88rem;
-      padding: 0.62rem 0.8rem;
-      outline: none;
+      border-radius: 7px; color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem;
+      padding: 0.62rem 0.8rem; outline: none;
     }
-    .field-input:focus, .field-select:focus {
-      border-color: var(--gold);
-    }
+    .field-input:focus, .field-select:focus { border-color: var(--gold); }
 
-    /* Primary Ingest Action Buttons */
-    .ingest-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      margin-top: 0.35rem;
-    }
+    .ingest-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.35rem; }
     .btn-ingest-github {
       width: 100%;
       background: linear-gradient(135deg, #d6b26d 0%, #b88b3b 100%);
-      color: #000000;
-      border: none;
-      border-radius: 999px;
-      padding: 0.88rem 1.4rem;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.86rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
+      color: #000000; border: none; border-radius: 999px;
+      padding: 0.88rem 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.86rem; font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer;
       box-shadow: 0 8px 25px var(--gold-glow);
       transition: transform 0.15s ease, filter 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-ingest-github:hover:not(:disabled) {
-      filter: brightness(1.08);
-      transform: translateY(-1px);
-    }
-    .btn-ingest-github:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
+    .btn-ingest-github:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-ingest-github:disabled { opacity: 0.45; cursor: not-allowed; }
 
     .btn-resynth {
-      width: 100%;
-      background: rgba(214, 178, 109, 0.1);
-      border: 1px solid rgba(214, 178, 109, 0.38);
-      color: var(--gold-bright);
-      border-radius: 8px;
-      padding: 0.58rem 1rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      width: 100%; background: rgba(214, 178, 109, 0.1);
+      border: 1px solid rgba(214, 178, 109, 0.38); color: var(--gold-bright);
+      border-radius: 8px; padding: 0.58rem 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s ease;
     }
-    .btn-resynth:hover:not(:disabled) {
-      background: rgba(214, 178, 109, 0.2);
-      border-color: var(--gold);
-    }
+    .btn-resynth:hover:not(:disabled) { background: rgba(214, 178, 109, 0.2); border-color: var(--gold); }
 
-    /* Right Live Preview Stage */
     .live-preview-stage {
-      background: #040406;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 310px;
+      background: #040406; border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px; padding: 1.4rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 310px;
     }
     .preview-canvas-wrap {
-      position: relative;
-      height: 210px;
-      aspect-ratio: 4 / 3;
-      border-radius: 4px;
-      overflow: hidden;
-      background: #09090c;
+      position: relative; height: 210px; aspect-ratio: 4 / 3;
+      border-radius: 4px; overflow: hidden; background: #09090c;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08);
       transition: aspect-ratio 0.25s ease;
     }
@@ -526,161 +254,61 @@
     .preview-canvas-wrap.aspect-classic { aspect-ratio: 4 / 3; }
 
     .wireframe-fallback {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
       background: radial-gradient(circle at 50% 50%, rgba(214, 178, 109, 0.1) 0%, #060608 85%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
     }
     #preview-image-el {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      opacity: 0;
-      transition: opacity 0.25s ease;
+      position: relative; z-index: 2; width: 100%; height: 100%;
+      object-fit: cover; display: block; opacity: 0; transition: opacity 0.25s ease;
     }
-    #preview-image-el.is-loaded {
-      opacity: 1;
-    }
-    .preview-placard {
-      margin-top: 14px;
-      text-align: center;
-    }
+    #preview-image-el.is-loaded { opacity: 1; }
+    .preview-placard { margin-top: 14px; text-align: center; }
     .preview-year {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 4px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.28em; color: var(--gold); display: block; margin-bottom: 4px;
     }
-    .preview-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1rem;
-      color: var(--text-main);
-    }
+    .preview-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: var(--text-main); }
 
-    /* Secondary Card: Permanent Source Backup & Live Repository Timeline */
     .backup-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 1.25rem 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      background: var(--card-bg); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.25rem 1.6rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
     }
-    .backup-info h3 {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.2rem;
-    }
-    .backup-info p {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
-      color: var(--text-muted);
-    }
-    .backup-btn-group {
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
+    .backup-info h3 { font-size: 0.92rem; font-weight: 700; color: #ffffff; margin-bottom: 0.2rem; }
+    .backup-info p { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-muted); }
+    .backup-btn-group { display: flex; gap: 0.65rem; flex-wrap: wrap; }
     .btn-crimson-pill {
-      background: var(--crimson);
-      color: #ffffff;
-      border: none;
-      border-radius: 999px;
-      padding: 0.65rem 1.25rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 20px var(--crimson-glow);
-      transition: filter 0.2s ease;
+      background: var(--crimson); color: #ffffff; border: none; border-radius: 999px;
+      padding: 0.65rem 1.25rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 20px var(--crimson-glow); transition: filter 0.2s ease;
     }
-    .btn-crimson-pill:hover {
-      filter: brightness(1.12);
-    }
+    .btn-crimson-pill:hover { filter: brightness(1.12); }
 
-    /* Live Timeline Manager Table */
     .timeline-manager-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 1.4rem 1.6rem;
+      background: var(--card-bg); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.4rem 1.6rem;
     }
-    .manager-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-    .manager-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .timeline-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      max-height: 260px;
-      overflow-y: auto;
-    }
+    .manager-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .manager-title { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
+    .timeline-list { display: flex; flex-direction: column; gap: 0.45rem; max-height: 260px; overflow-y: auto; }
     .timeline-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      padding: 0.55rem 0.85rem;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
-      font-size: 0.8rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      padding: 0.55rem 0.85rem; background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; font-size: 0.8rem;
     }
-    .timeline-row-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      overflow: hidden;
-    }
-    .row-year {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--gold);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .row-title {
-      color: var(--text-main);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    .timeline-row-left { display: flex; align-items: center; gap: 0.75rem; overflow: hidden; }
+    .row-year { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-weight: 600; white-space: nowrap; }
+    .row-title { color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .row-del-btn {
-      background: transparent;
-      border: 1px solid rgba(248, 113, 113, 0.3);
-      color: var(--error);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      padding: 0.22rem 0.55rem;
-      border-radius: 4px;
-      cursor: pointer;
+      background: transparent; border: 1px solid rgba(248, 113, 113, 0.3);
+      color: var(--error); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; padding: 0.22rem 0.55rem; border-radius: 4px; cursor: pointer;
     }
-    .row-del-btn:hover {
-      background: rgba(248, 113, 113, 0.15);
-    }
+    .row-del-btn:hover { background: rgba(248, 113, 113, 0.15); }
   </style>
 </head>
 <body>
@@ -696,7 +324,6 @@
   </div>
 
   <div class="console-shell">
-    <!-- Top Header (NovelVerse Style) -->
     <header class="top-bar">
       <div class="brand-heading">
         VIRASAT<span class="slash">//</span><span class="accent">VISUAL INGESTION</span>
@@ -707,20 +334,18 @@
       </div>
     </header>
 
-    <!-- Main Synthesizer & Ingestion Card -->
     <section class="synthesizer-card">
       <div class="synth-header-row">
         <div class="synth-title">
           <span class="sparkle">✦</span>
           <span>Gemini Flash Auto-Synthesizer</span>
         </div>
-        <label class="auto-push-toggle" title="Automatically push to GitHub right after Gemini finishes extracting metadata">
+        <label class="auto-push-toggle">
           <input type="checkbox" id="auto-commit-toggle" />
           <span>Auto-Commit to GitHub immediately after AI Synthesis</span>
         </label>
       </div>
 
-      <!-- Persistent Gemini Key & GitHub Token Inputs -->
       <div class="key-bars-grid">
         <div class="credential-box">
           <input type="password" id="gemini-api-key" class="cred-input" placeholder="Paste Gemini API Key (AIzaSy...)" />
@@ -732,7 +357,6 @@
         </div>
       </div>
 
-      <!-- Target Repository Bar (Pre-filled with ani0707y/Virasat) -->
       <div class="repo-bar">
         <div class="repo-inputs">
           <span class="repo-label">TARGET REPO:</span>
@@ -745,23 +369,20 @@
         </button>
       </div>
 
-      <!-- Giant Click / Drag-and-Drop Photo Ingestion Zone -->
       <div class="drop-arena" id="drop-zone">
         <input type="file" id="photo-file-input" class="file-input-hidden" accept="image/*" />
         <div class="drop-emoji">🖼️</div>
         <div class="drop-headline" id="drop-headline">Click or Drag Historical Exhibit Photo Here</div>
         <div class="drop-subline">
-          Gemini Flash Vision will automatically inspect the artwork, extract Year, Title, Chapter &amp; Aspect Ratio, and prepare it for GitHub ingestion.
+          Gemini Flash Vision automatically analyzes the photo, fills Year, Title, Chapter &amp; Aspect, and commits directly to GitHub.
         </div>
       </div>
 
-      <!-- Live Status Strip -->
       <div class="status-strip" id="status-strip">
-        <span id="status-text">Ready. Drop an Alamy/archival photo above to auto-synthesize with Gemini Flash.</span>
+        <span id="status-text">Ready. Drop an archival photo above to auto-synthesize with Gemini Flash.</span>
         <span id="file-pill" style="color: var(--gold);"></span>
       </div>
 
-      <!-- Workbench: Left Editable Metadata & Big Ingest Button | Right Live Preview -->
       <div class="workbench-grid">
         <form id="ingest-form" class="meta-form-stack" novalidate>
           <div class="field-row-3">
@@ -804,7 +425,6 @@
           </div>
         </form>
 
-        <!-- Right Live Exhibition Preview -->
         <div class="live-preview-stage">
           <div class="preview-canvas-wrap aspect-tall" id="preview-canvas-box">
             <div class="wireframe-fallback" id="wireframe-label">Drop Photo</div>
@@ -818,7 +438,6 @@
       </div>
     </section>
 
-    <!-- Permanent Source Backup Card (NovelVerse Style) -->
     <section class="backup-card">
       <div class="backup-info">
         <h3>Permanent Source Backup</h3>
@@ -830,7 +449,6 @@
       </div>
     </section>
 
-    <!-- Live Repository Timeline Registry -->
     <section class="timeline-manager-card">
       <div class="manager-header">
         <span class="manager-title">Synced Timeline Registry (<span id="registry-count">0</span> Exhibits)</span>
@@ -844,84 +462,29 @@
     const REQUIRED_PIN = "7714";
 
     const DEFAULT_TIMELINE = [
-      {
-        "id": "1757-plassey",
-        "year": "1757",
-        "chapter": "Company Ascendancy",
-        "wing": "Wing I — Mercantile Conquest",
-        "title": "Battle of Plassey on the Banks of the Bhagirathi",
-        "aspect": "classic",
-        "image": "assets/1757-plassey.jpg"
-      },
-      {
-        "id": "1765-allahabad",
-        "year": "1765",
-        "chapter": "The Diwani Charter",
-        "wing": "Wing I — Mercantile Conquest",
-        "title": "Treaty of Allahabad & Grant of Diwani Rights",
-        "aspect": "wide",
-        "image": "assets/1765-allahabad.jpg"
-      },
-      {
-        "id": "1855-santhal-hool",
-        "year": "1855",
-        "chapter": "Indigenous Uprisings",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool",
-        "aspect": "tall",
-        "image": "assets/1855-santhal-hool.jpg"
-      },
-      {
-        "id": "1857-kunwar-singh",
-        "year": "1857",
-        "chapter": "First War of Independence",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
-        "aspect": "classic",
-        "image": "assets/1857-kunwar-singh.jpg"
-      },
-      {
-        "id": "1857-delhi-front",
-        "year": "1857",
-        "chapter": "First War of Independence",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "The Delhi Front at Kashmiri Gate & Red Fort",
-        "aspect": "wide",
-        "image": "assets/1857-delhi-front.jpg"
-      },
-      {
-        "id": "1905-swadeshi",
-        "year": "1905",
-        "chapter": "Swadeshi Awakening",
-        "wing": "Wing III — Mass Nationalist Awakening",
-        "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
-        "aspect": "classic",
-        "image": "assets/1905-swadeshi.jpg"
-      },
-      {
-        "id": "1930-dandi-march",
-        "year": "1930",
-        "chapter": "Civil Disobedience",
-        "wing": "Wing III — Mass Nationalist Awakening",
-        "title": "The Coastal Salt Satyagraha at Dandi",
-        "aspect": "wide",
-        "image": "assets/1930-dandi-march.jpg"
-      },
-      {
-        "id": "1942-quit-india",
-        "year": "1942",
-        "chapter": "Quit India Uprising",
-        "wing": "Wing IV — Final Surge to Sovereignty",
-        "title": "The Seven Student Martyrs at Patna Secretariat",
-        "aspect": "classic",
-        "image": "assets/1942-quit-india.jpg"
-      }
+      { "id": "1757-plassey", "year": "1757", "chapter": "Company Ascendancy", "wing": "Wing I — Mercantile Conquest", "title": "Battle of Plassey on the Banks of the Bhagirathi", "aspect": "classic", "image": "assets/1757-plassey.jpg" },
+      { "id": "1765-allahabad", "year": "1765", "chapter": "The Diwani Charter", "wing": "Wing I — Mercantile Conquest", "title": "Treaty of Allahabad & Grant of Diwani Rights", "aspect": "wide", "image": "assets/1765-allahabad.jpg" },
+      { "id": "1855-santhal-hool", "year": "1855", "chapter": "Indigenous Uprisings", "wing": "Wing II — Subaltern & Great Revolt", "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool", "aspect": "tall", "image": "assets/1855-santhal-hool.jpg" },
+      { "id": "1857-kunwar-singh", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur", "aspect": "classic", "image": "assets/1857-kunwar-singh.jpg" },
+      { "id": "1857-delhi-front", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "The Delhi Front at Kashmiri Gate & Red Fort", "aspect": "wide", "image": "assets/1857-delhi-front.jpg" },
+      { "id": "1905-swadeshi", "year": "1905", "chapter": "Swadeshi Awakening", "wing": "Wing III — Mass Nationalist Awakening", "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly", "aspect": "classic", "image": "assets/1905-swadeshi.jpg" },
+      { "id": "1930-dandi-march", "year": "1930", "chapter": "Civil Disobedience", "wing": "Wing III — Mass Nationalist Awakening", "title": "The Coastal Salt Satyagraha at Dandi", "aspect": "wide", "image": "assets/1930-dandi-march.jpg" },
+      { "id": "1942-quit-india", "year": "1942", "chapter": "Quit India Uprising", "wing": "Wing IV — Final Surge to Sovereignty", "title": "The Seven Student Martyrs at Patna Secretariat", "aspect": "classic", "image": "assets/1942-quit-india.jpg" }
     ];
 
     let activeRegistry = [...DEFAULT_TIMELINE];
     let uploadedFileBase64 = null;
     let uploadedFileName = "";
     let uploadedFileMime = "";
+
+    /* Sanitize ASCII-only credentials to prevent Firefox ByteString > 255 fetch() error */
+    function sanitizeCredential(raw) {
+      return String(raw || "").replace(/[^\x21-\x7E]/g, "").trim();
+    }
+
+    function hasNonAscii(raw) {
+      return /[^\x20-\x7E]/.test(String(raw || "").trim());
+    }
 
     function parseYear(str) {
       const m = String(str || "").match(/(\d{3,4})/);
@@ -937,11 +500,7 @@
 
     function generateId(yr, title) {
       const y = parseYear(yr) || "0000";
-      const s = String(title || "exhibit")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, 26);
+      const s = String(title || "exhibit").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 26);
       return `${y}-${s || "item"}`;
     }
 
@@ -1052,14 +611,38 @@
       });
     }
 
-    /* Gemini Flash Vision Synthesizer (Tries gemini-2.0-flash then falls back to gemini-1.5-flash) */
+    /* Resize image to lightweight JPEG for fast, reliable Gemini Vision API call */
+    function compressImageForGemini(dataUrl, maxDim = 1024) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width;
+          let h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w >= h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+            else { w = Math.round((w * maxDim) / h); h = maxDim; }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/jpeg", 0.8);
+          resolve(compressed.split(",")[1]);
+        };
+        img.onerror = () => resolve(dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl);
+        img.src = dataUrl;
+      });
+    }
+
     async function runGeminiSynthesizer() {
-      const apiKey = document.getElementById("gemini-api-key").value.trim();
+      const rawKey = document.getElementById("gemini-api-key").value;
+      const apiKey = sanitizeCredential(rawKey);
       const imgPath = document.getElementById("exhibit-image").value.trim();
       const resynthBtn = document.getElementById("btn-resynth");
 
       if (!apiKey) {
-        setStatus("Paste your Gemini API Key above and click 'Save Key' for automatic AI synthesis.", "error");
+        setStatus("Paste a valid Gemini API Key above and click 'Save Key'.", "error");
         return false;
       }
 
@@ -1069,32 +652,30 @@
       }
 
       resynthBtn.disabled = true;
-      setStatus("✦ Gemini Flash Vision is analyzing the historical artwork...", "working");
+      setStatus("✦ Compressing & analyzing artwork with Gemini Flash Vision...", "working");
 
       const parts = [];
-      if (uploadedFileBase64 && uploadedFileBase64.includes(",")) {
+      if (uploadedFileBase64) {
+        const smallB64 = await compressImageForGemini(uploadedFileBase64, 1024);
         parts.push({
-          inlineData: {
-            mimeType: uploadedFileMime || "image/jpeg",
-            data: uploadedFileBase64.split(",")[1]
-          }
+          inlineData: { mimeType: "image/jpeg", data: smallB64 }
         });
       }
 
       parts.push({
         text: `You are a Senior Historian and Curator for a Modern Indian History museum (1750 to 1950).
-Carefully inspect this image (filename reference: "${uploadedFileName || imgPath}").
+Inspect this historical image (filename: "${uploadedFileName || imgPath}").
 Identify the exact historical person, battle, movement, or event in Modern Indian History.
-Return ONLY a raw JSON object (no markdown fences, no extra words) with these exact 4 keys:
+Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 {
-  "year": "4-digit year string, e.g. 1857",
+  "year": "4-digit year, e.g. 1857",
   "title": "Dignified museum placard title under 8 words, e.g. Babu Veer Kunwar Singh at Arrah",
   "chapter": "Short historical chapter, e.g. First War of Independence",
   "aspect": "classic or wide or tall"
 }`
       });
 
-      const models = ["gemini-2.0-flash", "gemini-1.5-flash"];
+      const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
       let lastError = null;
 
       for (const modelName of models) {
@@ -1121,7 +702,7 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
           if (parsed.chapter) document.getElementById("exhibit-chapter").value = parsed.chapter;
 
           updatePreview();
-          setStatus(`✦ Gemini synthesized: A.D. ${parsed.year} — "${parsed.title}"`, "success");
+          setStatus(`✦ Gemini (${modelName}) synthesized: A.D. ${parsed.year} — "${parsed.title}"`, "success");
           resynthBtn.disabled = false;
           return true;
         } catch (err) {
@@ -1130,11 +711,15 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       }
 
       resynthBtn.disabled = false;
-      setStatus(`Gemini Vision warning: ${lastError ? lastError.message : "Could not reach API"}. You can still edit fields manually and commit.`, "error");
+      const errMsg = lastError ? lastError.message : "Network error";
+      if (errMsg.toLowerCase().includes("networkerror")) {
+        setStatus(`Gemini blocked by browser/network (Disable Firefox Shield/AdBlocker for this site or check VPN). You can still edit & commit below!`, "error");
+      } else {
+        setStatus(`Gemini Vision warning: ${errMsg}. You can still edit fields manually and commit.`, "error");
+      }
       return false;
     }
 
-    /* Handle Photo Drop / File Selection -> Auto-Trigger Gemini Vision */
     function handlePhotoSelected(file) {
       if (!file || !file.type.startsWith("image/")) {
         setStatus("Please select a valid image file (JPG, PNG, WEBP).", "error");
@@ -1152,7 +737,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         document.getElementById("drop-headline").textContent = `Loaded: ${uploadedFileName}`;
         document.getElementById("file-pill").textContent = `${(file.size / 1024).toFixed(1)} KB → ${targetAssetPath}`;
 
-        // Detect aspect ratio automatically from image dimensions
         const imgProbe = new Image();
         imgProbe.onload = () => {
           const r = imgProbe.width / imgProbe.height;
@@ -1165,8 +749,7 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
 
         updatePreview();
 
-        // Automatically run Gemini Flash Synthesis if API key is present
-        const hasGeminiKey = document.getElementById("gemini-api-key").value.trim().length > 0;
+        const hasGeminiKey = sanitizeCredential(document.getElementById("gemini-api-key").value).length > 0;
         if (hasGeminiKey) {
           const synthOk = await runGeminiSynthesizer();
           const autoCommit = document.getElementById("auto-commit-toggle").checked;
@@ -1174,21 +757,22 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
             await commitToGitHub();
           }
         } else {
-          setStatus(`Photo "${uploadedFileName}" loaded! Click '⚡ Ingest & Commit to GitHub' below (or paste Gemini Key for auto-titles).`, "success");
+          setStatus(`Photo "${uploadedFileName}" loaded! Click '⚡ Ingest & Commit to GitHub' below.`, "success");
         }
       };
       reader.readAsDataURL(file);
     }
 
-    async function fetchRemoteTimeline(repo, branch, pat) {
+    async function fetchRemoteTimeline(repo, branch, rawPat) {
       const cleanRepo = repo.trim().replace(/^\/+|\/+$/g, "");
       const b = branch.trim() || "main";
+      const pat = sanitizeCredential(rawPat);
       const url = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json?ref=${encodeURIComponent(b)}`;
       const headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28"
       };
-      if (pat.trim()) headers["Authorization"] = `Bearer ${pat.trim()}`;
+      if (pat) headers["Authorization"] = `Bearer ${pat}`;
 
       const res = await fetch(url, { headers, cache: "no-store" });
       if (res.status === 404) {
@@ -1217,7 +801,7 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       try {
         const check = await fetch(`${url}?ref=${encodeURIComponent(branch)}`, {
           headers: {
-            "Authorization": `Bearer ${pat.trim()}`,
+            "Authorization": `Bearer ${pat}`,
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
           }
@@ -1238,7 +822,7 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       const putRes = await fetch(url, {
         method: "PUT",
         headers: {
-          "Authorization": `Bearer ${pat.trim()}`,
+          "Authorization": `Bearer ${pat}`,
           "Accept": "application/vnd.github+json",
           "X-GitHub-Api-Version": "2022-11-28",
           "Content-Type": "application/json"
@@ -1257,13 +841,19 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
 
       const repo = document.getElementById("github-repo").value.trim();
       const branch = document.getElementById("github-branch").value.trim() || "main";
-      const pat = document.getElementById("github-pat").value.trim();
+      const rawPat = document.getElementById("github-pat").value;
+      const pat = sanitizeCredential(rawPat);
       const yr = document.getElementById("exhibit-year").value.trim();
       const title = document.getElementById("exhibit-title").value.trim();
       const chapter = document.getElementById("exhibit-chapter").value.trim();
       const aspect = document.getElementById("exhibit-aspect").value || "classic";
       const img = document.getElementById("exhibit-image").value.trim();
       const ingestBtn = document.getElementById("btn-ingest-github");
+
+      if (hasNonAscii(rawPat)) {
+        setStatus("Error: Your GitHub PAT contains invalid non-ASCII characters (like '—'). Please re-paste a clean token and click 'Save Token'.", "error");
+        return;
+      }
 
       if (!yr || !title || !img) {
         setStatus("Please ensure Year, Visual Title, and Photo are set.", "error");
@@ -1281,12 +871,11 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       };
 
       if (!repo || !pat) {
-        // Save locally if PAT isn't entered yet
         activeRegistry = activeRegistry.filter((x) => x.id !== newEntry.id);
         activeRegistry.push(newEntry);
         try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
         renderRegistry();
-        setStatus("Added to local registry! Paste your GitHub PAT Token above and click 'Save Token' to push live to GitHub.", "error");
+        setStatus("Saved locally! Paste a clean GitHub PAT Token above and click 'Save Token' to push to GitHub.", "error");
         return;
       }
 
@@ -1356,16 +945,15 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
-      // Restore PIN session & saved keys
       try {
         if (sessionStorage.getItem("virasat_admin_unlocked") === "1") {
           document.getElementById("gate-overlay").classList.add("is-unlocked");
         }
         const savedGemini = localStorage.getItem("virasat_gemini_key");
-        if (savedGemini) document.getElementById("gemini-api-key").value = savedGemini;
+        if (savedGemini) document.getElementById("gemini-api-key").value = sanitizeCredential(savedGemini);
 
         const savedPat = localStorage.getItem("virasat_github_pat");
-        if (savedPat) document.getElementById("github-pat").value = savedPat;
+        if (savedPat) document.getElementById("github-pat").value = sanitizeCredential(savedPat);
 
         const savedRepo = localStorage.getItem("virasat_github_repo");
         if (savedRepo) document.getElementById("github-repo").value = savedRepo;
@@ -1377,7 +965,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         }
       } catch (e) {}
 
-      // Also try loading live data/timeline.json from same origin if hosted
       try {
         const res = await fetch("data/timeline.json", { cache: "no-store" });
         if (res.ok) {
@@ -1389,7 +976,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       renderRegistry();
       updatePreview();
 
-      // PIN Gate handlers
       document.getElementById("gate-submit-btn").addEventListener("click", checkPin);
       document.getElementById("gate-pin").addEventListener("keydown", (e) => {
         if (e.key === "Enter") checkPin();
@@ -1400,24 +986,30 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         document.getElementById("gate-overlay").classList.remove("is-unlocked");
       });
 
-      // Save Key & Save Token buttons (NovelVerse style)
       document.getElementById("save-gemini-btn").addEventListener("click", () => {
-        const val = document.getElementById("gemini-api-key").value.trim();
-        try { localStorage.setItem("virasat_gemini_key", val); } catch (e) {}
-        setStatus("✓ Gemini API Key saved to browser storage.", "success");
+        const raw = document.getElementById("gemini-api-key").value;
+        const clean = sanitizeCredential(raw);
+        document.getElementById("gemini-api-key").value = clean;
+        try { localStorage.setItem("virasat_gemini_key", clean); } catch (e) {}
+        setStatus("✓ Clean Gemini API Key saved.", "success");
       });
 
       document.getElementById("save-pat-btn").addEventListener("click", () => {
-        const val = document.getElementById("github-pat").value.trim();
+        const raw = document.getElementById("github-pat").value;
+        if (hasNonAscii(raw)) {
+          setStatus("Warning: Removed invalid non-ASCII characters (like '—') from PAT. Verify your token.", "error");
+        } else {
+          setStatus("✓ Clean GitHub PAT Token & Repo saved.", "success");
+        }
+        const clean = sanitizeCredential(raw);
+        document.getElementById("github-pat").value = clean;
         const repoVal = document.getElementById("github-repo").value.trim();
         try {
-          localStorage.setItem("virasat_github_pat", val);
+          localStorage.setItem("virasat_github_pat", clean);
           if (repoVal) localStorage.setItem("virasat_github_repo", repoVal);
         } catch (e) {}
-        setStatus("✓ GitHub PAT Token & Repo saved to browser storage.", "success");
       });
 
-      // Dropzone & File Input
       const dropZone = document.getElementById("drop-zone");
       const fileInput = document.getElementById("photo-file-input");
 
@@ -1438,7 +1030,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         }
       });
 
-      // Live field updates
       ["exhibit-year", "exhibit-title", "exhibit-image", "exhibit-chapter", "exhibit-aspect"].forEach((id) => {
         const el = document.getElementById(id);
         el.addEventListener("input", () => {
@@ -1451,11 +1042,10 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
       document.getElementById("btn-resynth").addEventListener("click", runGeminiSynthesizer);
       document.getElementById("ingest-form").addEventListener("submit", commitToGitHub);
 
-      // Sync Remote Repo
       document.getElementById("sync-repo-btn").addEventListener("click", async () => {
         const repo = document.getElementById("github-repo").value.trim();
         const branch = document.getElementById("github-branch").value.trim() || "main";
-        const pat = document.getElementById("github-pat").value.trim();
+        const pat = document.getElementById("github-pat").value;
         setStatus(`Syncing data/timeline.json from ${repo}...`, "working");
         try {
           const remote = await fetchRemoteTimeline(repo, branch, pat);
@@ -1467,7 +1057,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         }
       });
 
-      // Copy Synced JSON Array
       document.getElementById("copy-json-btn").addEventListener("click", async () => {
         const jsonStr = JSON.stringify(activeRegistry, null, 2);
         try {
@@ -1484,7 +1073,6 @@ Return ONLY a raw JSON object (no markdown fences, no extra words) with these ex
         }
       });
 
-      // Download timeline.json
       document.getElementById("download-json-btn").addEventListener("click", () => {
         const blob = new Blob([JSON.stringify(activeRegistry, null, 2) + "\n"], { type: "application/json" });
         const url = URL.createObjectURL(blob);
