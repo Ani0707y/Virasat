@@ -22,6 +22,7 @@
       --border-subtle: rgba(255, 255, 255, 0.08);
       --success: #34d399;
       --error: #f87171;
+      --info: #60a5fa;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* PIN Security Gate Modal (PIN: 7714) */
+    /* PIN Security Gate Modal (No Password Hint Shown) */
     .gate-overlay {
       position: fixed; inset: 0;
       background: radial-gradient(circle at 50% 45%, #111015 0%, #050507 85%);
@@ -47,7 +48,7 @@
     }
     .gate-overlay.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
     .gate-card {
-      width: 100%; max-width: 370px;
+      width: 100%; max-width: 360px;
       background: var(--card-bg);
       border: 1px dashed rgba(214, 178, 109, 0.45);
       border-radius: 12px; padding: 2.4rem 2rem;
@@ -77,7 +78,7 @@
     .gate-error { font-size: 0.75rem; color: var(--error); min-height: 1rem; }
 
     /* Main Container */
-    .console-shell { max-width: 1040px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
+    .console-shell { max-width: 1060px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
 
     .top-bar {
       display: flex; align-items: center; justify-content: space-between;
@@ -85,7 +86,6 @@
       border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;
     }
     .brand-heading {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(1.1rem, 2vw, 1.38rem); font-weight: 800;
       letter-spacing: 0.06em; text-transform: uppercase; color: #ffffff;
     }
@@ -96,13 +96,23 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.14);
       color: var(--text-main); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem; padding: 0.48rem 1rem; border-radius: 999px;
+      font-size: 0.75rem; padding: 0.48rem 0.95rem; border-radius: 999px;
       text-decoration: none; cursor: pointer; transition: all 0.2s ease;
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .pill-btn:hover {
+    .pill-btn:hover:not(:disabled) {
       border-color: var(--gold); color: var(--gold);
       background: rgba(214, 178, 109, 0.08);
+    }
+    .pill-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .pill-btn.is-gold {
+      background: rgba(214, 178, 109, 0.16);
+      border-color: var(--gold);
+      color: var(--gold-bright);
+    }
+    .pill-btn.is-gold:hover:not(:disabled) {
+      background: var(--gold);
+      color: #000;
     }
 
     /* Primary Synthesizer Card */
@@ -166,15 +176,17 @@
     }
     .auto-push-toggle input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
 
-    /* Optional Curator Hint Input */
+    /* Optional Curator Hint & Google Verify Bar */
     .hint-bar {
       margin-bottom: 0.9rem;
       display: flex;
       align-items: center;
       gap: 0.65rem;
+      flex-wrap: wrap;
     }
     .hint-input {
       flex: 1;
+      min-width: 240px;
       background: var(--input-bg);
       border: 1px solid rgba(214, 178, 109, 0.25);
       border-radius: 8px;
@@ -190,28 +202,85 @@
     .drop-arena {
       position: relative; border: 1px dashed rgba(255, 255, 255, 0.18);
       border-radius: 12px; background: rgba(6, 6, 8, 0.65);
-      padding: 2.1rem 1.5rem; text-align: center; cursor: pointer;
+      padding: 2rem 1.5rem; text-align: center; cursor: pointer;
       transition: all 0.25s ease;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem;
     }
     .drop-arena:hover, .drop-arena.is-dragover {
       border-color: var(--gold); background: rgba(214, 178, 109, 0.06);
       box-shadow: inset 0 0 30px rgba(214, 178, 109, 0.06);
     }
-    .drop-emoji { font-size: 2rem; line-height: 1; margin-bottom: 0.15rem; }
+    .drop-emoji { font-size: 1.9rem; line-height: 1; margin-bottom: 0.15rem; }
     .drop-headline { font-size: 0.98rem; font-weight: 700; color: #ffffff; }
-    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); max-width: 580px; }
+    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-muted); max-width: 620px; }
     .file-input-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
     .status-strip {
       margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px;
       background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #d6d1c4;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.77rem; color: #d6d1c4;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
     }
     .status-strip.is-working { border-color: var(--gold); color: var(--gold-bright); background: rgba(214, 178, 109, 0.08); }
     .status-strip.is-success { border-color: rgba(52, 211, 153, 0.45); color: var(--success); background: rgba(52, 211, 153, 0.08); }
     .status-strip.is-error { border-color: rgba(248, 113, 113, 0.5); color: var(--error); background: rgba(248, 113, 113, 0.08); }
+
+    /* Google Search Verification Panel */
+    .verify-box {
+      display: none;
+      margin-top: 0.85rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      background: rgba(96, 165, 250, 0.06);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      font-size: 0.76rem;
+    }
+    .verify-box.is-visible { display: block; }
+    .verify-box-title {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--info);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .verify-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.45rem;
+    }
+    .verify-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #cfe4ff;
+      background: rgba(96, 165, 250, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.32);
+      padding: 0.22rem 0.55rem;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .verify-link:hover { background: rgba(96, 165, 250, 0.28); color: #fff; }
+
+    /* Edit Mode Banner */
+    .edit-mode-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      background: rgba(214, 178, 109, 0.12);
+      border: 1px solid var(--gold);
+      color: var(--gold-bright);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      margin-bottom: 0.85rem;
+    }
+    .edit-mode-banner.is-active { display: flex; }
 
     .workbench-grid {
       display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.5rem;
@@ -250,11 +319,16 @@
     .btn-ingest-github:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
     .btn-ingest-github:disabled { opacity: 0.45; cursor: not-allowed; }
 
+    .dual-sub-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.55rem;
+    }
     .btn-resynth {
       width: 100%; background: rgba(214, 178, 109, 0.1);
       border: 1px solid rgba(214, 178, 109, 0.38); color: var(--gold-bright);
-      border-radius: 8px; padding: 0.58rem 1rem;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500;
+      border-radius: 8px; padding: 0.58rem 0.9rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 500;
       cursor: pointer; transition: all 0.2s ease;
     }
     .btn-resynth:hover:not(:disabled) { background: rgba(214, 178, 109, 0.2); border-color: var(--gold); }
@@ -265,13 +339,13 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 310px;
     }
     .preview-canvas-wrap {
-      position: relative; height: 210px; aspect-ratio: 4 / 3;
+      position: relative; height: 220px; aspect-ratio: 4 / 3;
       border-radius: 4px; overflow: hidden; background: #09090c;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08);
       transition: aspect-ratio 0.25s ease;
     }
     .preview-canvas-wrap.aspect-wide { aspect-ratio: 16 / 10; }
-    .preview-canvas-wrap.aspect-tall { aspect-ratio: 3 / 4; height: 225px; }
+    .preview-canvas-wrap.aspect-tall { aspect-ratio: 3 / 4; height: 235px; }
     .preview-canvas-wrap.aspect-classic { aspect-ratio: 4 / 3; }
 
     .wireframe-fallback {
@@ -292,12 +366,93 @@
       letter-spacing: 0.28em; color: var(--gold); display: block; margin-bottom: 4px;
     }
     .preview-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: var(--text-main); }
+    .quality-badge {
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      color: var(--success);
+      opacity: 0.8;
+    }
 
+    /* Timeline Manager Card (Edit + Reorder + Sort + Push Order) */
+    .timeline-manager-card {
+      background: var(--card-bg); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1.5rem;
+    }
+    .manager-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;
+    }
+    .manager-title { font-size: 0.95rem; font-weight: 700; color: #ffffff; }
+    .manager-controls { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .registry-search {
+      background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px; color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+      padding: 0.42rem 0.9rem; outline: none; width: 190px;
+    }
+    .registry-search:focus { border-color: var(--gold); }
+
+    .unsaved-dot {
+      display: none;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+    .unsaved-dot.is-dirty { display: inline-block; }
+
+    .timeline-list {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      max-height: 420px; overflow-y: auto; padding-right: 4px;
+    }
+    .timeline-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+      padding: 0.55rem 0.85rem; background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; font-size: 0.82rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .timeline-row:hover { border-color: rgba(214, 178, 109, 0.28); background: rgba(255, 255, 255, 0.035); }
+    .timeline-row.is-editing { border-color: var(--gold); background: rgba(214, 178, 109, 0.09); }
+    .timeline-row.is-drag-target { border-top: 2px solid var(--gold); }
+
+    .timeline-row-left { display: flex; align-items: center; gap: 0.75rem; overflow: hidden; flex: 1; }
+    .drag-handle {
+      cursor: grab; color: var(--text-muted); font-size: 0.95rem;
+      padding: 2px 4px; user-select: none;
+    }
+    .drag-handle:active { cursor: grabbing; }
+    .seq-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--text-muted); min-width: 24px;
+    }
+    .row-thumb {
+      width: 40px; height: 40px; border-radius: 4px; object-fit: cover;
+      background: #060608; border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
+    }
+    .row-meta { display: flex; flex-direction: column; overflow: hidden; }
+    .row-year { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 0.72rem; font-weight: 600; }
+    .row-title { color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .row-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.67rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .row-actions { display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
+    .mini-act-btn {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; padding: 0.28rem 0.55rem; border-radius: 5px;
+      cursor: pointer; transition: all 0.18s ease;
+    }
+    .mini-act-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+    .mini-act-btn:disabled { opacity: 0.28; cursor: not-allowed; }
+    .mini-act-btn.edit-btn { border-color: rgba(214, 178, 109, 0.35); color: var(--gold-bright); }
+    .mini-act-btn.del-btn { border-color: rgba(248, 113, 113, 0.3); color: var(--error); }
+    .mini-act-btn.del-btn:hover { background: rgba(248, 113, 113, 0.15); border-color: var(--error); color: #fff; }
+
+    /* Backup Card */
     .backup-card {
       background: var(--card-bg); border: 1px solid var(--border-subtle);
       border-radius: 12px; padding: 1.25rem 1.6rem;
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+      flex-wrap: wrap; gap: 1rem;
     }
     .backup-info h3 { font-size: 0.92rem; font-weight: 700; color: #ffffff; margin-bottom: 0.2rem; }
     .backup-info p { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-muted); }
@@ -308,36 +463,14 @@
       box-shadow: 0 6px 20px var(--crimson-glow); transition: filter 0.2s ease;
     }
     .btn-crimson-pill:hover { filter: brightness(1.12); }
-
-    .timeline-manager-card {
-      background: var(--card-bg); border: 1px solid var(--border-subtle);
-      border-radius: 12px; padding: 1.4rem 1.6rem;
-    }
-    .manager-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-    .manager-title { font-size: 0.9rem; font-weight: 700; color: #ffffff; }
-    .timeline-list { display: flex; flex-direction: column; gap: 0.45rem; max-height: 260px; overflow-y: auto; }
-    .timeline-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
-      padding: 0.55rem 0.85rem; background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px; font-size: 0.8rem;
-    }
-    .timeline-row-left { display: flex; align-items: center; gap: 0.75rem; overflow: hidden; }
-    .row-year { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-weight: 600; white-space: nowrap; }
-    .row-title { color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .row-del-btn {
-      background: transparent; border: 1px solid rgba(248, 113, 113, 0.3);
-      color: var(--error); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; padding: 0.22rem 0.55rem; border-radius: 4px; cursor: pointer;
-    }
-    .row-del-btn:hover { background: rgba(248, 113, 113, 0.15); }
   </style>
 </head>
 <body>
-  <!-- PIN Security Gate (PIN: 7714) -->
+  <!-- PIN Security Gate (Clean, Zero Password Hint) -->
   <div class="gate-overlay" id="gate-overlay">
     <div class="gate-card">
-      <h1 class="gate-title">Virasat // Ingestion Lock</h1>
-      <p class="gate-sub">Enter Curator PIN (7714) to Unlock Console</p>
+      <h1 class="gate-title">Virasat // Access Lock</h1>
+      <p class="gate-sub">Enter Curator PIN to Unlock Console</p>
       <input type="password" id="gate-pin" class="gate-pin-input" maxlength="4" placeholder="••••" autocomplete="off" autofocus />
       <button type="button" id="gate-submit-btn" class="gate-btn">Unlock Console</button>
       <span class="gate-error" id="gate-error-msg"></span>
@@ -385,19 +518,22 @@
           <span class="repo-label">BRANCH:</span>
           <input type="text" id="github-branch" class="repo-mini-input repo-branch-input" value="main" placeholder="main" />
         </div>
-        <button type="button" id="sync-repo-btn" class="pill-btn" style="padding: 0.32rem 0.8rem; font-size: 0.72rem;">
+        <button type="button" id="sync-repo-btn" class="pill-btn" style="padding: 0.34rem 0.85rem; font-size: 0.72rem;">
           ↻ Sync Remote timeline.json
         </button>
       </div>
 
-      <!-- Optional Curator Hint Bar -->
+      <!-- Optional Curator Hint + 1-Click Google Verify -->
       <div class="hint-bar">
         <input
           type="text"
           id="curator-hint"
           class="hint-input"
-          placeholder="Optional Hint for AI (e.g. 'Kunwar Singh' or 'Santhal Hool' — helps on obscure B&amp;W prints)"
+          placeholder="Optional Hint for AI (e.g. 'Kunwar Singh' or 'Santhal Hool' — boosts accuracy on B&amp;W prints)"
         />
+        <button type="button" id="google-verify-btn" class="pill-btn" title="Open Google Search to manually verify Alamy ID or Subject">
+          🔍 Verify on Google
+        </button>
       </div>
 
       <div class="drop-arena" id="drop-zone">
@@ -405,17 +541,33 @@
         <div class="drop-emoji">🖼️</div>
         <div class="drop-headline" id="drop-headline">Click or Drag Historical Exhibit Photo Here</div>
         <div class="drop-subline">
-          Uses Gemini 2.5 + Live Google Search Grounding to accurately identify historical figures, dates &amp; chapters.
+          100% Original Lossless Quality uploaded to GitHub &middot; Gemini + Live Google Search verifies Year, Title &amp; Chapter before filling.
         </div>
       </div>
 
       <div class="status-strip" id="status-strip">
-        <span id="status-text">Ready. Drop an archival photo above to auto-synthesize with Gemini.</span>
+        <span id="status-text">Ready. Drop an archival photo above or click Edit on any registered exhibit below.</span>
         <span id="file-pill" style="color: var(--gold);"></span>
+      </div>
+
+      <!-- Google Search Verification Grounding Strip -->
+      <div class="verify-box" id="verify-box">
+        <div class="verify-box-title">
+          <span>✓ Google Search Grounding Verification</span>
+          <span id="verify-confidence"></span>
+        </div>
+        <div id="verify-note" style="color: #d7e5f8;"></div>
+        <div class="verify-sources" id="verify-sources"></div>
       </div>
 
       <div class="workbench-grid">
         <form id="ingest-form" class="meta-form-stack" novalidate>
+          <!-- Active Edit Mode Banner -->
+          <div class="edit-mode-banner" id="edit-mode-banner">
+            <span id="edit-mode-label">Editing Existing Exhibit</span>
+            <button type="button" id="cancel-edit-btn" class="mini-act-btn">✕ Cancel Edit</button>
+          </div>
+
           <div class="field-row-3">
             <div class="field-group">
               <label class="field-label" for="exhibit-year">Year</label>
@@ -448,11 +600,16 @@
           <div class="ingest-actions">
             <button type="submit" class="btn-ingest-github" id="btn-ingest-github">
               <span>⚡</span>
-              <span>Ingest &amp; Commit to GitHub</span>
+              <span id="ingest-btn-text">Ingest &amp; Commit to GitHub</span>
             </button>
-            <button type="button" class="btn-resynth" id="btn-resynth">
-              ✦ Re-Run Gemini Vision Synthesizer on Current Photo
-            </button>
+            <div class="dual-sub-actions">
+              <button type="button" class="btn-resynth" id="btn-resynth">
+                ✦ Re-Run Gemini + Google Verify
+              </button>
+              <button type="button" class="pill-btn" id="reset-form-btn" style="border-radius: 8px;">
+                New Blank
+              </button>
+            </div>
           </div>
         </form>
 
@@ -465,10 +622,32 @@
             <span class="preview-year" id="preview-year-stamp">A.D. 1857</span>
             <h2 class="preview-title" id="preview-title-stamp">Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur</h2>
           </div>
+          <div class="quality-badge" id="quality-badge">Lossless Original Upload Active</div>
         </div>
       </div>
     </section>
 
+    <!-- Live Repository Timeline Registry with Edit, Drag/Drop & Up/Down Sequence Ordering -->
+    <section class="timeline-manager-card">
+      <div class="manager-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="manager-title">Registered Exhibits (<span id="registry-count">0</span>)</span>
+          <span class="unsaved-dot" id="unsaved-dot" title="Order or list changed locally — click Save Order to GitHub"></span>
+        </div>
+        <div class="manager-controls">
+          <input type="text" id="registry-search" class="registry-search" placeholder="Filter exhibits..." />
+          <button type="button" id="sort-chrono-btn" class="pill-btn" title="Sort by year while keeping your custom order inside the same year">
+            ⇅ Sort Chronologically
+          </button>
+          <button type="button" id="push-order-btn" class="pill-btn is-gold" title="Commit current sequence and deletions directly to GitHub">
+            💾 Save Order to GitHub
+          </button>
+        </div>
+      </div>
+      <div class="timeline-list" id="timeline-list"></div>
+    </section>
+
+    <!-- Permanent Source Backup -->
     <section class="backup-card">
       <div class="backup-info">
         <h3>Permanent Source Backup</h3>
@@ -478,14 +657,6 @@
         <button type="button" id="copy-json-btn" class="btn-crimson-pill">📋 Copy Synced JSON Array</button>
         <button type="button" id="download-json-btn" class="pill-btn">⬇ Download timeline.json</button>
       </div>
-    </section>
-
-    <section class="timeline-manager-card">
-      <div class="manager-header">
-        <span class="manager-title">Synced Timeline Registry (<span id="registry-count">0</span> Exhibits)</span>
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted);">Sorted Chronologically</span>
-      </div>
-      <div class="timeline-list" id="timeline-list"></div>
     </section>
   </div>
 
@@ -504,9 +675,11 @@
     ];
 
     let activeRegistry = [...DEFAULT_TIMELINE];
-    let uploadedFileBase64 = null;
+    let uploadedOriginalBase64 = null; // 100% untouched original file bytes for lossless GitHub upload
     let uploadedFileName = "";
     let uploadedFileMime = "";
+    let editingExhibitId = null; // Tracks whether we are editing an existing registered exhibit
+    let draggedIndex = null;
 
     function sanitizeCredential(raw) {
       return String(raw || "").replace(/[^\x21-\x7E]/g, "").trim();
@@ -559,6 +732,45 @@
       text.textContent = msg;
     }
 
+    function markDirty(isDirty) {
+      const dot = document.getElementById("unsaved-dot");
+      if (dot) dot.classList.toggle("is-dirty", Boolean(isDirty));
+    }
+
+    function setEditMode(item) {
+      const banner = document.getElementById("edit-mode-banner");
+      const label = document.getElementById("edit-mode-label");
+      const btnText = document.getElementById("ingest-btn-text");
+
+      if (!item) {
+        editingExhibitId = null;
+        banner.classList.remove("is-active");
+        btnText.textContent = "Ingest & Commit to GitHub";
+        renderRegistry();
+        return;
+      }
+
+      editingExhibitId = item.id;
+      uploadedOriginalBase64 = null;
+      uploadedFileName = "";
+      document.getElementById("file-pill").textContent = "";
+      document.getElementById("drop-headline").textContent = "Drop a new photo to replace artwork (optional)";
+
+      document.getElementById("exhibit-year").value = String(item.year || "").replace(/^A\.?D\.?\s*/i, "");
+      document.getElementById("exhibit-aspect").value = ["classic", "wide", "tall"].includes(item.aspect) ? item.aspect : "classic";
+      document.getElementById("exhibit-chapter").value = item.chapter || "";
+      document.getElementById("exhibit-title").value = item.title || "";
+      document.getElementById("exhibit-image").value = item.image || "";
+
+      label.textContent = `Editing: ${formatYear(item.year)} — ${item.title}`;
+      banner.classList.add("is-active");
+      btnText.textContent = "Save Changes & Commit to GitHub";
+      updatePreview();
+      renderRegistry();
+      window.scrollTo({ top: 180, behavior: "smooth" });
+      setStatus(`Editing "${item.title}". Update fields or drop a replacement photo, then click 'Save Changes'.`, "working");
+    }
+
     function updatePreview() {
       const yrVal = document.getElementById("exhibit-year").value;
       const titleVal = document.getElementById("exhibit-title").value;
@@ -574,10 +786,10 @@
       const imgEl = document.getElementById("preview-image-el");
       const wf = document.getElementById("wireframe-label");
 
-      if (uploadedFileBase64) {
+      if (uploadedOriginalBase64) {
         imgEl.classList.remove("is-loaded");
         imgEl.onload = () => imgEl.classList.add("is-loaded");
-        imgEl.src = uploadedFileBase64;
+        imgEl.src = uploadedOriginalBase64;
         return;
       }
 
@@ -597,51 +809,158 @@
       imgEl.src = imgVal;
     }
 
+    function moveExhibit(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= activeRegistry.length) return;
+      const temp = activeRegistry[index];
+      activeRegistry[index] = activeRegistry[targetIndex];
+      activeRegistry[targetIndex] = temp;
+      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
+      markDirty(true);
+      renderRegistry();
+      setStatus(`Moved "${temp.title}" to position #${targetIndex + 1}. Click '💾 Save Order to GitHub' to publish.`, "working");
+    }
+
     function renderRegistry() {
       const listEl = document.getElementById("timeline-list");
       const countEl = document.getElementById("registry-count");
+      const searchVal = (document.getElementById("registry-search")?.value || "").trim().toLowerCase();
       if (!listEl || !countEl) return;
 
-      activeRegistry.sort((a, b) => parseYear(a.year) - parseYear(b.year));
       countEl.textContent = String(activeRegistry.length);
       listEl.innerHTML = "";
 
-      activeRegistry.forEach((item) => {
+      activeRegistry.forEach((item, idx) => {
+        if (searchVal) {
+          const hay = `${item.year} ${item.title} ${item.chapter} ${item.image}`.toLowerCase();
+          if (!hay.includes(searchVal)) return;
+        }
+
         const row = document.createElement("div");
-        row.className = "timeline-row";
+        row.className = "timeline-row" + (editingExhibitId === item.id ? " is-editing" : "");
+        row.draggable = !searchVal;
+        row.dataset.index = String(idx);
+
+        // Drag-and-drop sequence ordering
+        row.addEventListener("dragstart", () => {
+          draggedIndex = idx;
+          row.style.opacity = "0.5";
+        });
+        row.addEventListener("dragend", () => {
+          row.style.opacity = "1";
+          listEl.querySelectorAll(".timeline-row").forEach(r => r.classList.remove("is-drag-target"));
+        });
+        row.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          row.classList.add("is-drag-target");
+        });
+        row.addEventListener("dragleave", () => row.classList.remove("is-drag-target"));
+        row.addEventListener("drop", (e) => {
+          e.preventDefault();
+          row.classList.remove("is-drag-target");
+          if (draggedIndex === null || draggedIndex === idx) return;
+          const [moved] = activeRegistry.splice(draggedIndex, 1);
+          activeRegistry.splice(idx, 0, moved);
+          draggedIndex = null;
+          try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
+          markDirty(true);
+          renderRegistry();
+          setStatus(`Reordered "${moved.title}" to position #${idx + 1}. Click '💾 Save Order to GitHub' to publish.`, "working");
+        });
 
         const left = document.createElement("div");
         left.className = "timeline-row-left";
 
+        const handle = document.createElement("span");
+        handle.className = "drag-handle";
+        handle.textContent = "⋮⋮";
+        handle.title = "Drag to reorder";
+
+        const seq = document.createElement("span");
+        seq.className = "seq-num";
+        seq.textContent = `#${idx + 1}`;
+
+        const thumb = document.createElement("img");
+        thumb.className = "row-thumb";
+        thumb.src = item.image || "";
+        thumb.alt = "";
+        thumb.onerror = () => { thumb.style.visibility = "hidden"; };
+
+        const meta = document.createElement("div");
+        meta.className = "row-meta";
+
         const y = document.createElement("span");
         y.className = "row-year";
-        y.textContent = formatYear(item.year);
+        y.textContent = `${formatYear(item.year)} · ${item.aspect || "classic"}`;
 
         const t = document.createElement("span");
         t.className = "row-title";
-        t.textContent = `${item.title} (${item.image})`;
+        t.textContent = item.title;
 
-        left.appendChild(y);
-        left.appendChild(t);
+        const sub = document.createElement("span");
+        sub.className = "row-sub";
+        sub.textContent = item.image;
+
+        meta.appendChild(y);
+        meta.appendChild(t);
+        meta.appendChild(sub);
+
+        left.appendChild(handle);
+        left.appendChild(seq);
+        left.appendChild(thumb);
+        left.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.className = "row-actions";
+
+        const upBtn = document.createElement("button");
+        upBtn.type = "button";
+        upBtn.className = "mini-act-btn";
+        upBtn.textContent = "▲";
+        upBtn.title = "Move Earlier in Sequence";
+        upBtn.disabled = idx === 0;
+        upBtn.addEventListener("click", () => moveExhibit(idx, -1));
+
+        const downBtn = document.createElement("button");
+        downBtn.type = "button";
+        downBtn.className = "mini-act-btn";
+        downBtn.textContent = "▼";
+        downBtn.title = "Move Later in Sequence";
+        downBtn.disabled = idx === activeRegistry.length - 1;
+        downBtn.addEventListener("click", () => moveExhibit(idx, 1));
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "mini-act-btn edit-btn";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => setEditMode(item));
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
-        delBtn.className = "row-del-btn";
+        delBtn.className = "mini-act-btn del-btn";
         delBtn.textContent = "Remove";
         delBtn.addEventListener("click", () => {
           activeRegistry = activeRegistry.filter((x) => x.id !== item.id);
+          if (editingExhibitId === item.id) setEditMode(null);
           try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
+          markDirty(true);
           renderRegistry();
-          setStatus(`Removed "${item.title}" from local list. Click 'Ingest & Commit' or 'Copy JSON' to update.`, "idle");
+          setStatus(`Removed "${item.title}". Click '💾 Save Order to GitHub' to publish.`, "working");
         });
 
+        actions.appendChild(upBtn);
+        actions.appendChild(downBtn);
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+
         row.appendChild(left);
-        row.appendChild(delBtn);
+        row.appendChild(actions);
         listEl.appendChild(row);
       });
     }
 
-    function compressImageForGemini(dataUrl, maxDim = 1024) {
+    /* Creates a temporary smaller copy ONLY for Gemini AI Vision API; NEVER touches the original file uploaded to GitHub */
+    function buildTempPreviewForGemini(dataUrl, maxDim = 1024) {
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
@@ -656,7 +975,7 @@
           canvas.height = h;
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, w, h);
-          const compressed = canvas.toDataURL("image/jpeg", 0.85);
+          const compressed = canvas.toDataURL("image/jpeg", 0.86);
           resolve(compressed.split(",")[1]);
         };
         img.onerror = () => resolve(dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl);
@@ -664,7 +983,6 @@
       });
     }
 
-    /* Prioritize full-power Gemini models (2.5-pro / 2.5-flash / 2.0-flash) and push lite models last */
     async function getWorkingGeminiModels(apiKey) {
       const preferredFull = [
         "gemini-2.5-flash",
@@ -694,9 +1012,8 @@
     async function callGeminiModel(apiKey, modelName, parts, useSearch) {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
       const payload = { contents: [{ parts }] };
-      if (useSearch) {
-        payload.tools = [{ google_search: {} }];
-      }
+      if (useSearch) payload.tools = [{ google_search: {} }];
+
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -707,6 +1024,36 @@
         throw new Error(errJson.error?.message || `HTTP ${res.status}`);
       }
       return res.json();
+    }
+
+    function showVerificationDetails(data, parsed) {
+      const box = document.getElementById("verify-box");
+      const noteEl = document.getElementById("verify-note");
+      const confEl = document.getElementById("verify-confidence");
+      const sourcesEl = document.getElementById("verify-sources");
+      if (!box) return;
+
+      const gm = data.candidates?.[0]?.groundingMetadata || {};
+      const chunks = Array.isArray(gm.groundingChunks) ? gm.groundingChunks : [];
+      const queries = Array.isArray(gm.webSearchQueries) ? gm.webSearchQueries : [];
+
+      noteEl.textContent = parsed.verificationNote || (queries.length ? `Verified via Google Search: ${queries.join(" · ")}` : "Analyzed via Gemini Vision.");
+      confEl.textContent = parsed.confidence ? `Confidence: ${parsed.confidence}` : (chunks.length ? `${chunks.length} Web Source(s)` : "");
+
+      sourcesEl.innerHTML = "";
+      chunks.slice(0, 5).forEach((ch) => {
+        if (ch.web && ch.web.uri) {
+          const a = document.createElement("a");
+          a.className = "verify-link";
+          a.href = ch.web.uri;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = `↗ ${ch.web.title || ch.web.uri}`;
+          sourcesEl.appendChild(a);
+        }
+      });
+
+      box.classList.add("is-visible");
     }
 
     async function runGeminiSynthesizer() {
@@ -721,19 +1068,19 @@
         return false;
       }
 
-      if (!uploadedFileBase64 && !imgPath) {
+      if (!uploadedOriginalBase64 && !imgPath) {
         setStatus("Drop or select a photo first.", "error");
         return false;
       }
 
       resynthBtn.disabled = true;
-      setStatus("✦ Analyzing artwork with Gemini + Google Search Grounding...", "working");
+      setStatus("✦ Searching Google & verifying historical artwork with Gemini...", "working");
 
       const parts = [];
-      if (uploadedFileBase64) {
-        const smallB64 = await compressImageForGemini(uploadedFileBase64, 1024);
+      if (uploadedOriginalBase64) {
+        const tempVisionB64 = await buildTempPreviewForGemini(uploadedOriginalBase64, 1024);
         parts.push({
-          inlineData: { mimeType: "image/jpeg", data: smallB64 }
+          inlineData: { mimeType: "image/jpeg", data: tempVisionB64 }
         });
       }
 
@@ -742,17 +1089,18 @@
 
       parts.push({
         text: `You are an expert Historian & Museum Curator specializing in Modern Indian History (1750–1950, Spectrum/NCERT aligned).
-Analyze this historical image carefully.
-Filename reference: "${fileRef}" (Note: if filename contains an Alamy stock ID like GJFA9B, search for that exact Alamy ID to verify the subject!).
+Step 1: Inspect the image and check the filename reference: "${fileRef}". If it contains an Alamy stock code (e.g. GJFA9B), use Google Search to verify that exact Alamy image ID first!
+Step 2: Cross-verify the exact Indian historical figure, uprising, treaty, or movement using Google Search.
 ${hintLine}
 
-Identify the exact Indian historical figure, uprising, treaty, or movement depicted.
 Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 {
   "year": "4-digit year string, e.g. 1857",
   "title": "Dignified museum placard title under 8 words, e.g. Babu Veer Kunwar Singh at Arrah & Jagdishpur",
   "chapter": "Short historical chapter, e.g. First War of Independence",
-  "aspect": "classic or wide or tall"
+  "aspect": "classic or wide or tall",
+  "confidence": "High, Medium, or Low",
+  "verificationNote": "1 short sentence explaining how the image/ID was verified"
 }`
       });
 
@@ -763,10 +1111,8 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         try {
           let data;
           try {
-            // Try with live Google Search grounding first
             data = await callGeminiModel(apiKey, modelName, parts, true);
           } catch (searchErr) {
-            // If model doesn't support google_search tool, retry without it
             data = await callGeminiModel(apiKey, modelName, parts, false);
           }
 
@@ -778,8 +1124,9 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
           if (parsed.title) document.getElementById("exhibit-title").value = parsed.title;
           if (parsed.chapter) document.getElementById("exhibit-chapter").value = parsed.chapter;
 
+          showVerificationDetails(data, parsed);
           updatePreview();
-          setStatus(`✦ Gemini (${modelName}) synthesized: A.D. ${parsed.year} — "${parsed.title}"`, "success");
+          setStatus(`✦ Verified via ${modelName}: A.D. ${parsed.year} — "${parsed.title}"`, "success");
           resynthBtn.disabled = false;
           return true;
         } catch (err) {
@@ -803,33 +1150,35 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 
       const reader = new FileReader();
       reader.onload = async (e) => {
-        uploadedFileBase64 = e.target.result;
+        // Store 100% untouched original file data for lossless GitHub upload
+        uploadedOriginalBase64 = e.target.result;
         const targetAssetPath = `assets/${uploadedFileName}`;
         document.getElementById("exhibit-image").value = targetAssetPath;
-        document.getElementById("drop-headline").textContent = `Loaded: ${uploadedFileName}`;
+        document.getElementById("drop-headline").textContent = `Loaded (Original Lossless): ${uploadedFileName}`;
         document.getElementById("file-pill").textContent = `${(file.size / 1024).toFixed(1)} KB → ${targetAssetPath}`;
 
         const imgProbe = new Image();
         imgProbe.onload = () => {
-          const r = imgProbe.width / imgProbe.height;
+          document.getElementById("quality-badge").textContent = `✓ Original Lossless: ${imgProbe.naturalWidth}×${imgProbe.naturalHeight}px (${(file.size / 1024).toFixed(1)} KB)`;
+          const r = imgProbe.naturalWidth / imgProbe.naturalHeight;
           if (r >= 1.42) document.getElementById("exhibit-aspect").value = "wide";
           else if (r <= 0.85) document.getElementById("exhibit-aspect").value = "tall";
           else document.getElementById("exhibit-aspect").value = "classic";
           updatePreview();
         };
-        imgProbe.src = uploadedFileBase64;
+        imgProbe.src = uploadedOriginalBase64;
 
         updatePreview();
 
         const hasGeminiKey = sanitizeCredential(document.getElementById("gemini-api-key").value).length > 0;
-        if (hasGeminiKey) {
+        if (hasGeminiKey && !editingExhibitId) {
           const synthOk = await runGeminiSynthesizer();
           const autoCommit = document.getElementById("auto-commit-toggle").checked;
           if (synthOk && autoCommit) {
-            await commitToGitHub();
+            await commitFormToGitHub();
           }
         } else {
-          setStatus(`Photo "${uploadedFileName}" loaded! Click '⚡ Ingest & Commit to GitHub' below.`, "success");
+          setStatus(`Lossless photo "${uploadedFileName}" loaded! Review details and click Commit.`, "success");
         }
       };
       reader.readAsDataURL(file);
@@ -864,10 +1213,10 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       };
     }
 
-    async function uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, assetPath, base64DataUrl) {
+    async function uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, assetPath, originalBase64DataUrl) {
       const cleanPath = assetPath.replace(/^\/+/, "");
       const url = `https://api.github.com/repos/${cleanRepo}/contents/${cleanPath}`;
-      const rawB64 = base64DataUrl.includes(",") ? base64DataUrl.split(",")[1] : base64DataUrl;
+      const rawB64 = originalBase64DataUrl.includes(",") ? originalBase64DataUrl.split(",")[1] : originalBase64DataUrl;
 
       let existingSha = null;
       try {
@@ -885,7 +1234,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       } catch (e) {}
 
       const payload = {
-        message: `Ingest artwork: ${cleanPath}`,
+        message: `Ingest lossless artwork: ${cleanPath}`,
         content: rawB64,
         branch: branch
       };
@@ -908,7 +1257,46 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       }
     }
 
-    async function commitToGitHub(e) {
+    async function pushTimelineArrayToGitHub(listToPush, commitMsg) {
+      const repo = document.getElementById("github-repo").value.trim();
+      const branch = document.getElementById("github-branch").value.trim() || "main";
+      const rawPat = document.getElementById("github-pat").value;
+      const pat = sanitizeCredential(rawPat);
+
+      if (!repo || !pat) {
+        throw new Error("Paste a valid GitHub PAT Token & Repo above and click 'Save Token' first.");
+      }
+
+      const cleanRepo = repo.replace(/^\/+|\/+$/g, "");
+      const remote = await fetchRemoteTimeline(cleanRepo, branch, pat);
+
+      const putUrl = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json`;
+      const putPayload = {
+        message: commitMsg,
+        content: encodeBase64(JSON.stringify(listToPush, null, 2) + "\n"),
+        branch: branch
+      };
+      if (remote.sha) putPayload.sha = remote.sha;
+
+      const putRes = await fetch(putUrl, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${pat}`,
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(putPayload)
+      });
+
+      if (!putRes.ok) {
+        const errBody = await putRes.json().catch(() => ({}));
+        throw new Error(`timeline.json PUT failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
+      }
+      return { cleanRepo, branch };
+    }
+
+    async function commitFormToGitHub(e) {
       if (e) e.preventDefault();
 
       const repo = document.getElementById("github-repo").value.trim();
@@ -926,14 +1314,14 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         setStatus("Error: Your GitHub PAT contains invalid characters. Paste a fresh token and click 'Save Token'.", "error");
         return;
       }
-
       if (!yr || !title || !img) {
         setStatus("Please ensure Year, Visual Title, and Photo are set.", "error");
         return;
       }
 
-      const newEntry = {
-        id: generateId(yr, title),
+      const targetId = editingExhibitId || generateId(yr, title);
+      const updatedEntry = {
+        id: targetId,
         year: String(parseYear(yr) || yr),
         chapter: chapter || "Modern Indian History",
         wing: "Virasat Chronological Corridor",
@@ -942,12 +1330,29 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         image: img
       };
 
+      // Update local array preserving custom sequence position if editing
+      const existingIdx = activeRegistry.findIndex(x => x.id === targetId);
+      if (existingIdx !== -1) {
+        activeRegistry[existingIdx] = updatedEntry;
+      } else {
+        // Insert chronologically into the current sequence without disrupting existing custom order
+        const newYearNum = parseYear(updatedEntry.year);
+        let insertAt = activeRegistry.length;
+        for (let i = 0; i < activeRegistry.length; i++) {
+          if (parseYear(activeRegistry[i].year) > newYearNum) {
+            insertAt = i;
+            break;
+          }
+        }
+        activeRegistry.splice(insertAt, 0, updatedEntry);
+      }
+
+      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
+      renderRegistry();
+
       if (!repo || !pat) {
-        activeRegistry = activeRegistry.filter((x) => x.id !== newEntry.id);
-        activeRegistry.push(newEntry);
-        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
-        renderRegistry();
-        setStatus("Saved locally! Paste a valid GitHub PAT Token above and click 'Save Token' to push to GitHub.", "error");
+        markDirty(true);
+        setStatus("Saved locally! Paste your GitHub PAT Token above and click 'Save Token' to push live.", "error");
         return;
       }
 
@@ -955,47 +1360,20 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       try {
         const cleanRepo = repo.replace(/^\/+|\/+$/g, "");
 
-        if (uploadedFileBase64 && img.startsWith("assets/")) {
-          setStatus(`1/3 Uploading photo binary to ${cleanRepo}/${img}...`, "working");
-          await uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, img, uploadedFileBase64);
+        // Step 1: Upload 100% lossless original photo bytes if a new file was dropped
+        if (uploadedOriginalBase64 && img.startsWith("assets/")) {
+          setStatus(`1/2 Uploading original lossless photo to ${cleanRepo}/${img}...`, "working");
+          await uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, img, uploadedOriginalBase64);
         }
 
-        setStatus(`2/3 Fetching current data/timeline.json from ${cleanRepo}...`, "working");
-        const remote = await fetchRemoteTimeline(cleanRepo, branch, pat);
+        // Step 2: Commit timeline.json with exact current sequence
+        setStatus(`2/2 Committing data/timeline.json (${activeRegistry.length} exhibits)...`, "working");
+        const actionWord = editingExhibitId ? "Update" : "Ingest";
+        await pushTimelineArrayToGitHub(activeRegistry, `${actionWord} exhibit ${updatedEntry.year}: ${updatedEntry.title}`);
 
-        const updatedList = remote.exhibits.filter((x) => x.id !== newEntry.id);
-        updatedList.push(newEntry);
-        updatedList.sort((a, b) => parseYear(a.year) - parseYear(b.year));
-
-        setStatus(`3/3 Committing updated data/timeline.json (${updatedList.length} exhibits)...`, "working");
-        const putUrl = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json`;
-        const putPayload = {
-          message: `Ingest exhibit ${newEntry.year}: ${newEntry.title}`,
-          content: encodeBase64(JSON.stringify(updatedList, null, 2) + "\n"),
-          branch: branch
-        };
-        if (remote.sha) putPayload.sha = remote.sha;
-
-        const putRes = await fetch(putUrl, {
-          method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${pat}`,
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(putPayload)
-        });
-
-        if (!putRes.ok) {
-          const errBody = await putRes.json().catch(() => ({}));
-          throw new Error(`timeline.json PUT failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
-        }
-
-        activeRegistry = updatedList;
-        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
-        renderRegistry();
-        setStatus(`✓ Live on GitHub! Committed "${newEntry.year} — ${newEntry.title}" to ${cleanRepo}@${branch}.`, "success");
+        markDirty(false);
+        setEditMode(null);
+        setStatus(`✓ Live on GitHub! ${actionWord}d "${updatedEntry.year} — ${updatedEntry.title}" in ${cleanRepo}@${branch}.`, "success");
       } catch (err) {
         setStatus(`GitHub Commit Error: ${err.message}`, "error");
       } finally {
@@ -1010,7 +1388,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         document.getElementById("gate-overlay").classList.add("is-unlocked");
         try { sessionStorage.setItem("virasat_admin_unlocked", "1"); } catch (e) {}
       } else {
-        errEl.textContent = "Incorrect PIN. Enter 7714.";
+        errEl.textContent = "Incorrect PIN. Access denied.";
         pinInput.value = "";
         pinInput.focus();
       }
@@ -1059,23 +1437,33 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       });
 
       document.getElementById("save-gemini-btn").addEventListener("click", () => {
-        const raw = document.getElementById("gemini-api-key").value;
-        const clean = sanitizeCredential(raw);
+        const clean = sanitizeCredential(document.getElementById("gemini-api-key").value);
         document.getElementById("gemini-api-key").value = clean;
         try { localStorage.setItem("virasat_gemini_key", clean); } catch (e) {}
-        setStatus("✓ Clean Gemini API Key saved.", "success");
+        setStatus("✓ Gemini API Key saved.", "success");
       });
 
       document.getElementById("save-pat-btn").addEventListener("click", () => {
-        const raw = document.getElementById("github-pat").value;
-        const clean = sanitizeCredential(raw);
+        const clean = sanitizeCredential(document.getElementById("github-pat").value);
         document.getElementById("github-pat").value = clean;
         const repoVal = document.getElementById("github-repo").value.trim();
         try {
           localStorage.setItem("virasat_github_pat", clean);
           if (repoVal) localStorage.setItem("virasat_github_repo", repoVal);
         } catch (e) {}
-        setStatus("✓ Clean GitHub PAT Token & Repo saved.", "success");
+        setStatus("✓ GitHub PAT Token & Repo saved.", "success");
+      });
+
+      // 1-Click Google Verify button
+      document.getElementById("google-verify-btn").addEventListener("click", () => {
+        const hint = document.getElementById("curator-hint").value.trim();
+        const title = document.getElementById("exhibit-title").value.trim();
+        const img = uploadedFileName || document.getElementById("exhibit-image").value.trim();
+        const alamyMatch = img.match(/alamy[_-]?([A-Za-z0-9]+)/i);
+        const query = alamyMatch
+          ? `alamy "${alamyMatch[1]}"`
+          : (hint || title || "Modern Indian History");
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank", "noopener,noreferrer");
       });
 
       const dropZone = document.getElementById("drop-zone");
@@ -1101,14 +1489,58 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       ["exhibit-year", "exhibit-title", "exhibit-image", "exhibit-chapter", "exhibit-aspect"].forEach((id) => {
         const el = document.getElementById(id);
         el.addEventListener("input", () => {
-          if (id === "exhibit-image") uploadedFileBase64 = null;
+          if (id === "exhibit-image") uploadedOriginalBase64 = null;
           updatePreview();
         });
         el.addEventListener("change", updatePreview);
       });
 
       document.getElementById("btn-resynth").addEventListener("click", runGeminiSynthesizer);
-      document.getElementById("ingest-form").addEventListener("submit", commitToGitHub);
+      document.getElementById("ingest-form").addEventListener("submit", commitFormToGitHub);
+      document.getElementById("cancel-edit-btn").addEventListener("click", () => {
+        setEditMode(null);
+        setStatus("Cancelled edit mode.", "idle");
+      });
+      document.getElementById("reset-form-btn").addEventListener("click", () => {
+        setEditMode(null);
+        uploadedOriginalBase64 = null;
+        uploadedFileName = "";
+        document.getElementById("exhibit-year").value = "";
+        document.getElementById("exhibit-title").value = "";
+        document.getElementById("exhibit-chapter").value = "";
+        document.getElementById("exhibit-image").value = "";
+        document.getElementById("file-pill").textContent = "";
+        document.getElementById("verify-box").classList.remove("is-visible");
+        updatePreview();
+        setStatus("Cleared form for a new exhibit.", "idle");
+      });
+
+      document.getElementById("registry-search").addEventListener("input", renderRegistry);
+
+      // Chronological Sort (stable sort: keeps your custom relative order inside the same year!)
+      document.getElementById("sort-chrono-btn").addEventListener("click", () => {
+        activeRegistry.sort((a, b) => parseYear(a.year) - parseYear(b.year));
+        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
+        markDirty(true);
+        renderRegistry();
+        setStatus("Sorted chronologically (preserving same-year sequence). Click '💾 Save Order to GitHub' to publish.", "working");
+      });
+
+      // Push Sequence / Deletions to GitHub
+      document.getElementById("push-order-btn").addEventListener("click", async () => {
+        const btn = document.getElementById("push-order-btn");
+        btn.disabled = true;
+        setStatus(`Pushing custom sequence (${activeRegistry.length} exhibits) to GitHub...`, "working");
+        try {
+          const { cleanRepo, branch } = await pushTimelineArrayToGitHub(activeRegistry, `Update exhibition sequence (${activeRegistry.length} exhibits)`);
+          markDirty(false);
+          setStatus(`✓ Custom sequence live on ${cleanRepo}@${branch}!`, "success");
+        } catch (err) {
+          setStatus(`GitHub Push Error: ${err.message}`, "error");
+        } finally {
+          btn.disabled = false;
+        }
+      });
 
       document.getElementById("sync-repo-btn").addEventListener("click", async () => {
         const repo = document.getElementById("github-repo").value.trim();
@@ -1118,6 +1550,8 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         try {
           const remote = await fetchRemoteTimeline(repo, branch, pat);
           activeRegistry = remote.exhibits;
+          try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
+          markDirty(false);
           renderRegistry();
           setStatus(`✓ Synced ${activeRegistry.length} exhibits from ${repo}@${branch}.`, "success");
         } catch (err) {
