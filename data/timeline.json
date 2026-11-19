@@ -188,6 +188,23 @@
     "image": "assets/1942-quit-india.jpg"
   },
   {
+    "id": "1946-first-edition-of-the-disco",
+    "year": "1946",
+    "chapter": "Nationalist Literature and the Freedom Struggle",
+    "wing": "Virasat Chronological Corridor",
+    "title": "First Edition of The Discovery of India",
+    "aspect": "tall",
+    "image": "assets/1000097555.jpg",
+    "insight": "Revolt of 1857 :  Viewed it as essentially a feudal uprising with limited nationalist elements.\n\nWritten during Jawaharlal Nehru's imprisonment at Ahmednagar Fort (1942–1945) following the Quit India resolution, the work traces India's civilizational ethos from antiquity to the modern era. \n\nPublished in 1946 by Calcutta's Signet Press with dust jacket design by Satyajit Ray, it provided the philosophical blueprint for post-independence democratic nation-building.",
+    "tags": [
+      "Jawaharlal Nehru",
+      "The Discovery of India",
+      "Quit India Movement",
+      "Nationalist Literature"
+    ],
+    "context": "Nehru penned this seminal work while incarcerated alongside leaders of the Congress Working Committee during World War II. The book offered a composite, pluralistic view of Indian history designed to unify the subcontinent on the eve of independence."
+  },
+  {
     "id": "1957-official-centenary-history",
     "year": "1957",
     "chapter": "Historiography of the Revolt of 1857",
