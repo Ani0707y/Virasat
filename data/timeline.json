@@ -153,6 +153,23 @@
     "image": "assets/1905-swadeshi.jpg"
   },
   {
+    "id": "1909-savarkar-s-the-indian-war-",
+    "year": "1909",
+    "chapter": "Nationalist Movement & Historiography",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Savarkar's 'The Indian War of Independence 1857'",
+    "aspect": "tall",
+    "image": "assets/1000097433.jpg",
+    "insight": "Described it as the \"First War of Indian Independence\" and argued that it was a planned national struggle against British rule.\n\nV.D. Savarkar's 1909 landmark text fundamentally reinterpreted the 1857 uprising, shifting the narrative from a mere 'Sepoy Mutiny' to India's first organized war for freedom. \n\nBanned by British authorities prior to publication, it became a major source of ideological inspiration for revolutionary nationalists.",
+    "tags": [
+      "Revolt of 1857",
+      "VD Savarkar",
+      "Nationalist Historiography",
+      "Freedom Movement"
+    ],
+    "context": "Authored while Savarkar was in London at India House, this influential book systematically analyzed the political, religious, and economic causes of the 1857 revolt to foster patriotic consciousness across British India."
+  },
+  {
     "id": "1930-dandi-march",
     "year": "1930",
     "chapter": "Civil Disobedience",
