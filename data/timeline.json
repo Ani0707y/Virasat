@@ -186,5 +186,22 @@
     "title": "The Seven Student Martyrs at Patna Secretariat",
     "aspect": "classic",
     "image": "assets/1942-quit-india.jpg"
+  },
+  {
+    "id": "1957-official-centenary-history",
+    "year": "1957",
+    "chapter": "Historiography of the Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Official Centenary History of Eighteen Fifty-Seven",
+    "aspect": "tall",
+    "image": "assets/1000097549.jpg",
+    "insight": "Held that although the revolt began as a military mutiny, it gradually assumed the character of a war of independence.\n\nCommissioned by the Government of India for the revolt's centenary, historian S.N. Sen concluded that the uprising began as a fight for religion but ended as a war of independence. \n\nIn contrast to V.D. Savarkar's assertion of a premeditated national uprising, Sen argued that the movement lacked national cohesion and central planning.",
+    "tags": [
+      "Revolt of 1857",
+      "Surendra Nath Sen",
+      "Historiography",
+      "Maulana Abul Kalam Azad"
+    ],
+    "context": "Published by the Ministry of Information and Broadcasting in 1957 with a foreword by Education Minister Maulana Abul Kalam Azad, this book served as independent India's official scholarly assessment of the 1857 rebellion."
   }
 ]
