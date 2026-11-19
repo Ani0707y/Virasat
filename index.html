@@ -2,23 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Modern Indian History — Visual Timeline</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg-void: #000000;
+      --gold: #d6b26d;
+      --gold-soft: rgba(214, 178, 109, 0.38);
+      --ivory: #ede6d6;
+      --drawer-bg: rgba(10, 10, 13, 0.94);
+      --card-bg: rgba(18, 18, 22, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --note-font-size: 1.04rem;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       overflow: hidden;
       background: #000000;
       color: #ffffff;
@@ -27,7 +38,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Ultra-clean museum background: deep void with zero distractions */
     .gallery-stage {
       position: fixed;
       inset: 0;
@@ -36,34 +46,36 @@
       z-index: 0;
     }
 
-    /* Horizontal Exhibition Corridor: strictly pictures and titles */
+    /* Sacred Horizontal Corridor */
     .corridor {
       position: relative;
       z-index: 5;
       width: 100vw;
       height: 100vh;
+      height: 100dvh;
       overflow-x: auto;
       overflow-y: hidden;
       display: flex;
       align-items: center;
       padding: 0 16vw;
-      gap: clamp(5.5rem, 9.5vw, 11.5rem);
+      gap: clamp(5rem, 9.5vw, 11.5rem);
       scroll-behavior: auto;
       scrollbar-width: none;
       -ms-overflow-style: none;
       cursor: grab;
       touch-action: pan-x;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: filter 0.4s ease, opacity 0.4s ease;
     }
 
-    .corridor.is-dragging {
-      cursor: grabbing;
+    .corridor.is-dragging { cursor: grabbing; }
+    .corridor::-webkit-scrollbar { display: none; }
+    .corridor.is-blurred {
+      filter: blur(14px) brightness(0.32);
+      pointer-events: none;
     }
 
-    .corridor::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Individual Exhibit Item */
     .exhibit-item {
       position: relative;
       flex: 0 0 auto;
@@ -77,24 +89,33 @@
         filter 0.55s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
-    /* Cinema Focus Physics: hovering one dims all others to 25% */
     .corridor.cinema-active .exhibit-item:not(.is-focused) {
       opacity: 0.25;
-      filter: grayscale(40%) brightness(0.65);
+      filter: brightness(0.65);
       transform: scale(0.97);
     }
 
     .corridor.cinema-active .exhibit-item.is-focused {
       opacity: 1;
-      filter: brightness(1.04);
       transform: scale(1.02);
     }
 
-    /* Pure Museum Canvas */
+    /* Silent Recall / Quiz Mode (Toggle with 'R' key) */
+    body.recall-mode .exhibit-label {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    body.recall-mode .exhibit-item.is-focused .exhibit-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .canvas-wrap {
       position: relative;
-      height: clamp(280px, 56vh, 520px);
+      height: clamp(270px, 55vh, 520px);
       aspect-ratio: 4 / 3;
+      max-width: 84vw;
       border-radius: 4px;
       overflow: hidden;
       background: #0a0a0c;
@@ -106,18 +127,9 @@
       transition: box-shadow 0.5s ease;
     }
 
-    .canvas-wrap.aspect-wide {
-      aspect-ratio: 16 / 10;
-    }
-
-    .canvas-wrap.aspect-tall {
-      aspect-ratio: 3 / 4;
-      height: clamp(300px, 60vh, 560px);
-    }
-
-    .canvas-wrap.aspect-classic {
-      aspect-ratio: 4 / 3;
-    }
+    .canvas-wrap.aspect-wide { aspect-ratio: 16 / 10; }
+    .canvas-wrap.aspect-tall { aspect-ratio: 3 / 4; height: clamp(290px, 58vh, 550px); }
+    .canvas-wrap.aspect-classic { aspect-ratio: 4 / 3; }
 
     .exhibit-item.is-focused .canvas-wrap {
       box-shadow:
@@ -126,24 +138,25 @@
         0 0 0 1px rgba(214, 178, 109, 0.42);
     }
 
+    /* 100% Original Lossless Image Rendering */
     .canvas-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: contrast(1.03) saturate(1.02);
+      image-rendering: high-quality;
       transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
     .exhibit-item.is-focused .canvas-image {
-      transform: scale(1.025);
+      transform: scale(1.022);
     }
 
-    /* Minimal Floating Typewriter Title & Year */
     .exhibit-label {
       margin-top: 22px;
       text-align: center;
-      width: clamp(280px, 34vw, 460px);
+      width: clamp(260px, 34vw, 460px);
+      max-width: 86vw;
       min-height: 62px;
       display: flex;
       flex-direction: column;
@@ -159,27 +172,26 @@
       font-weight: 500;
       letter-spacing: 0.34em;
       text-transform: uppercase;
-      color: #d6b26d;
+      color: var(--gold);
       min-height: 1.2em;
     }
 
     .title-stamp {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1rem, 1.3vw, 1.22rem);
+      font-size: clamp(0.98rem, 1.3vw, 1.22rem);
       font-weight: 500;
       line-height: 1.35;
       letter-spacing: 0.015em;
-      color: #ede6d6;
+      color: var(--ivory);
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
       min-height: 2.7em;
     }
 
-    /* Subtle Typewriter Caret */
     .tw-cursor::after {
       content: "▍";
       display: inline-block;
       margin-left: 3px;
-      color: #d6b26d;
+      color: var(--gold);
       font-size: 0.85em;
       animation: caretBlink 0.65s infinite;
     }
@@ -189,35 +201,31 @@
       50% { opacity: 0; }
     }
 
-    /* Pure Floor Reflection */
     .floor-reflection {
       position: relative;
       margin-top: 8px;
       width: 100%;
-      height: 68px;
+      height: 64px;
       overflow: hidden;
       pointer-events: none;
-      opacity: 0.17;
+      opacity: 0.16;
       filter: blur(2.2px);
       -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.78) 0%, transparent 90%);
       mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.78) 0%, transparent 90%);
       transition: opacity 0.5s ease;
     }
 
-    .exhibit-item.is-focused .floor-reflection {
-      opacity: 0.3;
-    }
+    .exhibit-item.is-focused .floor-reflection { opacity: 0.28; }
 
     .reflection-img {
       width: 100%;
-      height: 180px;
+      height: 170px;
       object-fit: cover;
       object-position: bottom center;
       transform: scaleY(-1);
       display: block;
     }
 
-    /* Minimal Progress Hairline at Bottom */
     .corridor-bar-track {
       position: fixed;
       bottom: 0;
@@ -232,103 +240,433 @@
     .corridor-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #b85d3b, #d6b26d);
+      background: linear-gradient(90deg, #b85d3b, var(--gold));
       box-shadow: 0 0 10px rgba(214, 178, 109, 0.6);
       transition: width 0.1s ease-out;
+    }
+
+    /* Optical Archival Loupe Glass (Used both in Sanctuary & 'Z' key in Corridor) */
+    .optical-loupe {
+      position: fixed;
+      width: 196px;
+      height: 196px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(214, 178, 109, 0.85);
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.92),
+        0 0 0 1px rgba(0, 0, 0, 0.8),
+        inset 0 0 22px rgba(0, 0, 0, 0.45);
+      background-repeat: no-repeat;
+      background-color: #050507;
+      pointer-events: none;
+      z-index: 1200;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.88);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      image-rendering: high-quality;
+    }
+    .optical-loupe.is-active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .optical-loupe::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* ===================================================================
+       DOUBLE-CLICK SANCTUARY: HD LOUPE STAGE + NOVELVERSE COMPANION DRAWER
+       =================================================================== */
+    .sanctuary-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      background: rgba(4, 4, 6, 0.84);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: grid;
+      grid-template-columns: 1fr 430px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .sanctuary-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Left HD Inspection Stage */
+    .sanctuary-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 2.5rem 3.5rem;
+      overflow: hidden;
+    }
+
+    .sanctuary-art-frame {
+      position: relative;
+      max-width: 100%;
+      max-height: 76vh;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow:
+        0 32px 90px rgba(0, 0, 0, 0.96),
+        0 0 0 1px rgba(214, 178, 109, 0.28);
+      cursor: crosshair;
+      background: #060608;
+    }
+
+    .sanctuary-art-img {
+      display: block;
+      max-width: 100%;
+      max-height: 76vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      image-rendering: high-quality;
+    }
+
+    .sanctuary-stage-bar {
+      margin-top: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sanc-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #d8d2c5;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 0.38rem 0.78rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .sanc-pill:hover, .sanc-pill.is-active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(214, 178, 109, 0.1);
+    }
+
+    /* Right Curator's Companion Drawer (NovelVerse Literary Aesthetic) */
+    .companion-drawer {
+      background: var(--drawer-bg);
+      border-left: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      transform: translateX(30px);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sanctuary-overlay.is-open .companion-drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      gap: 0.75rem;
+    }
+
+    .drawer-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+    }
+
+    .drawer-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .drawer-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.4rem 1.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .drawer-meta-header {
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .drawer-year-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.24em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .drawer-title-meta {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.32rem;
+      font-weight: 500;
+      line-height: 1.32;
+      color: #f6f2ea;
+    }
+
+    /* NovelVerse-Style Matte Insight Cards */
+    .insight-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+    }
+
+    .insight-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8f8a80;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .insight-prose {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: var(--note-font-size);
+      line-height: 1.78;
+      color: #e9e4d9;
+      white-space: pre-line;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .insight-empty {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 0.96rem;
+      color: rgba(237, 230, 214, 0.45);
+      line-height: 1.6;
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .motif-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.76rem;
+      color: #e4decb;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    /* Silent Toast for Recall Mode */
+    .quiet-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      background: rgba(14, 14, 18, 0.92);
+      border: 1px solid rgba(214, 178, 109, 0.4);
+      color: var(--gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      z-index: 1100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .quiet-toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===================================================================
+       MOBILE & TABLET RESPONSIVE ADAPTATION (Phones + Narrow Viewports)
+       =================================================================== */
+    @media (max-width: 900px) {
+      .corridor {
+        padding: 0 9vw;
+        gap: 3.5rem;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .exhibit-item {
+        scroll-snap-align: center;
+      }
+
+      .canvas-wrap,
+      .canvas-wrap.aspect-classic,
+      .canvas-wrap.aspect-wide {
+        height: auto;
+        width: 82vw;
+        max-height: 54dvh;
+      }
+
+      .canvas-wrap.aspect-tall {
+        height: 54dvh;
+        width: auto;
+        max-width: 82vw;
+      }
+
+      .exhibit-label {
+        margin-top: 18px;
+        width: 84vw;
+      }
+
+      .floor-reflection {
+        height: 44px;
+      }
+
+      /* Sanctuary becomes clean vertical split on mobile */
+      .sanctuary-overlay {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        overflow-y: auto;
+      }
+
+      .sanctuary-stage {
+        padding: 1.25rem 1rem 1rem;
+      }
+
+      .sanctuary-art-frame,
+      .sanctuary-art-img {
+        max-height: 42dvh;
+      }
+
+      .companion-drawer {
+        height: auto;
+        min-height: 52dvh;
+        border-left: none;
+        border-top: 1px solid var(--border-subtle);
+        transform: translateY(20px);
+      }
+
+      .sanctuary-overlay.is-open .companion-drawer {
+        transform: translateY(0);
+      }
+
+      .drawer-scroll {
+        overflow-y: visible;
+        padding: 1.1rem 1.15rem 2.5rem;
+      }
+
+      .optical-loupe {
+        width: 150px;
+        height: 150px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="gallery-stage" aria-hidden="true"></div>
-
-  <!-- Pure Corridor: Only Artwork + Typewriter Year & Title -->
   <main class="corridor" id="corridor" aria-label="Modern Indian History Visual Timeline"></main>
 
   <div class="corridor-bar-track" aria-hidden="true">
     <div class="corridor-bar" id="corridor-bar"></div>
   </div>
 
+  <!-- High-Res Optical Loupe -->
+  <div class="optical-loupe" id="optical-loupe" aria-hidden="true"></div>
+
+  <!-- Double-Click / Double-Tap Sanctuary: HD Loupe + Curator's Companion Notes -->
+  <section class="sanctuary-overlay" id="sanctuary-overlay" aria-hidden="true">
+    <div class="sanctuary-stage" id="sanctuary-stage">
+      <div class="sanctuary-art-frame" id="sanctuary-art-frame">
+        <img class="sanctuary-art-img" id="sanctuary-art-img" src="" alt="High-Resolution Exhibit Inspection" />
+      </div>
+      <div class="sanctuary-stage-bar">
+        <button type="button" class="sanc-pill is-active" id="loupe-toggle-btn">Loupe: ON (2.6×)</button>
+        <button type="button" class="sanc-pill" id="loupe-zoom-btn">Zoom: 2.6×</button>
+        <button type="button" class="sanc-pill" id="sanc-prev-btn">← Prev</button>
+        <button type="button" class="sanc-pill" id="sanc-next-btn">Next →</button>
+      </div>
+    </div>
+
+    <aside class="companion-drawer" aria-label="Curator's Companion Notes">
+      <div class="drawer-top">
+        <span class="drawer-heading">Curator&rsquo;s Companion</span>
+        <div class="drawer-controls">
+          <button type="button" class="sanc-pill" id="font-dec-btn" title="Decrease Text Size">A−</button>
+          <button type="button" class="sanc-pill" id="font-inc-btn" title="Increase Text Size">A+</button>
+          <button type="button" class="sanc-pill" id="sanc-close-btn">EXIT ✕</button>
+        </div>
+      </div>
+
+      <div class="drawer-scroll">
+        <div class="drawer-meta-header">
+          <span class="drawer-year-meta" id="drawer-year-meta">A.D. 1857</span>
+          <h2 class="drawer-title-meta" id="drawer-title-meta">Exhibit Title</h2>
+        </div>
+
+        <div class="insight-card" id="card-insight">
+          <span class="insight-card-label">Personal Insight &amp; Recall Note</span>
+          <div class="insight-prose" id="drawer-insight-text"></div>
+        </div>
+
+        <div class="insight-card" id="card-tags">
+          <span class="insight-card-label">Key Recall Motifs</span>
+          <div class="tag-cloud" id="drawer-tags"></div>
+        </div>
+
+        <div class="insight-card" id="card-context">
+          <span class="insight-card-label">Historical Context</span>
+          <div class="insight-prose" id="drawer-context-text"></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Quiet Toast for Keyboard Shortcuts -->
+  <div class="quiet-toast" id="quiet-toast" aria-live="polite"></div>
+
   <script>
     const FALLBACK_TIMELINE = [
-      {
-        "id": "1757-plassey",
-        "year": "1757",
-        "chapter": "Company Ascendancy",
-        "wing": "Wing I — Mercantile Conquest",
-        "title": "Battle of Plassey on the Banks of the Bhagirathi",
-        "aspect": "classic",
-        "image": "assets/1757-plassey.jpg"
-      },
-      {
-        "id": "1765-allahabad",
-        "year": "1765",
-        "chapter": "The Diwani Charter",
-        "wing": "Wing I — Mercantile Conquest",
-        "title": "Treaty of Allahabad & Grant of Diwani Rights",
-        "aspect": "wide",
-        "image": "assets/1765-allahabad.jpg"
-      },
-      {
-        "id": "1855-santhal-hool",
-        "year": "1855",
-        "chapter": "Indigenous Uprisings",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool",
-        "aspect": "tall",
-        "image": "assets/1855-santhal-hool.jpg"
-      },
-      {
-        "id": "1857-kunwar-singh",
-        "year": "1857",
-        "chapter": "First War of Independence",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
-        "aspect": "classic",
-        "image": "assets/1857-kunwar-singh.jpg"
-      },
-      {
-        "id": "1857-delhi-front",
-        "year": "1857",
-        "chapter": "First War of Independence",
-        "wing": "Wing II — Subaltern & Great Revolt",
-        "title": "The Delhi Front at Kashmiri Gate & Red Fort",
-        "aspect": "wide",
-        "image": "assets/1857-delhi-front.jpg"
-      },
-      {
-        "id": "1905-swadeshi",
-        "year": "1905",
-        "chapter": "Swadeshi Awakening",
-        "wing": "Wing III — Mass Nationalist Awakening",
-        "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
-        "aspect": "classic",
-        "image": "assets/1905-swadeshi.jpg"
-      },
-      {
-        "id": "1930-dandi-march",
-        "year": "1930",
-        "chapter": "Civil Disobedience",
-        "wing": "Wing III — Mass Nationalist Awakening",
-        "title": "The Coastal Salt Satyagraha at Dandi",
-        "aspect": "wide",
-        "image": "assets/1930-dandi-march.jpg"
-      },
-      {
-        "id": "1942-quit-india",
-        "year": "1942",
-        "chapter": "Quit India Uprising",
-        "wing": "Wing IV — Final Surge to Sovereignty",
-        "title": "The Seven Student Martyrs at Patna Secretariat",
-        "aspect": "classic",
-        "image": "assets/1942-quit-india.jpg"
-      }
+      { "id": "1757-plassey", "year": "1757", "chapter": "Company Ascendancy", "wing": "Wing I — Mercantile Conquest", "title": "Battle of Plassey on the Banks of the Bhagirathi", "aspect": "classic", "image": "assets/1757-plassey.jpg" },
+      { "id": "1765-allahabad", "year": "1765", "chapter": "The Diwani Charter", "wing": "Wing I — Mercantile Conquest", "title": "Treaty of Allahabad & Grant of Diwani Rights", "aspect": "wide", "image": "assets/1765-allahabad.jpg" },
+      { "id": "1855-santhal-hool", "year": "1855", "chapter": "Indigenous Uprisings", "wing": "Wing II — Subaltern & Great Revolt", "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool", "aspect": "tall", "image": "assets/1855-santhal-hool.jpg" },
+      { "id": "1857-kunwar-singh", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur", "aspect": "classic", "image": "assets/1857-kunwar-singh.jpg" },
+      { "id": "1857-delhi-front", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "The Delhi Front at Kashmiri Gate & Red Fort", "aspect": "wide", "image": "assets/1857-delhi-front.jpg" },
+      { "id": "1905-swadeshi", "year": "1905", "chapter": "Swadeshi Awakening", "wing": "Wing III — Mass Nationalist Awakening", "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly", "aspect": "classic", "image": "assets/1905-swadeshi.jpg" },
+      { "id": "1930-dandi-march", "year": "1930", "chapter": "Civil Disobedience", "wing": "Wing III — Mass Nationalist Awakening", "title": "The Coastal Salt Satyagraha at Dandi", "aspect": "wide", "image": "assets/1930-dandi-march.jpg" },
+      { "id": "1942-quit-india", "year": "1942", "chapter": "Quit India Uprising", "wing": "Wing IV — Final Surge to Sovereignty", "title": "The Seven Student Martyrs at Patna Secretariat", "aspect": "classic", "image": "assets/1942-quit-india.jpg" }
     ];
 
-    function extractNumericYear(yearStr) {
-      if (!yearStr) return 0;
-      const match = String(yearStr).match(/(\d{3,4})/);
-      return match ? parseInt(match[1], 10) : 0;
-    }
+    let galleryExhibits = [];
+    let currentSanctuaryIndex = -1;
+    let loupeEnabled = true;
+    let loupeZoomLevels = [2.6, 3.5, 4.5];
+    let loupeZoomIdx = 0;
+    let zKeyHeld = false;
+    let noteFontRem = 1.04;
 
     function formatYearStamp(yearStr) {
       const trimmed = String(yearStr || "").trim();
@@ -349,53 +687,158 @@
       return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
     }
 
-    /* Typewriter Animation Engine per Exhibit */
-    const activeTimers = new WeakMap();
+    let toastTimer = null;
+    function showToast(msg) {
+      const t = document.getElementById("quiet-toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("is-visible"), 2000);
+    }
 
+    /* High-Res Optical Loupe Controller */
+    const loupeEl = document.getElementById("optical-loupe");
+
+    function updateLoupeAt(imgEl, clientX, clientY) {
+      if (!imgEl || !loupeEl) return;
+      const rect = imgEl.getBoundingClientRect();
+      if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
+        loupeEl.classList.remove("is-active");
+        return;
+      }
+
+      const zoom = loupeZoomLevels[loupeZoomIdx];
+      const relX = clientX - rect.left;
+      const relY = clientY - rect.top;
+      const loupeW = loupeEl.offsetWidth || 196;
+      const loupeH = loupeEl.offsetHeight || 196;
+
+      loupeEl.style.left = `${clientX}px`;
+      loupeEl.style.top = `${clientY}px`;
+      loupeEl.style.backgroundImage = `url("${imgEl.currentSrc || imgEl.src}")`;
+      loupeEl.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+      loupeEl.style.backgroundPosition = `${-(relX * zoom - loupeW / 2)}px ${-(relY * zoom - loupeH / 2)}px`;
+      loupeEl.classList.add("is-active");
+    }
+
+    function hideLoupe() {
+      if (loupeEl) loupeEl.classList.remove("is-active");
+    }
+
+    /* Typewriter Animation Engine */
+    const activeTimers = new WeakMap();
     function playTypewriter(bay, yearText, titleText) {
       const yearEl = bay.querySelector(".year-stamp");
       const titleEl = bay.querySelector(".title-stamp");
       if (!yearEl || !titleEl) return;
 
       const prev = activeTimers.get(bay);
-      if (prev) {
-        clearTimeout(prev.t1);
-        clearTimeout(prev.t2);
-      }
+      if (prev) { clearTimeout(prev.t1); clearTimeout(prev.t2); }
 
       yearEl.textContent = "";
       titleEl.textContent = "";
       yearEl.classList.add("tw-cursor");
       titleEl.classList.remove("tw-cursor");
 
-      let yIdx = 0;
-      let tIdx = 0;
+      let yIdx = 0, tIdx = 0;
       const state = { t1: null, t2: null };
       activeTimers.set(bay, state);
 
       function stepYear() {
         if (yIdx < yearText.length) {
-          yearEl.textContent += yearText.charAt(yIdx);
-          yIdx++;
-          state.t1 = setTimeout(stepYear, 32);
+          yearEl.textContent += yearText.charAt(yIdx++);
+          state.t1 = setTimeout(stepYear, 30);
         } else {
           yearEl.classList.remove("tw-cursor");
           titleEl.classList.add("tw-cursor");
-          state.t2 = setTimeout(stepTitle, 60);
+          state.t2 = setTimeout(stepTitle, 55);
         }
       }
 
       function stepTitle() {
         if (tIdx < titleText.length) {
-          titleEl.textContent += titleText.charAt(tIdx);
-          tIdx++;
-          state.t2 = setTimeout(stepTitle, 22);
+          titleEl.textContent += titleText.charAt(tIdx++);
+          state.t2 = setTimeout(stepTitle, 20);
         } else {
-          setTimeout(() => titleEl.classList.remove("tw-cursor"), 650);
+          setTimeout(() => titleEl.classList.remove("tw-cursor"), 600);
         }
       }
-
       stepYear();
+    }
+
+    /* Double-Click / Double-Tap Sanctuary Controller */
+    function openSanctuary(index) {
+      if (index < 0 || index >= galleryExhibits.length) return;
+      currentSanctuaryIndex = index;
+      const item = galleryExhibits[index];
+
+      const overlay = document.getElementById("sanctuary-overlay");
+      const corridor = document.getElementById("corridor");
+      const sancImg = document.getElementById("sanctuary-art-img");
+
+      sancImg.src = item.image || buildFallbackSvg(item);
+      sancImg.alt = item.title || "Historical Exhibit";
+      sancImg.onerror = () => { sancImg.src = buildFallbackSvg(item); };
+
+      const chapterSuffix = item.chapter ? ` · ${item.chapter}` : "";
+      document.getElementById("drawer-year-meta").textContent = `${formatYearStamp(item.year)}${chapterSuffix}`;
+      document.getElementById("drawer-title-meta").textContent = item.title || "";
+
+      // Personal Insight Note
+      const insightEl = document.getElementById("drawer-insight-text");
+      if (item.insight && item.insight.trim()) {
+        insightEl.className = "insight-prose";
+        insightEl.textContent = item.insight.trim();
+      } else {
+        insightEl.className = "insight-empty";
+        insightEl.textContent = "No personal curator insight recorded yet. Add your note anytime in Curator Studio.";
+      }
+
+      // Recall Motif Tags
+      const tagsCard = document.getElementById("card-tags");
+      const tagsWrap = document.getElementById("drawer-tags");
+      const tagsList = Array.isArray(item.tags)
+        ? item.tags.filter(Boolean)
+        : (typeof item.tags === "string" ? item.tags.split(",").map(s => s.trim()).filter(Boolean) : []);
+
+      tagsWrap.innerHTML = "";
+      if (tagsList.length > 0) {
+        tagsCard.style.display = "block";
+        tagsList.forEach(tag => {
+          const span = document.createElement("span");
+          span.className = "motif-tag";
+          span.textContent = tag;
+          tagsWrap.appendChild(span);
+        });
+      } else {
+        tagsCard.style.display = "none";
+      }
+
+      // Historical Context
+      const ctxCard = document.getElementById("card-context");
+      const ctxEl = document.getElementById("drawer-context-text");
+      if (item.context && item.context.trim()) {
+        ctxCard.style.display = "block";
+        ctxEl.textContent = item.context.trim();
+      } else {
+        ctxCard.style.display = "none";
+      }
+
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      corridor.classList.add("is-blurred");
+      hideLoupe();
+    }
+
+    function closeSanctuary() {
+      const overlay = document.getElementById("sanctuary-overlay");
+      const corridor = document.getElementById("corridor");
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      corridor.classList.remove("is-blurred");
+      currentSanctuaryIndex = -1;
+      hideLoupe();
     }
 
     async function loadTimelineData() {
@@ -422,10 +865,7 @@
       const corridor = document.getElementById("corridor");
       if (!corridor) return;
 
-      const sorted = [...exhibits].sort(
-        (a, b) => extractNumericYear(a.year) - extractNumericYear(b.year)
-      );
-
+      galleryExhibits = [...exhibits];
       corridor.innerHTML = "";
 
       const observer = new IntersectionObserver(
@@ -440,10 +880,10 @@
             }
           });
         },
-        { root: corridor, threshold: 0.35 }
+        { root: corridor, threshold: 0.3 }
       );
 
-      sorted.forEach((item, index) => {
+      galleryExhibits.forEach((item, index) => {
         const bay = document.createElement("article");
         bay.className = "exhibit-item";
         bay.dataset.id = item.id || ("item-" + index);
@@ -452,9 +892,7 @@
         bay.dataset.yearText = formattedYear;
         bay.dataset.titleText = formattedTitle;
 
-        const aspectKey = ["wide", "tall", "classic"].includes(item.aspect)
-          ? item.aspect
-          : "classic";
+        const aspectKey = ["wide", "tall", "classic"].includes(item.aspect) ? item.aspect : "classic";
         const canvasWrap = document.createElement("div");
         canvasWrap.className = `canvas-wrap aspect-${aspectKey}`;
 
@@ -518,13 +956,38 @@
           if (!corridor.querySelector(".exhibit-item.is-focused")) {
             corridor.classList.remove("cinema-active");
           }
+          hideLoupe();
         };
 
         bay.addEventListener("mouseenter", activateFocus);
         bay.addEventListener("mouseleave", releaseFocus);
 
+        // Hold 'Z' key in Corridor for direct wall loupe
+        canvasWrap.addEventListener("mousemove", (e) => {
+          if (zKeyHeld && currentSanctuaryIndex === -1) {
+            updateLoupeAt(img, e.clientX, e.clientY);
+          } else if (currentSanctuaryIndex === -1) {
+            hideLoupe();
+          }
+        });
+
+        // Desktop Double-Click -> Open HD Loupe & Curator's Companion Notes
+        canvasWrap.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          openSanctuary(index);
+        });
+
+        // Reliable Mobile Double-Tap + Single-Tap Centering
+        let lastTapTime = 0;
         canvasWrap.addEventListener("click", () => {
           if (hasMovedDuringDrag) return;
+          const now = Date.now();
+          if (now - lastTapTime < 340) {
+            lastTapTime = 0;
+            openSanctuary(index);
+            return;
+          }
+          lastTapTime = now;
           const bayCenter = bay.offsetLeft + bay.offsetWidth / 2;
           const target = bayCenter - corridor.clientWidth / 2;
           setTargetScroll(target);
@@ -537,15 +1000,9 @@
       updateProgress();
     }
 
-    let targetScroll = 0;
-    let currentScroll = 0;
-    let rafId = null;
-    let isDragging = false;
-    let hasMovedDuringDrag = false;
-    let dragStartX = 0;
-    let dragScrollStart = 0;
-    let lastDragX = 0;
-    let dragVelocity = 0;
+    let targetScroll = 0, currentScroll = 0, rafId = null;
+    let isDragging = false, hasMovedDuringDrag = false;
+    let dragStartX = 0, dragScrollStart = 0, lastDragX = 0, dragVelocity = 0;
 
     function clamp(val, corridor) {
       const maxScroll = Math.max(0, corridor.scrollWidth - corridor.clientWidth);
@@ -588,22 +1045,73 @@
 
     function setupControls() {
       const corridor = document.getElementById("corridor");
-      if (!corridor) return;
+      const sancFrame = document.getElementById("sanctuary-art-frame");
+      const sancImg = document.getElementById("sanctuary-art-img");
+      const loupeToggleBtn = document.getElementById("loupe-toggle-btn");
+      const loupeZoomBtn = document.getElementById("loupe-zoom-btn");
 
-      window.addEventListener(
-        "wheel",
-        (e) => {
-          e.preventDefault();
-          const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-          if (!rafId) {
-            currentScroll = corridor.scrollLeft;
-            targetScroll = corridor.scrollLeft;
-          }
-          setTargetScroll(targetScroll + delta * 1.35);
-        },
-        { passive: false }
-      );
+      // Mouse wheel walking (paused when Sanctuary is open)
+      window.addEventListener("wheel", (e) => {
+        if (currentSanctuaryIndex !== -1) return;
+        e.preventDefault();
+        const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+        if (!rafId) { currentScroll = corridor.scrollLeft; targetScroll = corridor.scrollLeft; }
+        setTargetScroll(targetScroll + delta * 1.35);
+      }, { passive: false });
 
+      // Sanctuary Loupe (Mouse + Touch Inspect)
+      sancFrame.addEventListener("mousemove", (e) => {
+        if (loupeEnabled) updateLoupeAt(sancImg, e.clientX, e.clientY);
+      });
+      sancFrame.addEventListener("mouseleave", hideLoupe);
+      sancFrame.addEventListener("touchmove", (e) => {
+        if (!loupeEnabled || !e.touches.length) return;
+        e.preventDefault();
+        updateLoupeAt(sancImg, e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: false });
+      sancFrame.addEventListener("touchend", hideLoupe);
+
+      function syncLoupeLabels() {
+        const z = loupeZoomLevels[loupeZoomIdx];
+        loupeToggleBtn.textContent = loupeEnabled ? `Loupe: ON (${z}×)` : "Loupe: OFF";
+        loupeToggleBtn.classList.toggle("is-active", loupeEnabled);
+        loupeZoomBtn.textContent = `Zoom: ${z}×`;
+        if (!loupeEnabled) hideLoupe();
+      }
+
+      loupeToggleBtn.addEventListener("click", () => {
+        loupeEnabled = !loupeEnabled;
+        syncLoupeLabels();
+      });
+
+      loupeZoomBtn.addEventListener("click", () => {
+        loupeZoomIdx = (loupeZoomIdx + 1) % loupeZoomLevels.length;
+        syncLoupeLabels();
+      });
+
+      document.getElementById("sanc-prev-btn").addEventListener("click", () => {
+        if (currentSanctuaryIndex > 0) openSanctuary(currentSanctuaryIndex - 1);
+      });
+      document.getElementById("sanc-next-btn").addEventListener("click", () => {
+        if (currentSanctuaryIndex < galleryExhibits.length - 1) openSanctuary(currentSanctuaryIndex + 1);
+      });
+      document.getElementById("sanc-close-btn").addEventListener("click", closeSanctuary);
+
+      document.getElementById("sanctuary-stage").addEventListener("click", (e) => {
+        if (e.target.id === "sanctuary-stage") closeSanctuary();
+      });
+
+      // A- / A+ Reader Font Size Controls
+      document.getElementById("font-dec-btn").addEventListener("click", () => {
+        noteFontRem = Math.max(0.86, +(noteFontRem - 0.08).toFixed(2));
+        document.documentElement.style.setProperty("--note-font-size", `${noteFontRem}rem`);
+      });
+      document.getElementById("font-inc-btn").addEventListener("click", () => {
+        noteFontRem = Math.min(1.42, +(noteFontRem + 0.08).toFixed(2));
+        document.documentElement.style.setProperty("--note-font-size", `${noteFontRem}rem`);
+      });
+
+      // Desktop drag-to-stroll
       corridor.addEventListener("mousedown", (e) => {
         isDragging = true;
         hasMovedDuringDrag = false;
@@ -611,10 +1119,7 @@
         dragStartX = e.pageX;
         lastDragX = e.pageX;
         dragVelocity = 0;
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
-        }
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
         dragScrollStart = corridor.scrollLeft;
         currentScroll = corridor.scrollLeft;
         targetScroll = corridor.scrollLeft;
@@ -637,67 +1142,45 @@
         if (!isDragging) return;
         isDragging = false;
         corridor.classList.remove("is-dragging");
-        if (Math.abs(dragVelocity) > 2) {
-          setTargetScroll(corridor.scrollLeft - dragVelocity * 8);
-        }
+        if (Math.abs(dragVelocity) > 2) setTargetScroll(corridor.scrollLeft - dragVelocity * 8);
       });
 
-      corridor.addEventListener(
-        "touchstart",
-        (e) => {
-          if (!e.touches || e.touches.length === 0) return;
-          isDragging = true;
-          hasMovedDuringDrag = false;
-          dragStartX = e.touches[0].pageX;
-          lastDragX = dragStartX;
-          dragVelocity = 0;
-          if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-          }
-          dragScrollStart = corridor.scrollLeft;
-          currentScroll = corridor.scrollLeft;
-          targetScroll = corridor.scrollLeft;
-        },
-        { passive: true }
-      );
-
-      corridor.addEventListener(
-        "touchmove",
-        (e) => {
-          if (!isDragging || !e.touches || e.touches.length === 0) return;
-          const x = e.touches[0].pageX;
-          dragVelocity = x - lastDragX;
-          lastDragX = x;
-          const total = dragStartX - x;
-          if (Math.abs(total) > 4) hasMovedDuringDrag = true;
-          corridor.scrollLeft = clamp(dragScrollStart + total * 1.15, corridor);
-          currentScroll = corridor.scrollLeft;
-          targetScroll = corridor.scrollLeft;
-          updateProgress();
-        },
-        { passive: true }
-      );
-
-      corridor.addEventListener(
-        "touchend",
-        () => {
-          if (!isDragging) return;
-          isDragging = false;
-          if (Math.abs(dragVelocity) > 2) {
-            setTargetScroll(corridor.scrollLeft - dragVelocity * 7);
-          }
-        },
-        { passive: true }
-      );
-
+      // Keyboard Controls (Arrows, Esc, R for Recall Mode, Z for Corridor Loupe)
       window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && currentSanctuaryIndex !== -1) {
+          closeSanctuary();
+          return;
+        }
+        if (currentSanctuaryIndex !== -1) {
+          if (e.key === "ArrowRight" && currentSanctuaryIndex < galleryExhibits.length - 1) {
+            e.preventDefault();
+            openSanctuary(currentSanctuaryIndex + 1);
+          } else if (e.key === "ArrowLeft" && currentSanctuaryIndex > 0) {
+            e.preventDefault();
+            openSanctuary(currentSanctuaryIndex - 1);
+          }
+          return;
+        }
+
         if (e.key === "ArrowRight") {
           e.preventDefault();
           setTargetScroll((rafId ? targetScroll : corridor.scrollLeft) + 420);
         } else if (e.key === "ArrowLeft") {
           e.preventDefault();
           setTargetScroll((rafId ? targetScroll : corridor.scrollLeft) - 420);
+        } else if (e.key.toLowerCase() === "r") {
+          document.body.classList.toggle("recall-mode");
+          const on = document.body.classList.contains("recall-mode");
+          showToast(on ? "Recall Mode: ON (Hover to Reveal)" : "Recall Mode: OFF");
+        } else if (e.key.toLowerCase() === "z") {
+          zKeyHeld = true;
+        }
+      });
+
+      window.addEventListener("keyup", (e) => {
+        if (e.key.toLowerCase() === "z") {
+          zKeyHeld = false;
+          if (currentSanctuaryIndex === -1) hideLoupe();
         }
       });
 
