@@ -37,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* PIN Security Gate Modal (No Password Hint Shown) */
+    /* PIN Security Gate Modal */
     .gate-overlay {
       position: fixed; inset: 0;
       background: radial-gradient(circle at 50% 45%, #111015 0%, #050507 85%);
@@ -107,10 +107,14 @@
     .pill-btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .pill-btn.is-gold {
       background: rgba(214, 178, 109, 0.16);
-      border-color: var(--gold);
-      color: var(--gold-bright);
+      border-color: var(--gold); color: var(--gold-bright);
     }
     .pill-btn.is-gold:hover:not(:disabled) { background: var(--gold); color: #000; }
+    .pill-btn.is-cdn {
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.5); color: var(--success);
+    }
+    .pill-btn.is-cdn:hover:not(:disabled) { background: var(--success); color: #000; }
 
     /* Primary Synthesizer Card */
     .synthesizer-card {
@@ -156,16 +160,20 @@
       flex-wrap: wrap; gap: 0.75rem; padding: 0.65rem 0.9rem;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border-subtle); border-radius: 8px;
-      margin-bottom: 0.85rem; font-size: 0.76rem;
+      margin-bottom: 0.75rem; font-size: 0.76rem;
+    }
+    .cdn-bar {
+      border-color: rgba(52, 211, 153, 0.28);
+      background: rgba(52, 211, 153, 0.03);
     }
     .repo-inputs { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
-    .repo-label { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.72rem; }
+    .repo-label { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.71rem; }
     .repo-mini-input {
       background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
-      padding: 0.35rem 0.65rem; border-radius: 6px; width: 165px;
+      padding: 0.35rem 0.65rem; border-radius: 6px; width: 160px;
     }
-    .repo-branch-input { width: 76px; }
+    .repo-branch-input { width: 80px; }
     .auto-push-toggle {
       display: inline-flex; align-items: center; gap: 8px;
       cursor: pointer; color: #d6d1c4; font-size: 0.75rem; user-select: none;
@@ -259,10 +267,7 @@
     }
     .field-textarea {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.98rem;
-      line-height: 1.65;
-      resize: vertical;
-      min-height: 92px;
+      font-size: 0.98rem; line-height: 1.65; resize: vertical; min-height: 92px;
     }
     .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: var(--gold); }
 
@@ -326,19 +331,13 @@
     }
     .preview-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: var(--text-main); }
     .preview-note-snippet {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.88rem;
-      line-height: 1.55;
-      color: rgba(237, 230, 214, 0.72);
-      text-align: center;
-      max-width: 320px;
+      margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: 'Newsreader', Georgia, serif; font-size: 0.88rem; line-height: 1.55;
+      color: rgba(237, 230, 214, 0.72); text-align: center; max-width: 320px;
     }
     .quality-badge {
       margin-top: 10px; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem; color: var(--success); opacity: 0.8; text-align: center;
+      font-size: 0.66rem; color: var(--success); opacity: 0.85; text-align: center;
     }
 
     /* Timeline Manager Card */
@@ -356,7 +355,7 @@
       background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px; color: var(--text-main);
       font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
-      padding: 0.42rem 0.9rem; outline: none; width: 185px;
+      padding: 0.42rem 0.9rem; outline: none; width: 175px;
     }
     .registry-search:focus { border-color: var(--gold); }
 
@@ -422,10 +421,8 @@
     }
     .btn-crimson-pill:hover { filter: brightness(1.12); }
 
-    /* Mobile & Tablet Responsive Polish */
     @media (max-width: 860px) {
-      .key-bars-grid,
-      .workbench-grid { grid-template-columns: 1fr; }
+      .key-bars-grid, .workbench-grid { grid-template-columns: 1fr; }
       .field-row-3 { grid-template-columns: 1fr 1fr; }
     }
 
@@ -435,13 +432,12 @@
       .dual-sub-actions { grid-template-columns: 1fr; }
       .timeline-row { flex-direction: column; align-items: stretch; gap: 0.6rem; }
       .row-actions { justify-content: flex-end; }
-      .registry-search { width: 100%; }
-      .repo-mini-input { width: 100%; }
+      .registry-search, .repo-mini-input { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <!-- PIN Security Gate (Clean, Zero Password Hint) -->
+  <!-- PIN Security Gate -->
   <div class="gate-overlay" id="gate-overlay">
     <div class="gate-card">
       <h1 class="gate-title">Virasat // Access Lock</h1>
@@ -467,7 +463,7 @@
       <div class="synth-header-row">
         <div class="synth-title">
           <span class="sparkle">✦</span>
-          <span>Gemini Pro/Flash Auto-Synthesizer</span>
+          <span>Gemini + Cloudinary Zero-Lag Studio</span>
         </div>
         <label class="auto-push-toggle">
           <input type="checkbox" id="auto-commit-toggle" />
@@ -486,9 +482,23 @@
         </div>
       </div>
 
+      <!-- Cloudinary Image CDN Config (Unsigned Preset: Virasat) -->
+      <div class="repo-bar cdn-bar">
+        <div class="repo-inputs">
+          <span class="repo-label" style="color: var(--success);">CLOUDINARY CDN:</span>
+          <input type="text" id="cld-cloud-name" class="repo-mini-input" placeholder="Cloud Name (e.g. dxyz123)" />
+          <span class="repo-label">PRESET:</span>
+          <input type="text" id="cld-preset" class="repo-mini-input repo-branch-input" value="Virasat" placeholder="Virasat" />
+        </div>
+        <button type="button" id="save-cld-btn" class="save-cred-btn" style="padding: 0.34rem 0.85rem; font-size: 0.72rem;">
+          Save CDN
+        </button>
+      </div>
+
+      <!-- GitHub Repo Config -->
       <div class="repo-bar">
         <div class="repo-inputs">
-          <span class="repo-label">REPO:</span>
+          <span class="repo-label">GITHUB REPO:</span>
           <input type="text" id="github-repo" class="repo-mini-input" value="ani0707y/Virasat" placeholder="owner/repo" />
           <span class="repo-label">BRANCH:</span>
           <input type="text" id="github-branch" class="repo-mini-input repo-branch-input" value="main" placeholder="main" />
@@ -515,12 +525,12 @@
         <div class="drop-emoji">🖼️</div>
         <div class="drop-headline" id="drop-headline">Click or Drag Historical Exhibit Photo Here</div>
         <div class="drop-subline">
-          100% Original Lossless Quality uploaded to GitHub &middot; Gemini + Live Google Search verifies Year, Title &amp; Insight Note.
+          Uploads 100% lossless original to Cloudinary CDN (fast AVIF/WebP in corridor, untouched full-res in Loupe).
         </div>
       </div>
 
       <div class="status-strip" id="status-strip">
-        <span id="status-text">Ready. Drop an archival photo above or click Edit on any registered exhibit below.</span>
+        <span id="status-text">Ready. Enter your Cloudinary Cloud Name above, then drop a photo or migrate old assets below.</span>
         <span id="file-pill" style="color: var(--gold);"></span>
       </div>
 
@@ -565,11 +575,10 @@
           </div>
 
           <div class="field-group">
-            <label class="field-label" for="exhibit-image">Target Asset Path / URL</label>
-            <input type="text" id="exhibit-image" class="field-input" value="assets/1857-kunwar-singh.jpg" placeholder="assets/filename.jpg" required />
+            <label class="field-label" for="exhibit-image">Target Asset URL / Path</label>
+            <input type="text" id="exhibit-image" class="field-input" value="assets/1857-kunwar-singh.jpg" placeholder="https://res.cloudinary.com/... or assets/..." required />
           </div>
 
-          <!-- Personal Insight Notes (Appears on Double-Click in index.html) -->
           <div class="field-group">
             <label class="field-label" for="exhibit-insight">Personal Insight Note (Double-Click Companion)</label>
             <textarea
@@ -602,7 +611,7 @@
           <div class="ingest-actions">
             <button type="submit" class="btn-ingest-github" id="btn-ingest-github">
               <span>⚡</span>
-              <span id="ingest-btn-text">Ingest &amp; Commit to GitHub</span>
+              <span id="ingest-btn-text">Upload to Cloudinary &amp; Commit JSON</span>
             </button>
             <div class="dual-sub-actions">
               <button type="button" class="btn-resynth" id="btn-resynth">
@@ -625,7 +634,7 @@
             <h2 class="preview-title" id="preview-title-stamp">Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur</h2>
           </div>
           <div class="preview-note-snippet" id="preview-note-snippet"></div>
-          <div class="quality-badge" id="quality-badge">Lossless Original Upload Active</div>
+          <div class="quality-badge" id="quality-badge">Lossless Cloudinary CDN Mode</div>
         </div>
       </div>
     </section>
@@ -638,6 +647,9 @@
         </div>
         <div class="manager-controls">
           <input type="text" id="registry-search" class="registry-search" placeholder="Filter exhibits..." />
+          <button type="button" id="migrate-cld-btn" class="pill-btn is-cdn" title="Automatically upload all existing GitHub assets/... images to Cloudinary and update timeline.json">
+            ☁ Migrate Old Assets → Cloudinary
+          </button>
           <button type="button" id="sort-chrono-btn" class="pill-btn">⇅ Sort Chronologically</button>
           <button type="button" id="push-order-btn" class="pill-btn is-gold">💾 Save Order to GitHub</button>
         </div>
@@ -672,9 +684,9 @@
     ];
 
     let activeRegistry = [...DEFAULT_TIMELINE];
+    let uploadedOriginalFile = null;
     let uploadedOriginalBase64 = null;
     let uploadedFileName = "";
-    let uploadedFileMime = "";
     let editingExhibitId = null;
     let draggedIndex = null;
 
@@ -734,20 +746,32 @@
       if (dot) dot.classList.toggle("is-dirty", Boolean(isDirty));
     }
 
+    function syncCommitButtonLabel() {
+      const btnText = document.getElementById("ingest-btn-text");
+      const hasCloud = sanitizeCredential(document.getElementById("cld-cloud-name").value).length > 0;
+      if (editingExhibitId) {
+        btnText.textContent = "Save Changes & Commit to GitHub";
+      } else {
+        btnText.textContent = hasCloud
+          ? "Upload to Cloudinary & Commit JSON"
+          : "Ingest & Commit to GitHub";
+      }
+    }
+
     function setEditMode(item) {
       const banner = document.getElementById("edit-mode-banner");
       const label = document.getElementById("edit-mode-label");
-      const btnText = document.getElementById("ingest-btn-text");
 
       if (!item) {
         editingExhibitId = null;
         banner.classList.remove("is-active");
-        btnText.textContent = "Ingest & Commit to GitHub";
+        syncCommitButtonLabel();
         renderRegistry();
         return;
       }
 
       editingExhibitId = item.id;
+      uploadedOriginalFile = null;
       uploadedOriginalBase64 = null;
       uploadedFileName = "";
       document.getElementById("file-pill").textContent = "";
@@ -764,7 +788,7 @@
 
       label.textContent = `Editing: ${formatYear(item.year)} — ${item.title}`;
       banner.classList.add("is-active");
-      btnText.textContent = "Save Changes & Commit to GitHub";
+      syncCommitButtonLabel();
       updatePreview();
       renderRegistry();
       window.scrollTo({ top: 180, behavior: "smooth" });
@@ -824,6 +848,25 @@
       setStatus(`Moved "${temp.title}" to #${targetIndex + 1}. Click '💾 Save Order to GitHub' to publish.`, "working");
     }
 
+    function getThumbUrl(url) {
+      if (url && url.includes("res.cloudinary.com") && url.includes("/image/upload/") && !url.includes("/upload/f_auto")) {
+        return url.replace("/image/upload/", "/image/upload/f_auto,q_auto,w_120,c_fill/");
+      }
+      return url || "";
+    }
+
+    function updateMigrateButtonBadge() {
+      const btn = document.getElementById("migrate-cld-btn");
+      if (!btn) return;
+      const legacyCount = activeRegistry.filter(it => it.image && !it.image.includes("res.cloudinary.com") && !it.image.startsWith("data:")).length;
+      if (legacyCount > 0) {
+        btn.style.display = "inline-flex";
+        btn.textContent = `☁ Migrate ${legacyCount} Old Asset${legacyCount > 1 ? "s" : ""} → Cloudinary`;
+      } else {
+        btn.style.display = "none";
+      }
+    }
+
     function renderRegistry() {
       const listEl = document.getElementById("timeline-list");
       const countEl = document.getElementById("registry-count");
@@ -831,6 +874,7 @@
       if (!listEl || !countEl) return;
 
       countEl.textContent = String(activeRegistry.length);
+      updateMigrateButtonBadge();
       listEl.innerHTML = "";
 
       activeRegistry.forEach((item, idx) => {
@@ -876,7 +920,7 @@
 
         const thumb = document.createElement("img");
         thumb.className = "row-thumb";
-        thumb.src = item.image || "";
+        thumb.src = getThumbUrl(item.image);
         thumb.alt = "";
         thumb.onerror = () => { thumb.style.visibility = "hidden"; };
 
@@ -884,9 +928,10 @@
         meta.className = "row-meta";
 
         const hasNote = item.insight && item.insight.trim() ? " · ✎ Note" : "";
+        const isCld = item.image && item.image.includes("res.cloudinary.com") ? " · ☁ CDN" : " · Local";
         const y = document.createElement("span");
         y.className = "row-year";
-        y.textContent = `${formatYear(item.year)} · ${item.aspect || "classic"}${hasNote}`;
+        y.textContent = `${formatYear(item.year)} · ${item.aspect || "classic"}${hasNote}${isCld}`;
 
         const t = document.createElement("span");
         t.className = "row-title";
@@ -1123,22 +1168,111 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       return false;
     }
 
+    /* Unsigned Browser Upload to Cloudinary (100% Original Lossless File / Blob) */
+    async function uploadToCloudinary(fileOrBlob, cloudName, presetName, fileNameOverride) {
+      const url = `https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/image/upload`;
+      const fd = new FormData();
+      if (fileNameOverride && fileOrBlob instanceof Blob) {
+        fd.append("file", fileOrBlob, fileNameOverride);
+      } else {
+        fd.append("file", fileOrBlob);
+      }
+      fd.append("upload_preset", presetName);
+      fd.append("folder", "virasat");
+
+      const res = await fetch(url, { method: "POST", body: fd });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.error?.message || `Cloudinary upload failed (${res.status})`);
+      }
+      return data.secure_url;
+    }
+
+    /* 1-Click Migration: Moves all existing GitHub assets/... images to Cloudinary & commits timeline.json */
+    async function migrateOldAssetsToCloudinary() {
+      const cloudName = sanitizeCredential(document.getElementById("cld-cloud-name").value);
+      const preset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
+      const btn = document.getElementById("migrate-cld-btn");
+
+      if (!cloudName) {
+        setStatus("Enter your Cloudinary Cloud Name above and click 'Save CDN' before migrating.", "error");
+        document.getElementById("cld-cloud-name").focus();
+        return;
+      }
+
+      const targets = activeRegistry.filter(it => it.image && !it.image.includes("res.cloudinary.com") && !it.image.startsWith("data:"));
+      if (targets.length === 0) {
+        setStatus("All exhibits are already hosted on Cloudinary CDN!", "success");
+        return;
+      }
+
+      btn.disabled = true;
+      let migrated = 0;
+      let failed = 0;
+
+      for (let i = 0; i < targets.length; i++) {
+        const item = targets[i];
+        setStatus(`☁ Migrating (${i + 1}/${targets.length}): "${item.title}" → Cloudinary...`, "working");
+        try {
+          const resp = await fetch(item.image, { cache: "no-store" });
+          if (!resp.ok) throw new Error(`Could not fetch ${item.image} (${resp.status})`);
+          const blob = await resp.blob();
+          const fname = item.image.split("/").pop() || `${item.id}.jpg`;
+          const secureUrl = await uploadToCloudinary(blob, cloudName, preset, fname);
+          item.image = secureUrl;
+          migrated++;
+          renderRegistry();
+        } catch (err) {
+          failed++;
+          console.warn("Migration skipped for", item.id, err);
+        }
+      }
+
+      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
+      renderRegistry();
+
+      if (migrated > 0) {
+        const repo = document.getElementById("github-repo").value.trim();
+        const pat = sanitizeCredential(document.getElementById("github-pat").value);
+        if (repo && pat) {
+          try {
+            setStatus(`Committing ${migrated} migrated Cloudinary URLs to data/timeline.json...`, "working");
+            await pushTimelineArrayToGitHub(activeRegistry, `Migrate ${migrated} exhibits to Cloudinary CDN`);
+            markDirty(false);
+            setStatus(`✓ Migrated ${migrated} exhibit(s) to Cloudinary & updated GitHub timeline.json!${failed ? ` (${failed} skipped)` : ""}`, "success");
+          } catch (err) {
+            markDirty(true);
+            setStatus(`Migrated ${migrated} locally, but GitHub commit failed: ${err.message}`, "error");
+          }
+        } else {
+          markDirty(true);
+          setStatus(`✓ Migrated ${migrated} exhibit(s) to Cloudinary! Click '💾 Save Order to GitHub' after adding your PAT.`, "success");
+        }
+      } else {
+        setStatus(`Could not migrate any old assets (${failed} failed). Make sure you opened admin.html from your live GitHub Pages URL.`, "error");
+      }
+
+      btn.disabled = false;
+    }
+
     function handlePhotoSelected(file) {
       if (!file || !file.type.startsWith("image/")) {
         setStatus("Please select a valid image file (JPG, PNG, WEBP).", "error");
         return;
       }
 
+      uploadedOriginalFile = file;
       uploadedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-      uploadedFileMime = file.type || "image/jpeg";
 
       const reader = new FileReader();
       reader.onload = async (e) => {
         uploadedOriginalBase64 = e.target.result;
-        const targetAssetPath = `assets/${uploadedFileName}`;
-        document.getElementById("exhibit-image").value = targetAssetPath;
+        const hasCloud = sanitizeCredential(document.getElementById("cld-cloud-name").value).length > 0;
+        const previewPath = hasCloud ? `cloudinary://virasat/${uploadedFileName}` : `assets/${uploadedFileName}`;
+
+        document.getElementById("exhibit-image").value = previewPath;
         document.getElementById("drop-headline").textContent = `Loaded (Original Lossless): ${uploadedFileName}`;
-        document.getElementById("file-pill").textContent = `${(file.size / 1024).toFixed(1)} KB → ${targetAssetPath}`;
+        document.getElementById("file-pill").textContent = `${(file.size / 1024).toFixed(1)} KB`;
 
         const imgProbe = new Image();
         imgProbe.onload = () => {
@@ -1158,7 +1292,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
           const autoCommit = document.getElementById("auto-commit-toggle").checked;
           if (synthOk && autoCommit) await commitFormToGitHub();
         } else {
-          setStatus(`Lossless photo "${uploadedFileName}" loaded! Review details and click Commit.`, "success");
+          setStatus(`Lossless photo "${uploadedFileName}" loaded! Review details and click Upload & Commit.`, "success");
         }
       };
       reader.readAsDataURL(file);
@@ -1212,7 +1346,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
 
       if (!putRes.ok) {
         const errBody = await putRes.json().catch(() => ({}));
-        throw new Error(`Image upload failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
+        throw new Error(`GitHub image upload failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
       }
     }
 
@@ -1254,11 +1388,14 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       const branch = document.getElementById("github-branch").value.trim() || "main";
       const rawPat = document.getElementById("github-pat").value;
       const pat = sanitizeCredential(rawPat);
+      const cloudName = sanitizeCredential(document.getElementById("cld-cloud-name").value);
+      const cloudPreset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
+
       const yr = document.getElementById("exhibit-year").value.trim();
       const title = document.getElementById("exhibit-title").value.trim();
       const chapter = document.getElementById("exhibit-chapter").value.trim();
       const aspect = document.getElementById("exhibit-aspect").value || "classic";
-      const img = document.getElementById("exhibit-image").value.trim();
+      let img = document.getElementById("exhibit-image").value.trim();
       const insight = document.getElementById("exhibit-insight").value.trim();
       const tagsRaw = document.getElementById("exhibit-tags").value.trim();
       const context = document.getElementById("exhibit-context").value.trim();
@@ -1268,64 +1405,72 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         setStatus("Error: Your GitHub PAT contains invalid characters. Paste a fresh token and click 'Save Token'.", "error");
         return;
       }
-      if (!yr || !title || !img) {
+      if (!yr || !title || (!img && !uploadedOriginalFile)) {
         setStatus("Please ensure Year, Visual Title, and Photo are set.", "error");
-        return;
-      }
-
-      const tagsArr = tagsRaw ? tagsRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
-      const targetId = editingExhibitId || generateId(yr, title);
-      const updatedEntry = {
-        id: targetId,
-        year: String(parseYear(yr) || yr),
-        chapter: chapter || "Modern Indian History",
-        wing: "Virasat Chronological Corridor",
-        title: title,
-        aspect: aspect,
-        image: img,
-        insight: insight,
-        tags: tagsArr,
-        context: context
-      };
-
-      const existingIdx = activeRegistry.findIndex(x => x.id === targetId);
-      if (existingIdx !== -1) {
-        activeRegistry[existingIdx] = updatedEntry;
-      } else {
-        const newYearNum = parseYear(updatedEntry.year);
-        let insertAt = activeRegistry.length;
-        for (let i = 0; i < activeRegistry.length; i++) {
-          if (parseYear(activeRegistry[i].year) > newYearNum) { insertAt = i; break; }
-        }
-        activeRegistry.splice(insertAt, 0, updatedEntry);
-      }
-
-      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
-      renderRegistry();
-
-      if (!repo || !pat) {
-        markDirty(true);
-        setStatus("Saved locally! Paste a valid GitHub PAT Token above and click 'Save Token' to push live.", "error");
         return;
       }
 
       ingestBtn.disabled = true;
       try {
-        const cleanRepo = repo.replace(/^\/+|\/+$/g, "");
-        if (uploadedOriginalBase64 && img.startsWith("assets/")) {
-          setStatus(`1/2 Uploading original lossless photo to ${cleanRepo}/${img}...`, "working");
-          await uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, img, uploadedOriginalBase64);
+        if (uploadedOriginalFile) {
+          if (cloudName) {
+            setStatus(`1/2 Uploading lossless photo to Cloudinary (${cloudName} / ${cloudPreset})...`, "working");
+            img = await uploadToCloudinary(uploadedOriginalFile, cloudName, cloudPreset);
+            document.getElementById("exhibit-image").value = img;
+          } else if (repo && pat) {
+            const fallbackPath = img.startsWith("assets/") ? img : `assets/${uploadedFileName}`;
+            setStatus(`1/2 Uploading lossless photo to GitHub ${fallbackPath}...`, "working");
+            await uploadPhotoBinaryToGitHub(repo.replace(/^\/+|\/+$/g, ""), branch, pat, fallbackPath, uploadedOriginalBase64);
+            img = fallbackPath;
+          }
+          uploadedOriginalFile = null;
+        }
+
+        const tagsArr = tagsRaw ? tagsRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+        const targetId = editingExhibitId || generateId(yr, title);
+        const updatedEntry = {
+          id: targetId,
+          year: String(parseYear(yr) || yr),
+          chapter: chapter || "Modern Indian History",
+          wing: "Virasat Chronological Corridor",
+          title: title,
+          aspect: aspect,
+          image: img,
+          insight: insight,
+          tags: tagsArr,
+          context: context
+        };
+
+        const existingIdx = activeRegistry.findIndex(x => x.id === targetId);
+        if (existingIdx !== -1) {
+          activeRegistry[existingIdx] = updatedEntry;
+        } else {
+          const newYearNum = parseYear(updatedEntry.year);
+          let insertAt = activeRegistry.length;
+          for (let i = 0; i < activeRegistry.length; i++) {
+            if (parseYear(activeRegistry[i].year) > newYearNum) { insertAt = i; break; }
+          }
+          activeRegistry.splice(insertAt, 0, updatedEntry);
+        }
+
+        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
+        renderRegistry();
+
+        if (!repo || !pat) {
+          markDirty(true);
+          setStatus("Photo uploaded & saved locally! Paste GitHub PAT above to commit timeline.json.", "error");
+          return;
         }
 
         setStatus(`2/2 Committing data/timeline.json (${activeRegistry.length} exhibits)...`, "working");
         const actionWord = editingExhibitId ? "Update" : "Ingest";
-        await pushTimelineArrayToGitHub(activeRegistry, `${actionWord} exhibit ${updatedEntry.year}: ${updatedEntry.title}`);
+        const { cleanRepo } = await pushTimelineArrayToGitHub(activeRegistry, `${actionWord} exhibit ${updatedEntry.year}: ${updatedEntry.title}`);
 
         markDirty(false);
         setEditMode(null);
-        setStatus(`✓ Live on GitHub! ${actionWord}d "${updatedEntry.year} — ${updatedEntry.title}" in ${cleanRepo}@${branch}.`, "success");
+        setStatus(`✓ Live! "${updatedEntry.year} — ${updatedEntry.title}" synced to ${cleanRepo}.`, "success");
       } catch (err) {
-        setStatus(`GitHub Commit Error: ${err.message}`, "error");
+        setStatus(`Error: ${err.message}`, "error");
       } finally {
         ingestBtn.disabled = false;
       }
@@ -1355,6 +1500,10 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         if (savedPat) document.getElementById("github-pat").value = sanitizeCredential(savedPat);
         const savedRepo = localStorage.getItem("virasat_github_repo");
         if (savedRepo) document.getElementById("github-repo").value = savedRepo;
+        const savedCloud = localStorage.getItem("virasat_cld_cloud");
+        if (savedCloud) document.getElementById("cld-cloud-name").value = sanitizeCredential(savedCloud);
+        const savedPreset = localStorage.getItem("virasat_cld_preset");
+        if (savedPreset) document.getElementById("cld-preset").value = sanitizeCredential(savedPreset);
         const cachedList = localStorage.getItem("virasat_timeline_cache");
         if (cachedList) {
           const parsed = JSON.parse(cachedList);
@@ -1370,6 +1519,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         }
       } catch (e) {}
 
+      syncCommitButtonLabel();
       renderRegistry();
       updatePreview();
 
@@ -1399,6 +1549,22 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
         setStatus("✓ GitHub PAT Token & Repo saved.", "success");
       });
 
+      document.getElementById("save-cld-btn").addEventListener("click", () => {
+        const cloud = sanitizeCredential(document.getElementById("cld-cloud-name").value);
+        const preset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
+        document.getElementById("cld-cloud-name").value = cloud;
+        document.getElementById("cld-preset").value = preset;
+        try {
+          localStorage.setItem("virasat_cld_cloud", cloud);
+          localStorage.setItem("virasat_cld_preset", preset);
+        } catch (e) {}
+        syncCommitButtonLabel();
+        setStatus(cloud ? `✓ Cloudinary CDN saved (${cloud} / ${preset}).` : "Cleared Cloudinary Cloud Name (using GitHub assets fallback).", "success");
+      });
+
+      document.getElementById("cld-cloud-name").addEventListener("input", syncCommitButtonLabel);
+      document.getElementById("migrate-cld-btn").addEventListener("click", migrateOldAssetsToCloudinary);
+
       document.getElementById("google-verify-btn").addEventListener("click", () => {
         const hint = document.getElementById("curator-hint").value.trim();
         const title = document.getElementById("exhibit-title").value.trim();
@@ -1426,7 +1592,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       ["exhibit-year", "exhibit-title", "exhibit-image", "exhibit-chapter", "exhibit-aspect", "exhibit-insight"].forEach((id) => {
         const el = document.getElementById(id);
         el.addEventListener("input", () => {
-          if (id === "exhibit-image") uploadedOriginalBase64 = null;
+          if (id === "exhibit-image") { uploadedOriginalBase64 = null; uploadedOriginalFile = null; }
           updatePreview();
         });
         el.addEventListener("change", updatePreview);
@@ -1440,6 +1606,7 @@ Return ONLY a raw JSON object (no markdown fences) with these exact keys:
       });
       document.getElementById("reset-form-btn").addEventListener("click", () => {
         setEditMode(null);
+        uploadedOriginalFile = null;
         uploadedOriginalBase64 = null;
         uploadedFileName = "";
         ["exhibit-year", "exhibit-title", "exhibit-chapter", "exhibit-image", "exhibit-insight", "exhibit-tags", "exhibit-context"].forEach(id => {
