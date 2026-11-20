@@ -1,12 +1,48 @@
 [
   {
+    "id": "1757-plassey",
+    "year": "1757",
+    "chapter": "Company Ascendancy",
+    "wing": "Wing I — Mercantile Conquest",
+    "title": "Battle of Plassey on the Banks of the Bhagirathi",
+    "aspect": "classic",
+    "image": "assets/1757-plassey.jpg"
+  },
+  {
+    "id": "1765-allahabad",
+    "year": "1765",
+    "chapter": "The Diwani Charter",
+    "wing": "Wing I — Mercantile Conquest",
+    "title": "Treaty of Allahabad & Grant of Diwani Rights",
+    "aspect": "wide",
+    "image": "assets/1765-allahabad.jpg"
+  },
+  {
+    "id": "1855-santhal-hool",
+    "year": "1855",
+    "chapter": "Indigenous Uprisings",
+    "wing": "Wing II — Subaltern & Great Revolt",
+    "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool",
+    "aspect": "tall",
+    "image": "assets/1855-santhal-hool.jpg"
+  },
+  {
+    "id": "1857-delhi-front",
+    "year": "1857",
+    "chapter": "First War of Independence",
+    "wing": "Wing II — Subaltern & Great Revolt",
+    "title": "The Delhi Front at Kashmiri Gate & Red Fort",
+    "aspect": "wide",
+    "image": "assets/1857-delhi-front.jpg"
+  },
+  {
     "id": "1857-babu-veer-kunwar-singh-at-",
     "year": "1857",
     "chapter": "First War of Independence",
     "wing": "Virasat Chronological Corridor",
     "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160960/virasat/ile2qf07pgfxsvldw8ss.jpg"
+    "image": "assets/alamy_GJFA9B.jpg"
   },
   {
     "id": "1857-the-siege-of-arrah-house",
@@ -15,7 +51,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "The Siege of Arrah House",
     "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160964/virasat/brkv3gasxsbnb6bkbf7k.webp"
+    "image": "assets/1000079947.webp"
   },
   {
     "id": "1857-begum-hazrat-mahal-the-beg",
@@ -24,7 +60,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Begum Hazrat Mahal: The Begum of Awadh",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160968/virasat/tvrbgcsd1wsrgrynigxv.jpg"
+    "image": "assets/1000097329.jpg"
   },
   {
     "id": "1857-nana-saheb-leader-of-the-k",
@@ -33,7 +69,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Nana Saheb, Leader of the Kanpur Uprising",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160974/virasat/vw7mgrcmfoymljrilqdv.jpg"
+    "image": "assets/1000097330.jpg"
   },
   {
     "id": "1857-tatya-tope-general-of-the-",
@@ -42,7 +78,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Tatya Tope: General of the 1857 Revolt",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160977/virasat/hzdt21ngwrlerza9klop.jpg"
+    "image": "assets/1000097332.jpg"
   },
   {
     "id": "1857-bahadur-shah-ii-last-mugha",
@@ -51,7 +87,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Bahadur Shah II, Last Mughal Emperor",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160982/virasat/ukfgyotuapobqcclqgkk.jpg"
+    "image": "assets/1000097333.jpg"
   },
   {
     "id": "1857-rani-lakshmibai-of-jhansi",
@@ -60,7 +96,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Rani Lakshmibai of Jhansi",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160984/virasat/e3rnucysliokcdnb1eyy.jpg"
+    "image": "assets/1000097334.jpg"
   },
   {
     "id": "1857-rani-lakshmibai-the-queen-",
@@ -69,7 +105,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Rani Lakshmibai, the Queen of Jhansi",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160989/virasat/upk7omonq9m3ojg2mjkr.jpg"
+    "image": "assets/1000097336.jpg"
   },
   {
     "id": "1857-mangal-pandey-at-barrackpo",
@@ -78,7 +114,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey at Barrackpore",
     "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160994/virasat/ci2tjac08yor1m2bskag.jpg"
+    "image": "assets/1000097337.jpg"
   },
   {
     "id": "1857-mangal-pandey-and-captain-",
@@ -87,7 +123,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey and Captain William Gordon",
     "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160996/virasat/armjxpws0ckegkosyrlq.jpg"
+    "image": "assets/1000097339.jpg"
   },
   {
     "id": "1857-mangal-pandey-and-the-outb",
@@ -96,7 +132,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey and the Outbreak at Barrackpore",
     "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160998/virasat/vxm5yp3vssekpautco0f.jpg"
+    "image": "assets/1000097338.jpg"
   },
   {
     "id": "1858-queen-victoria-s-proclamat",
@@ -105,91 +141,50 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Queen Victoria's Proclamation of 1858",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161010/virasat/yifkszdrajdcryuz44gb.jpg"
+    "image": "assets/1000097462.jpg"
   },
   {
-    "id": "1883-sir-john-seeley-s-the-expa",
-    "year": "1883",
-    "chapter": "Colonial Historiography and Imperial Ideology",
+    "id": "1858-sir-hugh-rose-commander-of",
+    "year": "1858",
+    "chapter": "The Revolt of 1857",
     "wing": "Virasat Chronological Corridor",
-    "title": "Sir John Seeley's The Expansion of England",
-    "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161012/virasat/y1db4zygyuqxnadlwam8.jpg",
-    "insight": "Revolt of 1857 : Described the revolt as a \"Sepoy Mutiny\" with no national character or popular support.\n\nIn this 1883 treatise, Cambridge historian J. R. Seeley famously characterized the British Empire's acquisition as occurring in a 'fit of absence of mind'.\n\n His claim that India was a mere geographical expression devoid of nationhood served as a core ideological justification for continuing British rule.",
-    "tags": [
-      "Colonial Historiography",
-      "British Raj",
-      "John Seeley",
-      "Imperial Ideology"
-    ],
-    "context": "Delivered as Cambridge lectures and published in 1883, Seeley's work profoundly shaped late-Victorian imperial policy and doctrine. His denial of Indian national unity became a catalyst for early Indian nationalists to articulate and construct modern Indian political identity."
-  },
-  {
-    "id": "1909-savarkar-s-the-indian-war-",
-    "year": "1909",
-    "chapter": "Nationalist Movement & Historiography",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Savarkar's 'The Indian War of Independence 1857'",
-    "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161013/virasat/zwp7phmwa1066hrhza9p.jpg",
-    "insight": "Described it as the \"First War of Indian Independence\" and argued that it was a planned national struggle against British rule.\n\nV.D. Savarkar's 1909 landmark text fundamentally reinterpreted the 1857 uprising, shifting the narrative from a mere 'Sepoy Mutiny' to India's first organized war for freedom. \n\nBanned by British authorities prior to publication, it became a major source of ideological inspiration for revolutionary nationalists.",
+    "title": "Sir Hugh Rose: Commander of the Central India Field Force",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795168343/virasat/uytdni6cco025aagyrje.jpg",
+    "insight": "Sir Hugh Rose (1857 Revolt)\n\n- Role: Commander, Central India Field Force (1858); later Commander-in-Chief of India (1860–65).\n\n- Strategy: Fast movement and continuous attacks; gave rebels little time to regroup.\n\n- 1858 Campaign:\n  - Sagar & Chanderi (Jan–Mar): British advance in Central India.\n  - Betwa & Jhansi (April): Defeated rebel forces; stopped Tatya Tope's relief attempt.\n  - Kalpi (May): Captured an important rebel base.\n  - Gwalior (June): Recaptured Gwalior; Rani Lakshmibai died fighting at Kotah-ki-Serai.\n\n- Famous Remark: \"Here lay the woman who was the only man among the rebels.\" (On Rani Lakshmibai)\n\n- Key Point: Known for fast military movements and effective planning during the 1857 Revolt.\n\nSir Hugh Rose conducted the lightning campaign across Central India that broke the rebellion's backbone, notably capturing Jhansi and Gwalior. He famously described Rani Lakshmibai as 'the bravest and best' military leader among the rebels.",
     "tags": [
       "Revolt of 1857",
-      "VD Savarkar",
-      "Nationalist Historiography",
-      "Freedom Movement"
+      "Hugh Rose",
+      "Jhansi",
+      "British Military History"
     ],
-    "context": "Authored while Savarkar was in London at India House, this influential book systematically analyzed the political, religious, and economic causes of the 1857 revolt to foster patriotic consciousness across British India."
+    "context": "A senior British officer who led the Central India Field Force in 1858, systematically dismantling rebel strongholds and defeating forces led by Rani Lakshmibai and Tantia Tope."
   },
   {
-    "id": "1946-first-edition-of-the-disco",
-    "year": "1946",
-    "chapter": "Nationalist Literature and the Freedom Struggle",
-    "wing": "Virasat Chronological Corridor",
-    "title": "First Edition of The Discovery of India",
-    "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161015/virasat/ttfdqxgktbfwqqogsj3q.jpg",
-    "insight": "Revolt of 1857 :  Viewed it as essentially a feudal uprising with limited nationalist elements.\n\nWritten during Jawaharlal Nehru's imprisonment at Ahmednagar Fort (1942–1945) following the Quit India resolution, the work traces India's civilizational ethos from antiquity to the modern era. \n\nPublished in 1946 by Calcutta's Signet Press with dust jacket design by Satyajit Ray, it provided the philosophical blueprint for post-independence democratic nation-building.",
-    "tags": [
-      "Jawaharlal Nehru",
-      "The Discovery of India",
-      "Quit India Movement",
-      "Nationalist Literature"
-    ],
-    "context": "Nehru penned this seminal work while incarcerated alongside leaders of the Congress Working Committee during World War II. The book offered a composite, pluralistic view of Indian history designed to unify the subcontinent on the eve of independence."
+    "id": "1905-swadeshi",
+    "year": "1905",
+    "chapter": "Swadeshi Awakening",
+    "wing": "Wing III — Mass Nationalist Awakening",
+    "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
+    "aspect": "classic",
+    "image": "assets/1905-swadeshi.jpg"
   },
   {
-    "id": "1957-official-centenary-history",
-    "year": "1957",
-    "chapter": "Historiography of the Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Official Centenary History of Eighteen Fifty-Seven",
-    "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161017/virasat/q8nezb1m5k8losfxhcgp.jpg",
-    "insight": "Held that although the revolt began as a military mutiny, it gradually assumed the character of a war of independence.\n\nCommissioned by the Government of India for the revolt's centenary, historian S.N. Sen concluded that the uprising began as a fight for religion but ended as a war of independence. \n\nIn contrast to V.D. Savarkar's assertion of a premeditated national uprising, Sen argued that the movement lacked national cohesion and central planning.",
-    "tags": [
-      "Revolt of 1857",
-      "Surendra Nath Sen",
-      "Historiography",
-      "Maulana Abul Kalam Azad"
-    ],
-    "context": "Published by the Ministry of Information and Broadcasting in 1957 with a foreword by Education Minister Maulana Abul Kalam Azad, this book served as independent India's official scholarly assessment of the 1857 rebellion."
+    "id": "1930-dandi-march",
+    "year": "1930",
+    "chapter": "Civil Disobedience",
+    "wing": "Wing III — Mass Nationalist Awakening",
+    "title": "The Coastal Salt Satyagraha at Dandi",
+    "aspect": "wide",
+    "image": "assets/1930-dandi-march.jpg"
   },
   {
-    "id": "1957-majumdar-s-critique-of-the",
-    "year": "1957",
-    "chapter": "Revolt of 1857 Historiography",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Majumdar's Critique of the 1857 Revolt",
-    "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161020/virasat/ukkoewks9intozpjrcuf.png",
-    "insight": "R. C. Majumdar famously concluded that the 1857 uprising was 'neither first, nor national, nor a war of independence' due to fragmented regional motivations.\n\n His seminal work challenged nationalist romanticism by applying rigorous empirical analysis to British administrative records and rebel proclamations.",
-    "tags": [
-      "Revolt of 1857",
-      "R. C. Majumdar",
-      "Historiography",
-      "Indian Nationalism"
-    ],
-    "context": "Commissioned alongside S. N. Sen during the centenary commemorations of 1857, Majumdar published his independent critical analysis after editorial disputes with the government committee."
+    "id": "1942-quit-india",
+    "year": "1942",
+    "chapter": "Quit India Uprising",
+    "wing": "Wing IV — Final Surge to Sovereignty",
+    "title": "The Seven Student Martyrs at Patna Secretariat",
+    "aspect": "classic",
+    "image": "assets/1942-quit-india.jpg"
   }
 ]
