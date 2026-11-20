@@ -11,7 +11,6 @@
     :root {
       --bg-void: #000000;
       --gold: #d6b26d;
-      --gold-soft: rgba(214, 178, 109, 0.38);
       --ivory: #ede6d6;
       --drawer-bg: rgba(10, 10, 13, 0.94);
       --card-bg: rgba(18, 18, 22, 0.85);
@@ -138,7 +137,6 @@
         0 0 0 1px rgba(214, 178, 109, 0.42);
     }
 
-    /* 100% Original Lossless Image Rendering */
     .canvas-image {
       width: 100%;
       height: 100%;
@@ -245,7 +243,7 @@
       transition: width 0.1s ease-out;
     }
 
-    /* Optical Archival Loupe Glass (Used both in Sanctuary & 'Z' key in Corridor) */
+    /* High-Res Optical Loupe */
     .optical-loupe {
       position: fixed;
       width: 196px;
@@ -277,9 +275,7 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    /* ===================================================================
-       DOUBLE-CLICK SANCTUARY: HD LOUPE STAGE + NOVELVERSE COMPANION DRAWER
-       =================================================================== */
+    /* Double-Click / Double-Tap Sanctuary */
     .sanctuary-overlay {
       position: fixed;
       inset: 0;
@@ -301,7 +297,6 @@
       pointer-events: auto;
     }
 
-    /* Left HD Inspection Stage */
     .sanctuary-stage {
       position: relative;
       display: flex;
@@ -362,7 +357,6 @@
       background: rgba(214, 178, 109, 0.1);
     }
 
-    /* Right Curator's Companion Drawer (NovelVerse Literary Aesthetic) */
     .companion-drawer {
       background: var(--drawer-bg);
       border-left: 1px solid var(--border-subtle);
@@ -374,9 +368,7 @@
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .sanctuary-overlay.is-open .companion-drawer {
-      transform: translateX(0);
-    }
+    .sanctuary-overlay.is-open .companion-drawer { transform: translateX(0); }
 
     .drawer-top {
       display: flex;
@@ -388,18 +380,13 @@
     }
 
     .drawer-heading {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 0.88rem;
       font-weight: 600;
       letter-spacing: 0.04em;
       color: #ffffff;
     }
 
-    .drawer-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
+    .drawer-controls { display: flex; align-items: center; gap: 0.4rem; }
 
     .drawer-scroll {
       flex: 1;
@@ -431,7 +418,6 @@
       color: #f6f2ea;
     }
 
-    /* NovelVerse-Style Matte Insight Cards */
     .insight-card {
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
@@ -467,14 +453,9 @@
       line-height: 1.6;
     }
 
-    .tag-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 
     .motif-tag {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 0.76rem;
       color: #e4decb;
       background: rgba(255, 255, 255, 0.04);
@@ -483,7 +464,6 @@
       border-radius: 999px;
     }
 
-    /* Silent Toast for Recall Mode */
     .quiet-toast {
       position: fixed;
       bottom: 24px;
@@ -503,14 +483,8 @@
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
-    .quiet-toast.is-visible {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    .quiet-toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ===================================================================
-       MOBILE & TABLET RESPONSIVE ADAPTATION (Phones + Narrow Viewports)
-       =================================================================== */
     @media (max-width: 900px) {
       .corridor {
         padding: 0 9vw;
@@ -518,10 +492,7 @@
         scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
       }
-
-      .exhibit-item {
-        scroll-snap-align: center;
-      }
+      .exhibit-item { scroll-snap-align: center; }
 
       .canvas-wrap,
       .canvas-wrap.aspect-classic,
@@ -530,38 +501,21 @@
         width: 82vw;
         max-height: 54dvh;
       }
-
       .canvas-wrap.aspect-tall {
         height: 54dvh;
         width: auto;
         max-width: 82vw;
       }
+      .exhibit-label { margin-top: 18px; width: 84vw; }
+      .floor-reflection { height: 44px; }
 
-      .exhibit-label {
-        margin-top: 18px;
-        width: 84vw;
-      }
-
-      .floor-reflection {
-        height: 44px;
-      }
-
-      /* Sanctuary becomes clean vertical split on mobile */
       .sanctuary-overlay {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
         overflow-y: auto;
       }
-
-      .sanctuary-stage {
-        padding: 1.25rem 1rem 1rem;
-      }
-
-      .sanctuary-art-frame,
-      .sanctuary-art-img {
-        max-height: 42dvh;
-      }
-
+      .sanctuary-stage { padding: 1.25rem 1rem 1rem; }
+      .sanctuary-art-frame, .sanctuary-art-img { max-height: 42dvh; }
       .companion-drawer {
         height: auto;
         min-height: 52dvh;
@@ -569,20 +523,9 @@
         border-top: 1px solid var(--border-subtle);
         transform: translateY(20px);
       }
-
-      .sanctuary-overlay.is-open .companion-drawer {
-        transform: translateY(0);
-      }
-
-      .drawer-scroll {
-        overflow-y: visible;
-        padding: 1.1rem 1.15rem 2.5rem;
-      }
-
-      .optical-loupe {
-        width: 150px;
-        height: 150px;
-      }
+      .sanctuary-overlay.is-open .companion-drawer { transform: translateY(0); }
+      .drawer-scroll { overflow-y: visible; padding: 1.1rem 1.15rem 2.5rem; }
+      .optical-loupe { width: 150px; height: 150px; }
     }
   </style>
 </head>
@@ -594,10 +537,8 @@
     <div class="corridor-bar" id="corridor-bar"></div>
   </div>
 
-  <!-- High-Res Optical Loupe -->
   <div class="optical-loupe" id="optical-loupe" aria-hidden="true"></div>
 
-  <!-- Double-Click / Double-Tap Sanctuary: HD Loupe + Curator's Companion Notes -->
   <section class="sanctuary-overlay" id="sanctuary-overlay" aria-hidden="true">
     <div class="sanctuary-stage" id="sanctuary-stage">
       <div class="sanctuary-art-frame" id="sanctuary-art-frame">
@@ -645,7 +586,6 @@
     </aside>
   </section>
 
-  <!-- Quiet Toast for Keyboard Shortcuts -->
   <div class="quiet-toast" id="quiet-toast" aria-live="polite"></div>
 
   <script>
@@ -675,6 +615,20 @@
       return "A.D. " + trimmed;
     }
 
+    /* Dual-Stream Cloudinary URL Helpers:
+       - Corridor: fast auto-AVIF/WebP (f_auto,q_auto:best,w_1400,c_limit) for zero-lag scrolling
+       - Sanctuary & Optical Loupe: 100% untouched original lossless file */
+    function getCorridorUrl(url) {
+      if (url && url.includes("res.cloudinary.com") && url.includes("/image/upload/") && !url.includes("/upload/f_auto")) {
+        return url.replace("/image/upload/", "/image/upload/f_auto,q_auto:best,w_1400,c_limit/");
+      }
+      return url;
+    }
+
+    function getLosslessOriginalUrl(url) {
+      return url;
+    }
+
     function buildFallbackSvg(item) {
       const yearText = formatYearStamp(item.year);
       const titleText = String(item.title || "").slice(0, 40);
@@ -697,7 +651,6 @@
       toastTimer = setTimeout(() => t.classList.remove("is-visible"), 2000);
     }
 
-    /* High-Res Optical Loupe Controller */
     const loupeEl = document.getElementById("optical-loupe");
 
     function updateLoupeAt(imgEl, clientX, clientY) {
@@ -713,10 +666,11 @@
       const relY = clientY - rect.top;
       const loupeW = loupeEl.offsetWidth || 196;
       const loupeH = loupeEl.offsetHeight || 196;
+      const fullResUrl = imgEl.dataset.fullSrc || imgEl.currentSrc || imgEl.src;
 
       loupeEl.style.left = `${clientX}px`;
       loupeEl.style.top = `${clientY}px`;
-      loupeEl.style.backgroundImage = `url("${imgEl.currentSrc || imgEl.src}")`;
+      loupeEl.style.backgroundImage = `url("${fullResUrl}")`;
       loupeEl.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
       loupeEl.style.backgroundPosition = `${-(relX * zoom - loupeW / 2)}px ${-(relY * zoom - loupeH / 2)}px`;
       loupeEl.classList.add("is-active");
@@ -726,7 +680,6 @@
       if (loupeEl) loupeEl.classList.remove("is-active");
     }
 
-    /* Typewriter Animation Engine */
     const activeTimers = new WeakMap();
     function playTypewriter(bay, yearText, titleText) {
       const yearEl = bay.querySelector(".year-stamp");
@@ -767,7 +720,6 @@
       stepYear();
     }
 
-    /* Double-Click / Double-Tap Sanctuary Controller */
     function openSanctuary(index) {
       if (index < 0 || index >= galleryExhibits.length) return;
       currentSanctuaryIndex = index;
@@ -777,7 +729,9 @@
       const corridor = document.getElementById("corridor");
       const sancImg = document.getElementById("sanctuary-art-img");
 
-      sancImg.src = item.image || buildFallbackSvg(item);
+      const originalUrl = getLosslessOriginalUrl(item.image) || buildFallbackSvg(item);
+      sancImg.src = originalUrl;
+      sancImg.dataset.fullSrc = originalUrl;
       sancImg.alt = item.title || "Historical Exhibit";
       sancImg.onerror = () => { sancImg.src = buildFallbackSvg(item); };
 
@@ -785,7 +739,6 @@
       document.getElementById("drawer-year-meta").textContent = `${formatYearStamp(item.year)}${chapterSuffix}`;
       document.getElementById("drawer-title-meta").textContent = item.title || "";
 
-      // Personal Insight Note
       const insightEl = document.getElementById("drawer-insight-text");
       if (item.insight && item.insight.trim()) {
         insightEl.className = "insight-prose";
@@ -795,7 +748,6 @@
         insightEl.textContent = "No personal curator insight recorded yet. Add your note anytime in Curator Studio.";
       }
 
-      // Recall Motif Tags
       const tagsCard = document.getElementById("card-tags");
       const tagsWrap = document.getElementById("drawer-tags");
       const tagsList = Array.isArray(item.tags)
@@ -815,7 +767,6 @@
         tagsCard.style.display = "none";
       }
 
-      // Historical Context
       const ctxCard = document.getElementById("card-context");
       const ctxEl = document.getElementById("drawer-context-text");
       if (item.context && item.context.trim()) {
@@ -896,13 +847,15 @@
         const canvasWrap = document.createElement("div");
         canvasWrap.className = `canvas-wrap aspect-${aspectKey}`;
 
-        const resolvedSrc = item.image || buildFallbackSvg(item);
+        const corridorSrc = getCorridorUrl(item.image) || buildFallbackSvg(item);
+        const fullSrc = getLosslessOriginalUrl(item.image) || corridorSrc;
 
         const img = document.createElement("img");
         img.className = "canvas-image";
-        img.src = resolvedSrc;
+        img.src = corridorSrc;
+        img.dataset.fullSrc = fullSrc;
         img.alt = formattedTitle || "Historical Artwork";
-        img.loading = "eager";
+        img.loading = index < 4 ? "eager" : "lazy";
         img.decoding = "async";
         img.draggable = false;
 
@@ -926,7 +879,8 @@
 
         const reflImg = document.createElement("img");
         reflImg.className = "reflection-img";
-        reflImg.src = resolvedSrc;
+        reflImg.src = corridorSrc;
+        reflImg.loading = "lazy";
         reflImg.alt = "";
         reflImg.draggable = false;
 
@@ -962,7 +916,6 @@
         bay.addEventListener("mouseenter", activateFocus);
         bay.addEventListener("mouseleave", releaseFocus);
 
-        // Hold 'Z' key in Corridor for direct wall loupe
         canvasWrap.addEventListener("mousemove", (e) => {
           if (zKeyHeld && currentSanctuaryIndex === -1) {
             updateLoupeAt(img, e.clientX, e.clientY);
@@ -971,13 +924,11 @@
           }
         });
 
-        // Desktop Double-Click -> Open HD Loupe & Curator's Companion Notes
         canvasWrap.addEventListener("dblclick", (e) => {
           e.preventDefault();
           openSanctuary(index);
         });
 
-        // Reliable Mobile Double-Tap + Single-Tap Centering
         let lastTapTime = 0;
         canvasWrap.addEventListener("click", () => {
           if (hasMovedDuringDrag) return;
@@ -1050,7 +1001,6 @@
       const loupeToggleBtn = document.getElementById("loupe-toggle-btn");
       const loupeZoomBtn = document.getElementById("loupe-zoom-btn");
 
-      // Mouse wheel walking (paused when Sanctuary is open)
       window.addEventListener("wheel", (e) => {
         if (currentSanctuaryIndex !== -1) return;
         e.preventDefault();
@@ -1059,7 +1009,6 @@
         setTargetScroll(targetScroll + delta * 1.35);
       }, { passive: false });
 
-      // Sanctuary Loupe (Mouse + Touch Inspect)
       sancFrame.addEventListener("mousemove", (e) => {
         if (loupeEnabled) updateLoupeAt(sancImg, e.clientX, e.clientY);
       });
@@ -1101,7 +1050,6 @@
         if (e.target.id === "sanctuary-stage") closeSanctuary();
       });
 
-      // A- / A+ Reader Font Size Controls
       document.getElementById("font-dec-btn").addEventListener("click", () => {
         noteFontRem = Math.max(0.86, +(noteFontRem - 0.08).toFixed(2));
         document.documentElement.style.setProperty("--note-font-size", `${noteFontRem}rem`);
@@ -1111,7 +1059,6 @@
         document.documentElement.style.setProperty("--note-font-size", `${noteFontRem}rem`);
       });
 
-      // Desktop drag-to-stroll
       corridor.addEventListener("mousedown", (e) => {
         isDragging = true;
         hasMovedDuringDrag = false;
@@ -1145,7 +1092,6 @@
         if (Math.abs(dragVelocity) > 2) setTargetScroll(corridor.scrollLeft - dragVelocity * 8);
       });
 
-      // Keyboard Controls (Arrows, Esc, R for Recall Mode, Z for Corridor Loupe)
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && currentSanctuaryIndex !== -1) {
           closeSanctuary();
