@@ -58,6 +58,23 @@
     "context": ""
   },
   {
+    "id": "1858-amar-singh-the-sustained-r",
+    "year": "1858",
+    "chapter": "The 1857 Uprising in Bihar",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Amar Singh: The Sustained Resistance of Jagdishpur",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795281376/virasat/ewuth2sz3hubwewy25gu.png",
+    "insight": "Amar Singh pioneered effective guerilla warfare in the Kaimur hills, maintaining a parallel rebel administration in Shahabad long after major centers like Delhi had fallen. \n\nHis leadership highlights the transition of the 1857 movement into a prolonged popular struggle in the Bihar region.",
+    "tags": [
+      "1857 Revolt",
+      "Jagdishpur",
+      "Bihar Resistance",
+      "Guerilla Warfare"
+    ],
+    "context": "Following the death of his brother Kunwar Singh in April 1858, Amar Singh assumed command of the rebel forces in Jagdishpur, continuing the armed defiance against British authority until late 1859."
+  },
+  {
     "id": "1858-amar-singh-the-continued-s",
     "year": "1858",
     "chapter": "The Great Revolt of 1857",
@@ -211,22 +228,5 @@
     "title": "Queen Victoria's Proclamation of 1858",
     "aspect": "tall",
     "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795180000/erfeapko0ghd2myvygbc.jpg"
-  },
-  {
-    "id": "1858-amar-singh-the-sustained-r",
-    "year": "1858",
-    "chapter": "The 1857 Uprising in Bihar",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Amar Singh: The Sustained Resistance of Jagdishpur",
-    "aspect": "classic",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795281376/virasat/ewuth2sz3hubwewy25gu.png",
-    "insight": "Amar Singh pioneered effective guerilla warfare in the Kaimur hills, maintaining a parallel rebel administration in Shahabad long after major centers like Delhi had fallen. \n\nHis leadership highlights the transition of the 1857 movement into a prolonged popular struggle in the Bihar region.",
-    "tags": [
-      "1857 Revolt",
-      "Jagdishpur",
-      "Bihar Resistance",
-      "Guerilla Warfare"
-    ],
-    "context": "Following the death of his brother Kunwar Singh in April 1858, Amar Singh assumed command of the rebel forces in Jagdishpur, continuing the armed defiance against British authority until late 1859."
   }
 ]
