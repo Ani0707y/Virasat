@@ -7,7 +7,7 @@
     "title": "The Enfield P-53: Catalyst of Rebellion",
     "aspect": "classic",
     "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795254403/virasat/i7t5qbosnobhj9wvqfty.webp",
-    "insight": "The requirement to bite cartridges greased with bovine and porcine fat triggered the religious outcry that sparked the Great Revolt of 1857.\n\n It replaced the older 'Brown Bess' musket, symbolizing a turning point in East India Company military policy.",
+    "insight": "The requirement to bite cartridges greased with bovine and porcine fat triggered the religious outcry that sparked the Great Revolt of 1857.\n\nIt replaced the older 'Brown Bess' musket, symbolizing a turning point in East India Company military policy.",
     "tags": [
       "Enfield Rifle",
       "1857 Revolt",
@@ -104,6 +104,25 @@
     "insight": "",
     "tags": [],
     "context": ""
+  },
+  {
+    "id": "1857-general-bakht-khan-delhi",
+    "year": "1857",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "General Bakht Khan: Commander of Delhi Forces",
+    "aspect": "tall",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795256220/virasat/oxjzmd1i3q64ryojlqpr.webp",
+    "insight": "Bakht Khan established a 'Court of Administration' (Jalsa) in Delhi to provide a democratic military and civil structure to the uprising.\n\nA former Subedar in the British artillery, his leadership bridged the gap between the symbolic authority of Bahadur Shah Zafar and the practical needs of the sepoys.",
+    "tags": [
+      "1857 Revolt",
+      "Delhi Siege",
+      "Court of Administration",
+      "Commander-in-Chief",
+      "Sepoy Mutiny",
+      "Bahadur Shah Zafar"
+    ],
+    "context": "After leading the mutiny in Bareilly, Bakht Khan arrived in Delhi in July 1857 and was appointed Commander-in-Chief by the Mughal Emperor to organize the city's defense."
   },
   {
     "id": "1857-rani-lakshmibai-of-jhansi",
