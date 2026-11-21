@@ -1,39 +1,37 @@
 [
   {
-    "id": "1757-plassey",
-    "year": "1757",
-    "chapter": "Company Ascendancy",
-    "wing": "Wing I — Mercantile Conquest",
-    "title": "Battle of Plassey on the Banks of the Bhagirathi",
-    "aspect": "classic",
-    "image": "assets/1757-plassey.jpg"
-  },
-  {
-    "id": "1765-allahabad",
-    "year": "1765",
-    "chapter": "The Diwani Charter",
-    "wing": "Wing I — Mercantile Conquest",
-    "title": "Treaty of Allahabad & Grant of Diwani Rights",
-    "aspect": "wide",
-    "image": "assets/1765-allahabad.jpg"
-  },
-  {
-    "id": "1855-santhal-hool",
-    "year": "1855",
-    "chapter": "Indigenous Uprisings",
-    "wing": "Wing II — Subaltern & Great Revolt",
-    "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool",
-    "aspect": "tall",
-    "image": "assets/1855-santhal-hool.jpg"
-  },
-  {
-    "id": "1857-delhi-front",
+    "id": "1857-the-enfield-p-53-catalyst-",
     "year": "1857",
-    "chapter": "First War of Independence",
-    "wing": "Wing II — Subaltern & Great Revolt",
-    "title": "The Delhi Front at Kashmiri Gate & Red Fort",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "The Enfield P-53: Catalyst of Rebellion",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795254403/virasat/i7t5qbosnobhj9wvqfty.webp",
+    "insight": "The requirement to bite cartridges greased with bovine and porcine fat triggered the religious outcry that sparked the Great Revolt of 1857.\n\n It replaced the older 'Brown Bess' musket, symbolizing a turning point in East India Company military policy.",
+    "tags": [
+      "Enfield Rifle",
+      "1857 Revolt",
+      "Sepoy Mutiny",
+      "East India Company"
+    ],
+    "context": "The Enfield P-53 rifle's introduction provided the immediate provocation for sepoys across the Bengal Army to rise against British rule. Its rifled barrel improved accuracy but inadvertently unified disparate regiments through shared religious grievances."
+  },
+  {
+    "id": "1857-greased-cartridge-of-the-1",
+    "year": "1857",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Greased Cartridge of the 1853 Enfield Rifle",
     "aspect": "wide",
-    "image": "assets/1857-delhi-front.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795254775/virasat/kibl0aabvjqgtveiycmd.webp",
+    "insight": "The biting of these cartridges, rumored to contain beef and pig fat, served as the immediate 'spark' for the 1857 uprising by offending religious sentiments.\n\nIt transformed years of socio-political resentment into an armed military mutiny and a subsequent popular rebellion.",
+    "tags": [
+      "Revolt of 1857",
+      "Enfield Rifle",
+      "Sepoy Mutiny",
+      "Company Rule"
+    ],
+    "context": "Introduced in late 1856, these paper cartridges required sepoys to bite off the greased end before loading. \n\nThe perceived religious desecration united Hindu and Muslim soldiers against the British East India Company."
   },
   {
     "id": "1857-babu-veer-kunwar-singh-at-",
@@ -42,7 +40,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur",
     "aspect": "tall",
-    "image": "assets/alamy_GJFA9B.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160960/virasat/ile2qf07pgfxsvldw8ss.jpg",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-the-siege-of-arrah-house",
@@ -51,7 +52,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "The Siege of Arrah House",
     "aspect": "wide",
-    "image": "assets/1000079947.webp"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160964/virasat/brkv3gasxsbnb6bkbf7k.webp",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-begum-hazrat-mahal-the-beg",
@@ -60,7 +64,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Begum Hazrat Mahal: The Begum of Awadh",
     "aspect": "tall",
-    "image": "assets/1000097329.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160968/virasat/tvrbgcsd1wsrgrynigxv.jpg",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-nana-saheb-leader-of-the-k",
@@ -69,7 +76,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Nana Saheb, Leader of the Kanpur Uprising",
     "aspect": "tall",
-    "image": "assets/1000097330.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160974/virasat/vw7mgrcmfoymljrilqdv.jpg",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-tatya-tope-general-of-the-",
@@ -78,7 +88,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Tatya Tope: General of the 1857 Revolt",
     "aspect": "tall",
-    "image": "assets/1000097332.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160977/virasat/hzdt21ngwrlerza9klop.jpg",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-bahadur-shah-ii-last-mugha",
@@ -87,7 +100,10 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Bahadur Shah II, Last Mughal Emperor",
     "aspect": "tall",
-    "image": "assets/1000097333.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160982/virasat/ukfgyotuapobqcclqgkk.jpg",
+    "insight": "",
+    "tags": [],
+    "context": ""
   },
   {
     "id": "1857-rani-lakshmibai-of-jhansi",
@@ -96,7 +112,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Rani Lakshmibai of Jhansi",
     "aspect": "tall",
-    "image": "assets/1000097334.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179971/vsorwagkvnwcop8z4yrk.jpg"
   },
   {
     "id": "1857-rani-lakshmibai-the-queen-",
@@ -105,7 +121,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Rani Lakshmibai, the Queen of Jhansi",
     "aspect": "tall",
-    "image": "assets/1000097336.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179974/q8brc496z8easuypataj.jpg"
   },
   {
     "id": "1857-mangal-pandey-at-barrackpo",
@@ -114,7 +130,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey at Barrackpore",
     "aspect": "wide",
-    "image": "assets/1000097337.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179978/yki7bc7lfqdidupawii2.jpg"
   },
   {
     "id": "1857-mangal-pandey-and-captain-",
@@ -123,7 +139,7 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey and Captain William Gordon",
     "aspect": "wide",
-    "image": "assets/1000097339.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179980/bn05gkprvf9r3ictlhrn.jpg"
   },
   {
     "id": "1857-mangal-pandey-and-the-outb",
@@ -132,24 +148,24 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Mangal Pandey and the Outbreak at Barrackpore",
     "aspect": "wide",
-    "image": "assets/1000097338.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179981/znwfpvu4vzqwk7y3qgab.jpg"
   },
   {
-    "id": "1857-general-bakht-khan-command",
+    "id": "1857-sir-colin-campbell-command",
     "year": "1857",
-    "chapter": "The Great Revolt of 1857",
+    "chapter": "The Revolt of 1857",
     "wing": "Virasat Chronological Corridor",
-    "title": "General Bakht Khan: Commander of the Rebel Forces",
+    "title": "Sir Colin Campbell: Commander of British Forces",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795256220/virasat/oxjzmd1i3q64ryojlqpr.webp",
-    "insight": "Bakht Khan established a 'Court of Administration' (Jalsa) in Delhi to provide a democratic military and civil structure to the uprising. \n\nA former Subedar in the British artillery, his leadership bridged the gap between the symbolic authority of Bahadur Shah Zafar and the practical needs of the sepoys.",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795168952/virasat/refdbbumzoeu5yarc8su.jpg",
+    "insight": "Campbell orchestrated the final suppression of the 1857 Revolt, most notably through the strategic Relief and recapture of Lucknow. His methodical campaigns marked the shift from local skirmishes to the systematic restoration of British authority in North India.",
     "tags": [
       "1857 Revolt",
-      "Delhi Siege",
-      "Sepoy Mutiny",
-      "Bahadur Shah Zafar"
+      "British Indian Army",
+      "Lucknow Siege",
+      "Commander-in-Chief"
     ],
-    "context": "After leading the mutiny in Bareilly, Bakht Khan arrived in Delhi in July 1857 and was appointed Commander-in-Chief by the Mughal Emperor to organize the city's defense."
+    "context": "Appointed Commander-in-Chief in July 1857, Campbell led the critical military operations that defeated the rebels at Cawnpore and finally recaptured Lucknow in March 1858."
   },
   {
     "id": "1858-queen-victoria-s-proclamat",
@@ -158,33 +174,6 @@
     "wing": "Virasat Chronological Corridor",
     "title": "Queen Victoria's Proclamation of 1858",
     "aspect": "tall",
-    "image": "assets/1000097462.jpg"
-  },
-  {
-    "id": "1905-swadeshi",
-    "year": "1905",
-    "chapter": "Swadeshi Awakening",
-    "wing": "Wing III — Mass Nationalist Awakening",
-    "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly",
-    "aspect": "classic",
-    "image": "assets/1905-swadeshi.jpg"
-  },
-  {
-    "id": "1930-dandi-march",
-    "year": "1930",
-    "chapter": "Civil Disobedience",
-    "wing": "Wing III — Mass Nationalist Awakening",
-    "title": "The Coastal Salt Satyagraha at Dandi",
-    "aspect": "wide",
-    "image": "assets/1930-dandi-march.jpg"
-  },
-  {
-    "id": "1942-quit-india",
-    "year": "1942",
-    "chapter": "Quit India Uprising",
-    "wing": "Wing IV — Final Surge to Sovereignty",
-    "title": "The Seven Student Martyrs at Patna Secretariat",
-    "aspect": "classic",
-    "image": "assets/1942-quit-india.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795180000/erfeapko0ghd2myvygbc.jpg"
   }
 ]
