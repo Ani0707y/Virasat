@@ -58,6 +58,23 @@
     "context": ""
   },
   {
+    "id": "1858-amar-singh-the-continued-s",
+    "year": "1858",
+    "chapter": "The Great Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Amar Singh: The Continued Struggle of Jagdishpur",
+    "aspect": "wide",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795281197/virasat/fhljxeus0ef1grtrclko.png",
+    "insight": "Following Kunwar Singh’s death, Amar Singh maintained a parallel government and led sustained guerrilla warfare against British forces in the Kaimur hills. \n\nHis strategic mobility and local support made him one of the last major rebel leaders to be suppressed in the Bihar theater.",
+    "tags": [
+      "1857 Revolt",
+      "Amar Singh",
+      "Jagdishpur",
+      "Bihar Resistance"
+    ],
+    "context": "Amar Singh took command of the rebel forces in Bihar after his brother Kunwar Singh's death in April 1858, continuing the fight against British retribution. \n\nThe image depicts the grim reality of British hangings used to suppress the uprising in rural outposts."
+  },
+  {
     "id": "1857-begum-hazrat-mahal-the-beg",
     "year": "1857",
     "chapter": "The Revolt of 1857",
@@ -194,22 +211,5 @@
     "title": "Queen Victoria's Proclamation of 1858",
     "aspect": "tall",
     "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795180000/erfeapko0ghd2myvygbc.jpg"
-  },
-  {
-    "id": "1858-amar-singh-the-continued-s",
-    "year": "1858",
-    "chapter": "The Great Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Amar Singh: The Continued Struggle of Jagdishpur",
-    "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795281197/virasat/fhljxeus0ef1grtrclko.png",
-    "insight": "Following Kunwar Singh’s death, Amar Singh maintained a parallel government and led sustained guerrilla warfare against British forces in the Kaimur hills. \n\nHis strategic mobility and local support made him one of the last major rebel leaders to be suppressed in the Bihar theater.",
-    "tags": [
-      "1857 Revolt",
-      "Amar Singh",
-      "Jagdishpur",
-      "Bihar Resistance"
-    ],
-    "context": "Amar Singh took command of the rebel forces in Bihar after his brother Kunwar Singh's death in April 1858, continuing the fight against British retribution. \n\nThe image depicts the grim reality of British hangings used to suppress the uprising in rural outposts."
   }
 ]
