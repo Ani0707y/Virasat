@@ -228,5 +228,22 @@
     "title": "Queen Victoria's Proclamation of 1858",
     "aspect": "tall",
     "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795180000/erfeapko0ghd2myvygbc.jpg"
+  },
+  {
+    "id": "1858-sir-hugh-rose-commander-of",
+    "year": "1858",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Sir Hugh Rose: Commander of Central India",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795281855/virasat/mtl1d26jpylefm7eap1o.jpg",
+    "insight": "Rose led the Central India Field Force to decisive victories at Jhansi and Gwalior, effectively breaking the rebellion's backbone in the region. \n\nHe famously described the Rani of Jhansi as 'Here lay the woman who was the only man among the rebels.'",
+    "tags": [
+      "Sir Hugh Rose",
+      "Revolt of 1857",
+      "Jhansi",
+      "British East India Company"
+    ],
+    "context": "As the commander of the Central India Field Force, Sir Hugh Rose orchestrated the suppression of the 1857 uprising in Bundelkhand. His military campaign restored British authority across central provinces following the fall of major rebel strongholds."
   }
 ]
