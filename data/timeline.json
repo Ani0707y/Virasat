@@ -17,6 +17,23 @@
     "context": "The Enfield P-53 rifle's introduction provided the immediate provocation for sepoys across the Bengal Army to rise against British rule. Its rifled barrel improved accuracy but inadvertently unified disparate regiments through shared religious grievances."
   },
   {
+    "id": "1857-greased-cartridge-of-the-1",
+    "year": "1857",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Greased Cartridge of the 1853 Enfield Rifle",
+    "aspect": "wide",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795254775/virasat/kibl0aabvjqgtveiycmd.webp",
+    "insight": "The biting of these cartridges, rumored to contain beef and pig fat, served as the immediate 'spark' for the 1857 uprising by offending religious sentiments.\n\nIt transformed years of socio-political resentment into an armed military mutiny and a subsequent popular rebellion.",
+    "tags": [
+      "Revolt of 1857",
+      "Enfield Rifle",
+      "Sepoy Mutiny",
+      "Company Rule"
+    ],
+    "context": "Introduced in late 1856, these paper cartridges required sepoys to bite off the greased end before loading. \n\nThe perceived religious desecration united Hindu and Muslim soldiers against the British East India Company."
+  },
+  {
     "id": "1857-babu-veer-kunwar-singh-at-",
     "year": "1857",
     "chapter": "First War of Independence",
@@ -149,23 +166,6 @@
       "Commander-in-Chief"
     ],
     "context": "Appointed Commander-in-Chief in July 1857, Campbell led the critical military operations that defeated the rebels at Cawnpore and finally recaptured Lucknow in March 1858."
-  },
-  {
-    "id": "1857-greased-cartridge-of-the-1",
-    "year": "1857",
-    "chapter": "The Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Greased Cartridge of the 1853 Enfield Rifle",
-    "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795254775/virasat/kibl0aabvjqgtveiycmd.webp",
-    "insight": "The biting of these cartridges, rumored to contain beef and pig fat, served as the immediate 'spark' for the 1857 uprising by offending religious sentiments.\n\nIt transformed years of socio-political resentment into an armed military mutiny and a subsequent popular rebellion.",
-    "tags": [
-      "Revolt of 1857",
-      "Enfield Rifle",
-      "Sepoy Mutiny",
-      "Company Rule"
-    ],
-    "context": "Introduced in late 1856, these paper cartridges required sepoys to bite off the greased end before loading. \n\nThe perceived religious desecration united Hindu and Muslim soldiers against the British East India Company."
   },
   {
     "id": "1858-queen-victoria-s-proclamat",
