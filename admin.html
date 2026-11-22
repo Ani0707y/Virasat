@@ -104,7 +104,7 @@
       transition: border-color 0.2s;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--gold); }
-    textarea { resize: vertical; min-height: 82px; line-height: 1.5; }
+    textarea { resize: vertical; min-height: 115px; line-height: 1.55; }
 
     /* Buttons */
     .btn {
@@ -283,17 +283,17 @@
 
       <div class="form-group" style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
         <div style="flex:1;min-width:190px;">
-          <label>Optional Curator Hint (Person, Event, or Alamy ID)</label>
-          <input type="text" id="curator-hint" placeholder="e.g., S.N. Sen 1857, Kunwar Singh, or GJFA9B" />
+          <label>Optional Curator Hint (Person, Event, Book, or Alamy ID)</label>
+          <input type="text" id="curator-hint" placeholder="e.g., R.C. Majumdar 1957, Kunwar Singh, or GJFA9B" />
         </div>
-        <div style="min-width:145px;">
+        <div style="min-width:160px;">
           <label>Note Style</label>
           <select id="note-style">
-            <option value="hinglish" selected>Hinglish (Instant Recall)</option>
+            <option value="hinglish" selected>Hinglish (Research + Recall)</option>
             <option value="english">Crisp Simple English</option>
           </select>
         </div>
-        <button class="btn btn-sky" onclick="runGeminiSynthesizer()">✨ Run / Re-Run Gemini + Google</button>
+        <button class="btn btn-sky" id="gemini-btn" onclick="runGeminiSynthesizer()">✨ Run / Re-Run Gemini + Google</button>
         <button class="btn" onclick="verifyOnGoogle()">🔍 Verify</button>
       </div>
 
@@ -304,7 +304,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>Year (A.D.)</label>
-              <input type="text" id="field-year" placeholder="1857" />
+              <input type="text" id="field-year" placeholder="e.g. 1957 / 1857" />
             </div>
             <div class="form-group">
               <label>Aspect</label>
@@ -322,12 +322,12 @@
 
           <div class="form-group">
             <label>Chapter / Era</label>
-            <input type="text" id="field-chapter" placeholder="The Revolt of 1857" />
+            <input type="text" id="field-chapter" placeholder="e.g. Historiography of 1857 / The Revolt of 1857" />
           </div>
 
           <div class="form-group">
             <label>Visual Title (Glance Recall Inscription)</label>
-            <input type="text" id="field-title" placeholder="Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur" />
+            <input type="text" id="field-title" placeholder="R.C. Majumdar: The Sepoy Mutiny &amp; Revolt of 1857" />
           </div>
 
           <div class="form-group">
@@ -337,17 +337,17 @@
 
           <div class="form-group">
             <label>Personal Insight Note (Double-Click Companion)</label>
-            <textarea id="field-insight" placeholder="2-second sticky note in Hinglish or crisp English..."></textarea>
+            <textarea id="field-insight" placeholder="Research-backed crisp recall note (core thesis, famous quote, key facts)..."></textarea>
           </div>
 
           <div class="form-group">
             <label>Key Recall Tags (Comma Separated)</label>
-            <input type="text" id="field-tags" placeholder="Jagdishpur, Arrah House, Guerrilla Warfare" />
+            <input type="text" id="field-tags" placeholder="Neither First Nor National, 1957 Publication, Historiography" />
           </div>
 
           <div class="form-group">
-            <label>Historical Context (Optional, 1 Short Line)</label>
-            <textarea id="field-context" style="min-height:58px;" placeholder="Who, when, and why it matters..."></textarea>
+            <label>Historical Context (2 Crisp Lines)</label>
+            <textarea id="field-context" style="min-height:68px;" placeholder="Background, exact date/location, and why it matters..."></textarea>
           </div>
 
           <button class="btn btn-gold" id="commit-btn" style="width:100%;padding:12px;" onclick="ingestAndCommit()">⚡ UPLOAD TO CLOUDINARY &amp; COMMIT JSON</button>
@@ -395,7 +395,6 @@
   <script>
     const REQUIRED_PIN = "7714";
 
-    // ZERO hardcoded DEFAULT_TIMELINE — always strictly live from GitHub timeline.json
     let activeRegistry = [];
     let isSyncedFromGitHub = false;
     let editingIndex = -1;
@@ -550,7 +549,7 @@
       reader.readAsDataURL(file);
     }
 
-    // --- Cloudinary Upload (Dynamic Folder Mode: asset_folder) ---
+    // --- Cloudinary Upload ---
     async function uploadToCloudinary(blobOrFile, filename, meta = {}) {
       const cloud = sanitizeCredential(localStorage.getItem("virasat_cld_cloud"));
       const preset = sanitizeCredential(localStorage.getItem("virasat_cld_preset")) || "Virasat";
@@ -578,7 +577,7 @@
       return data.secure_url;
     }
 
-    // --- GitHub Registry Sync (Never falls back to dummy data) ---
+    // --- GitHub Registry Sync ---
     function getGitHubHeaders() {
       const pat = sanitizeCredential(localStorage.getItem("virasat_github_pat"));
       if (!pat) throw new Error("GitHub PAT missing. Save it in Section 1.");
@@ -615,7 +614,7 @@
     }
 
     async function commitRegistryToGitHub(message) {
-      if (!isSyncedFromGitHub) throw new Error("Not synced with GitHub yet. Tap 'Sync GitHub' first so live data isn't overwritten.");
+      if (!isSyncedFromGitHub) throw new Error("Not synced with GitHub yet. Tap 'Sync GitHub' first.");
       const repo = getRepo();
       const headers = { ...getGitHubHeaders(), "Content-Type": "application/json" };
       const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/data/timeline.json?ref=main&t=${Date.now()}`, { headers });
@@ -649,7 +648,7 @@
 
         const year = document.getElementById("field-year").value.trim();
         const title = document.getElementById("field-title").value.trim();
-        const chapter = document.getElementById("field-chapter").value.trim() || "The Revolt of 1857";
+        const chapter = document.getElementById("field-chapter").value.trim() || "Modern Indian History";
         const wing = document.getElementById("field-wing").value.trim() || "Virasat Chronological Corridor";
         const aspect = document.getElementById("field-aspect").value;
         const insight = document.getElementById("field-insight").value.trim();
@@ -824,7 +823,7 @@
       refreshPreviewCard();
     }
 
-    // --- Gemini Vision + Google Search Grounding (Instant-Recall Prompt) ---
+    // --- Strictly Gemini Vision Models (Excludes Gemma, TTS, Image-Gen, Embeddings) ---
     async function getWorkingGeminiModels(apiKey) {
       try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
@@ -832,13 +831,29 @@
         const names = (data.models || [])
           .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
           .map(m => m.name.replace("models/", ""))
-          .filter(n => !n.includes("tts") && !n.includes("image-generation"));
-        const priority = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
-        const full = priority.filter(p => names.includes(p));
-        const others = names.filter(n => !full.includes(n) && !n.includes("lite"));
-        const lites = names.filter(n => n.includes("lite"));
-        return [...full, ...others, ...lites];
-      } catch { return ["gemini-2.5-flash", "gemini-2.0-flash"]; }
+          .filter(n =>
+            n.startsWith("gemini-") &&
+            !n.includes("tts") &&
+            !n.includes("image") &&
+            !n.includes("audio") &&
+            !n.includes("embedding") &&
+            !n.includes("robotics") &&
+            !n.includes("computer-use")
+          );
+        const preferred = [
+          "gemini-2.5-flash",
+          "gemini-2.5-pro",
+          "gemini-2.0-flash",
+          "gemini-flash-latest"
+        ];
+        const ordered = preferred.filter(p => names.includes(p));
+        const otherFull = names.filter(n => !ordered.includes(n) && !n.includes("lite"));
+        const lites = names.filter(n => !ordered.includes(n) && n.includes("lite"));
+        const finalList = [...ordered, ...otherFull, ...lites];
+        return finalList.length ? finalList : ["gemini-2.5-flash", "gemini-2.0-flash"];
+      } catch {
+        return ["gemini-2.5-flash", "gemini-2.0-flash"];
+      }
     }
 
     async function imageSourceToBase64(src) {
@@ -859,6 +874,39 @@
       });
     }
 
+    function extractCleanJson(rawText) {
+      const cleaned = rawText.replace(/```json\s*/gi, "").replace(/```/g, "").trim();
+      const start = cleaned.indexOf("{");
+      const end = cleaned.lastIndexOf("}");
+      if (start === -1 || end === -1 || end <= start) return null;
+      return JSON.parse(cleaned.slice(start, end + 1));
+    }
+
+    async function callGeminiOnce(apiKey, model, prompt, b64, useSearch) {
+      const body = {
+        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }]
+      };
+      if (useSearch) {
+        body.tools = [{ google_search: {} }];
+      } else {
+        body.generationConfig = { responseMimeType: "application/json" };
+      }
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        const errTxt = await res.text().catch(() => "");
+        throw new Error(`${model} HTTP ${res.status}: ${errTxt.slice(0, 120)}`);
+      }
+      const data = await res.json();
+      const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
+      const parsed = extractCleanJson(rawText);
+      if (!parsed || !parsed.title) throw new Error(`${model} returned non-JSON`);
+      return { parsed, data };
+    }
+
     async function runGeminiSynthesizer() {
       const apiKey = sanitizeCredential(localStorage.getItem("virasat_gemini_key"));
       if (!apiKey) return setStatus("Save your Gemini API Key first.", "err");
@@ -869,83 +917,84 @@
         : "");
       if (!imgSrc) return setStatus("Drop a photo or Edit an existing exhibit first.", "err");
 
-      setStatus("Synthesizing instant-recall sticky notes with Gemini + Google Search...", "info");
+      const gBtn = document.getElementById("gemini-btn");
+      gBtn.disabled = true;
+      setStatus("Researching artwork with Gemini Vision + Google Search...", "info");
+
       const hint = document.getElementById("curator-hint").value.trim() || document.getElementById("field-title").value.trim();
       const fname = uploadedOriginalFile ? uploadedOriginalFile.name : "";
       const style = document.getElementById("note-style").value;
 
       let b64;
       try { b64 = await imageSourceToBase64(imgSrc); }
-      catch (e) { return setStatus(e.message, "err"); }
+      catch (e) { gBtn.disabled = false; return setStatus(e.message, "err"); }
 
       const models = await getWorkingGeminiModels(apiKey);
 
       const styleInstruction = style === "hinglish"
-        ? `Write "insight" and "context" in natural, punchy HINGLISH (conversational Hindi in English script + crisp English historical terms, e.g., "1957 me Govt of India ne officially likhwayi thi (Foreword: Maulana Azad). Sen ka point: Shuru mutiny se hui, par end hote-hote national struggle ban gayi."). NO formal textbook English.`
-        : `Write "insight" and "context" in super-simple, punchy everyday English (like a personal sticky note, zero academic jargon or textbook essays).`;
+        ? `Write "insight" and "context" in clear, punchy HINGLISH (natural Hindi in English script mixed with exact English historical terms). Easy to read and remember, NEVER robotic textbook prose.`
+        : `Write "insight" and "context" in crisp, super-clear everyday English—zero dry academic jargon, straight to the point.`;
 
-      const prompt = `You are a sharp Modern Indian History study partner helping a student build personal visual sticky-notes for 2-second instant recall.
-Analyze this image accurately. Filename: "${fname}". Hint: "${hint}".
-If the filename has an Alamy/stock ID, use Google Search to verify the exact person, event, or book.
+      const prompt = `You are an expert Modern Indian History researcher helping a student build high-yield visual recall cards.
+Analyze the image carefully. Filename: "${fname}". Curator hint: "${hint}".
+Use Google Search to verify the exact person, event, book, author, date, and core facts before answering.
 
-Strict Output Rules:
-1. "title": Crisp, memorable exhibit title (e.g., "S.N. Sen: Eighteen Fifty-Seven" or "General Bakht Khan: Delhi Commander").
-2. "insight": ${styleInstruction} Max 2 short lines. Focus ONLY on the exact memory hook, key argument, turning point, or exam trap so it clicks in 2 seconds.
-3. "tags": 3 to 4 ultra-specific recall hooks (e.g., "Official History 1957", "Maulana Azad Foreword", "Mutiny to National Struggle"). NEVER use generic filler tags like "UPSC History" or "Indian History".
-4. "context": 1 short, crystal-clear line (who, when, and why it matters).
+STRICT RULES:
+1. "year": Determine the TRUE historical year as a 4-digit string (e.g., for a book cover, use its exact first publication year like "1957" for R.C. Majumdar / S.N. Sen, "1909" for Savarkar, "1946" for Discovery of India; for a historical event/portrait, use the exact event year like "1757", "1855", "1857", "1930", "1942"). NEVER default to 1857 unless the image is actually from 1857!
+2. "chapter": Accurate chapter/era name matching the image (e.g., "Historiography of 1857", "The Revolt of 1857", "Swadeshi Movement", "Civil Disobedience").
+3. "title": Crisp, memorable exhibit title.
+4. "insight": ${styleInstruction} MUST be well-researched and substantive: 3 to 4 crisp sentences (roughly 55–85 words, split into 2 short paragraphs separated by \\n\\n). Include the exact core argument/famous quote (for books) OR key role, turning point, and memorable exam/recall hook (for people/events). Do NOT write a lazy 1-liner!
+5. "tags": 4 specific, high-yield recall hooks (exact quotes, places, regimental names, or key concepts — avoid generic filler like "Indian History" or "UPSC").
+6. "context": 2 short, factual lines giving concrete background (who, exact year/place, and historical significance).
 
-Return ONLY valid JSON:
+Return ONLY a valid JSON object (no markdown fences, no extra text):
 {
-  "year": "1857",
-  "title": "...",
-  "chapter": "The Revolt of 1857",
+  "year": "<4-digit YYYY>",
+  "title": "<crisp title>",
+  "chapter": "<accurate chapter>",
   "wing": "Virasat Chronological Corridor",
-  "insight": "...",
-  "tags": ["...", "...", "..."],
-  "context": "..."
+  "insight": "<paragraph 1>\\n\\n<paragraph 2>",
+  "tags": ["<hook 1>", "<hook 2>", "<hook 3>", "<hook 4>"],
+  "context": "<2 short factual lines>"
 }`;
 
-      for (const model of models.slice(0, 4)) {
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }],
-              tools: [{ google_search: {} }]
-            })
-          });
-          if (!res.ok) continue;
-          const data = await res.json();
-          const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          if (!jsonMatch) continue;
-          const parsed = JSON.parse(jsonMatch[0]);
+      let lastErr = "";
+      for (const model of models.slice(0, 3)) {
+        // Attempt 1: With Google Search grounding; Attempt 2: Direct JSON mode if search/parse fails
+        for (const useSearch of [true, false]) {
+          try {
+            const { parsed, data } = await callGeminiOnce(apiKey, model, prompt, b64, useSearch);
 
-          if (parsed.year) document.getElementById("field-year").value = parsed.year;
-          if (parsed.title) document.getElementById("field-title").value = parsed.title;
-          if (parsed.chapter) document.getElementById("field-chapter").value = parsed.chapter;
-          if (parsed.wing) document.getElementById("field-wing").value = parsed.wing;
-          if (parsed.insight) document.getElementById("field-insight").value = parsed.insight;
-          if (Array.isArray(parsed.tags)) document.getElementById("field-tags").value = parsed.tags.join(", ");
-          if (parsed.context) document.getElementById("field-context").value = parsed.context;
-          refreshPreviewCard();
+            if (parsed.year) document.getElementById("field-year").value = String(parsed.year).replace(/[^0-9]/g, "").slice(0, 4) || parsed.year;
+            if (parsed.title) document.getElementById("field-title").value = parsed.title;
+            if (parsed.chapter) document.getElementById("field-chapter").value = parsed.chapter;
+            if (parsed.wing) document.getElementById("field-wing").value = parsed.wing;
+            if (parsed.insight) document.getElementById("field-insight").value = parsed.insight;
+            if (Array.isArray(parsed.tags)) document.getElementById("field-tags").value = parsed.tags.join(", ");
+            if (parsed.context) document.getElementById("field-context").value = parsed.context;
+            refreshPreviewCard();
 
-          const chunks = data.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-          const strip = document.getElementById("verify-strip");
-          strip.innerHTML = chunks.slice(0, 4).filter(c => c.web?.uri).map(c =>
-            `<a class="verify-chip" href="${c.web.uri}" target="_blank">↗ ${c.web.title || "Verify Source"}</a>`
-          ).join("");
+            const chunks = data.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+            const strip = document.getElementById("verify-strip");
+            strip.innerHTML = chunks.slice(0, 4).filter(c => c.web?.uri).map(c =>
+              `<a class="verify-chip" href="${c.web.uri}" target="_blank">↗ ${c.web.title || "Verify Source"}</a>`
+            ).join("");
 
-          setStatus(`Gemini (${model}) synthesized recall note for A.D. ${parsed.year} — "${parsed.title}"`, "ok");
-          return;
-        } catch {}
+            setStatus(`Gemini (${model}${useSearch ? " + Google Search" : ""}) researched: A.D. ${parsed.year} — "${parsed.title}"`, "ok");
+            gBtn.disabled = false;
+            return;
+          } catch (err) {
+            lastErr = err.message;
+          }
+        }
       }
-      setStatus("Gemini Vision could not parse this image. Add a quick Hint and tap Re-Run.", "err");
+
+      gBtn.disabled = false;
+      setStatus(`Gemini Vision failed (${lastErr}). Check API key or try adding a Curator Hint.`, "err");
     }
 
     function verifyOnGoogle() {
-      const q = document.getElementById("field-title").value.trim() || document.getElementById("curator-hint").value.trim() || "Modern Indian History 1857";
+      const q = document.getElementById("field-title").value.trim() || document.getElementById("curator-hint").value.trim() || "Modern Indian History";
       window.open(`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(q)}`, "_blank");
     }
 
