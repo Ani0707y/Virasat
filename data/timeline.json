@@ -202,22 +202,21 @@
     "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179978/yki7bc7lfqdidupawii2.jpg"
   },
   {
-    "id": "1857-mangal-pandey-and-captain-",
-    "year": "1857",
-    "chapter": "The Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Mangal Pandey and Captain William Gordon",
-    "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179980/bn05gkprvf9r3ictlhrn.jpg"
-  },
-  {
     "id": "1857-mangal-pandey-and-the-outb",
     "year": "1857",
-    "chapter": "First War of Independence",
+    "chapter": "Revolt of 1857",
     "wing": "Virasat Chronological Corridor",
-    "title": "Mangal Pandey and the Outbreak at Barrackpore",
+    "title": "Mangal Pandey at Barrackpore",
     "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179981/znwfpvu4vzqwk7y3qgab.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160998/virasat/vxm5yp3vssekpautco0f.jpg",
+    "insight": "On 29 March 1857, Sepoy Mangal Pandey of the 34th Bengal Native Infantry openly rebelled against his British officers at Barrackpore over the greased Enfield cartridges. \n\nHis trial and hanging became an immediate symbol of anti-colonial resistance, directly precipitating the widespread uprisings across northern India.",
+    "tags": [
+      "Revolt of 1857",
+      "Mangal Pandey",
+      "Barrackpore",
+      "Bengal Native Infantry"
+    ],
+    "context": "Simmering discontent over religious desecration via grease-coated cartridges culminated when Mangal Pandey fired at Lieutenant Baugh on the parade ground. \n\nThe subsequent disbanding of the 34th BNI and Pandey's execution galvanized cantonments across northern and central India."
   },
   {
     "id": "1857-sir-colin-campbell-command",
