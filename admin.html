@@ -6,1689 +6,961 @@
   <title>Virasat — Visual Ingestion Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg-void: #070709;
-      --card-bg: #0d0d11;
-      --input-bg: #060608;
-      --gold: #d6b26d;
-      --gold-bright: #f2d694;
-      --crimson: #e11d48;
-      --crimson-glow: rgba(225, 29, 72, 0.35);
-      --gold-glow: rgba(214, 178, 109, 0.32);
-      --text-main: #f3efe6;
-      --text-muted: #8e8a80;
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --success: #34d399;
-      --error: #f87171;
-      --info: #60a5fa;
+      --bg: #060608;
+      --surface: #0d0d11;
+      --surface-2: #14141a;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-dashed: rgba(255, 255, 255, 0.18);
+      --text: #f2efe9;
+      --muted: #8b8882;
+      --gold: #d4af37;
+      --gold-dim: rgba(212, 175, 55, 0.14);
+      --emerald: #10b981;
+      --emerald-dim: rgba(16, 185, 129, 0.14);
+      --rose: #f43f5e;
+      --rose-dim: rgba(244, 63, 94, 0.14);
+      --sky: #38bdf8;
+      --sky-dim: rgba(56, 189, 248, 0.14);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
+    body {
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 22px 22px;
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
       min-height: 100vh;
-      background-color: var(--bg-void);
-      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 24px 24px;
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      padding: 20px 14px 80px;
     }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
 
-    /* PIN Security Gate Modal */
-    .gate-overlay {
-      position: fixed; inset: 0;
-      background: radial-gradient(circle at 50% 45%, #111015 0%, #050507 85%);
-      z-index: 999;
+    /* Lock Gate */
+    #lock-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(5, 5, 7, 0.96);
+      backdrop-filter: blur(16px);
       display: flex; align-items: center; justify-content: center;
-      padding: 1.5rem;
-      transition: opacity 0.35s ease, visibility 0.35s ease;
+      padding: 20px;
     }
-    .gate-overlay.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
-    .gate-card {
+    .lock-box {
       width: 100%; max-width: 360px;
-      background: var(--card-bg);
-      border: 1px dashed rgba(214, 178, 109, 0.45);
-      border-radius: 12px; padding: 2.4rem 2rem;
-      text-align: center; display: flex; flex-direction: column; gap: 1.15rem;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95);
+      background: var(--surface);
+      border: 1px dashed var(--border-dashed);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
     }
-    .gate-title {
-      font-family: 'Cinzel', serif; font-size: 0.9rem;
-      letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase;
+    .lock-box h1 { font-size: 1.5rem; font-weight: 500; margin-bottom: 6px; letter-spacing: 0.04em; }
+    .lock-box p { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+    .lock-input {
+      width: 100%; text-align: center; letter-spacing: 0.45em; font-size: 1.25rem;
+      padding: 12px; border-radius: 10px;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      margin-bottom: 14px; outline: none;
     }
-    .gate-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: -0.4rem; }
-    .gate-pin-input {
-      width: 100%; background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 8px; color: #fff;
-      font-family: 'JetBrains Mono', monospace; font-size: 1.45rem;
-      letter-spacing: 0.45em; text-align: center; padding: 0.75rem; outline: none;
-    }
-    .gate-pin-input:focus { border-color: var(--gold); }
-    .gate-btn {
-      width: 100%; background: var(--gold); color: #000; border: none;
-      border-radius: 8px; padding: 0.82rem; font-family: 'Cinzel', serif;
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; cursor: pointer; transition: background 0.2s ease;
-    }
-    .gate-btn:hover { background: var(--gold-bright); }
-    .gate-error { font-size: 0.75rem; color: var(--error); min-height: 1rem; }
+    .lock-input:focus { border-color: var(--gold); }
+    #lock-error { color: var(--rose); font-size: 0.78rem; min-height: 18px; margin-top: 8px; }
 
-    /* Main Container */
-    .console-shell { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    /* Container */
+    .shell { max-width: 1120px; margin: 0 auto; display: none; }
+    .shell.unlocked { display: block; }
 
-    .top-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-bottom: 1.25rem; margin-bottom: 1.75rem;
-      border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 0.85rem;
+    .topbar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px dashed var(--border-dashed);
     }
-    .brand-heading {
-      font-size: clamp(1.05rem, 2.2vw, 1.38rem); font-weight: 800;
-      letter-spacing: 0.06em; text-transform: uppercase; color: #ffffff;
-    }
-    .brand-heading .accent { color: var(--gold); }
-    .brand-heading .slash { color: rgba(255, 255, 255, 0.35); margin: 0 4px; }
-    .top-actions { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
-    .pill-btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem; padding: 0.48rem 0.9rem; border-radius: 999px;
-      text-decoration: none; cursor: pointer; transition: all 0.2s ease;
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .pill-btn:hover:not(:disabled) {
-      border-color: var(--gold); color: var(--gold);
-      background: rgba(214, 178, 109, 0.08);
-    }
-    .pill-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-    .pill-btn.is-gold {
-      background: rgba(214, 178, 109, 0.16);
-      border-color: var(--gold); color: var(--gold-bright);
-    }
-    .pill-btn.is-gold:hover:not(:disabled) { background: var(--gold); color: #000; }
-    .pill-btn.is-cdn {
-      background: rgba(52, 211, 153, 0.12);
-      border-color: rgba(52, 211, 153, 0.5); color: var(--success);
-    }
-    .pill-btn.is-cdn:hover:not(:disabled) { background: var(--success); color: #000; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+    .brand-title { font-size: 1.12rem; font-weight: 600; letter-spacing: 0.02em; }
+    .brand-sub { font-size: 0.73rem; color: var(--muted); }
+    .top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-    /* Primary Synthesizer Card */
-    .synthesizer-card {
-      background: var(--card-bg);
-      border: 1px dashed rgba(214, 178, 109, 0.55);
-      border-radius: 14px; padding: clamp(1.15rem, 3vw, 2.1rem);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75); margin-bottom: 1.5rem;
+    /* Cards */
+    .panel {
+      background: var(--surface);
+      border: 1px dashed var(--border-dashed);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
     }
-    .synth-header-row {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.85rem; margin-bottom: 1rem;
-    }
-    .synth-title {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 1.02rem; font-weight: 700; color: #ffffff;
-    }
-    .synth-title .sparkle { color: var(--gold); font-size: 1.2rem; }
-
-    .key-bars-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.85rem;
+    .panel-title {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
     }
 
-    .credential-box { display: flex; gap: 0.45rem; align-items: center; }
-    .cred-input {
-      flex: 1; min-width: 0; background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px; color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
-      padding: 0.65rem 0.85rem; outline: none; transition: border-color 0.2s ease;
+    /* Credentials Grid */
+    .cred-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .cred-item label { display: block; font-size: 0.68rem; color: var(--muted); margin-bottom: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .input-row { display: flex; gap: 6px; }
+    input[type="text"], input[type="password"], input[type="number"], select, textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 8px; padding: 9px 11px; font-size: 0.84rem; font-family: inherit; outline: none;
+      transition: border-color 0.2s;
     }
-    .cred-input:focus { border-color: var(--gold); }
-    .save-cred-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem; padding: 0.65rem 0.9rem; border-radius: 8px;
-      cursor: pointer; white-space: nowrap; transition: all 0.2s ease;
-    }
-    .save-cred-btn:hover { border-color: var(--gold); color: var(--gold); }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    textarea { resize: vertical; min-height: 82px; line-height: 1.5; }
 
-    .repo-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem; padding: 0.65rem 0.9rem;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-subtle); border-radius: 8px;
-      margin-bottom: 0.75rem; font-size: 0.76rem;
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 500;
+      border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+      cursor: pointer; transition: all 0.18s; text-decoration: none; white-space: nowrap;
     }
-    .cdn-bar {
-      border-color: rgba(52, 211, 153, 0.28);
-      background: rgba(52, 211, 153, 0.03);
-    }
-    .repo-inputs { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
-    .repo-label { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.71rem; }
-    .repo-mini-input {
-      background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
-      padding: 0.35rem 0.65rem; border-radius: 6px; width: 160px;
-    }
-    .repo-branch-input { width: 80px; }
-    .auto-push-toggle {
-      display: inline-flex; align-items: center; gap: 8px;
-      cursor: pointer; color: #d6d1c4; font-size: 0.75rem; user-select: none;
-    }
-    .auto-push-toggle input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
+    .btn:hover:not(:disabled) { border-color: rgba(255,255,255,0.3); transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-gold { background: var(--gold); color: #0a0a0c; border-color: var(--gold); font-weight: 600; }
+    .btn-gold:hover:not(:disabled) { background: #e2be46; }
+    .btn-emerald { background: var(--emerald-dim); color: var(--emerald); border-color: rgba(16,185,129,0.35); }
+    .btn-rose { background: var(--rose-dim); color: var(--rose); border-color: rgba(244,63,94,0.35); }
+    .btn-sky { background: var(--sky-dim); color: var(--sky); border-color: rgba(56,189,248,0.35); }
+    .btn-sm { padding: 6px 10px; font-size: 0.74rem; }
 
-    .hint-bar {
-      margin-bottom: 0.9rem;
-      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    /* Dropzone */
+    .dropzone {
+      border: 1.5px dashed rgba(212, 175, 55, 0.35);
+      background: rgba(212, 175, 55, 0.03);
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 14px;
     }
-    .hint-input {
-      flex: 1; min-width: 220px; background: var(--input-bg);
-      border: 1px solid rgba(214, 178, 109, 0.25); border-radius: 8px;
-      color: var(--gold-bright); font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.82rem; padding: 0.58rem 0.88rem; outline: none;
-    }
-    .hint-input:focus { border-color: var(--gold); }
-    .hint-input::placeholder { color: rgba(237, 230, 214, 0.35); }
+    .dropzone.dragover { border-color: var(--gold); background: var(--gold-dim); }
+    .dropzone h3 { font-size: 0.94rem; font-weight: 500; margin-bottom: 4px; }
+    .dropzone p { font-size: 0.75rem; color: var(--muted); }
 
-    .drop-arena {
-      position: relative; border: 1px dashed rgba(255, 255, 255, 0.18);
-      border-radius: 12px; background: rgba(6, 6, 8, 0.65);
-      padding: 1.85rem 1.25rem; text-align: center; cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.45rem;
+    /* Status Banner */
+    .status-bar {
+      padding: 10px 14px; border-radius: 9px; font-size: 0.79rem; margin-bottom: 16px;
+      border: 1px solid var(--border); background: var(--surface-2); display: none;
     }
-    .drop-arena:hover, .drop-arena.is-dragover {
-      border-color: var(--gold); background: rgba(214, 178, 109, 0.06);
-      box-shadow: inset 0 0 30px rgba(214, 178, 109, 0.06);
-    }
-    .drop-emoji { font-size: 1.85rem; line-height: 1; }
-    .drop-headline { font-size: 0.96rem; font-weight: 700; color: #ffffff; }
-    .drop-subline { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-muted); max-width: 620px; }
-    .file-input-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .status-bar.show { display: block; }
+    .status-bar.ok { border-color: rgba(16,185,129,0.4); background: var(--emerald-dim); color: #a7f3d0; }
+    .status-bar.err { border-color: rgba(244,63,94,0.4); background: var(--rose-dim); color: #fecdd3; }
+    .status-bar.info { border-color: rgba(212,175,55,0.4); background: var(--gold-dim); color: #fde68a; }
 
-    .status-strip {
-      margin-top: 1rem; padding: 0.72rem 1rem; border-radius: 8px;
-      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: #d6d1c4;
-      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;
-    }
-    .status-strip.is-working { border-color: var(--gold); color: var(--gold-bright); background: rgba(214, 178, 109, 0.08); }
-    .status-strip.is-success { border-color: rgba(52, 211, 153, 0.45); color: var(--success); background: rgba(52, 211, 153, 0.08); }
-    .status-strip.is-error { border-color: rgba(248, 113, 113, 0.5); color: var(--error); background: rgba(248, 113, 113, 0.08); }
+    /* Workbench Split */
+    .workbench { display: grid; grid-template-columns: 1.25fr 0.9fr; gap: 20px; align-items: start; }
+    .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
 
-    .verify-box {
-      display: none; margin-top: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px;
-      background: rgba(96, 165, 250, 0.06); border: 1px solid rgba(96, 165, 250, 0.28); font-size: 0.76rem;
+    .preview-stage {
+      background: #000; border: 1px solid var(--border); border-radius: 12px;
+      padding: 22px 16px; text-align: center;
     }
-    .verify-box.is-visible { display: block; }
-    .verify-box-title {
-      font-family: 'JetBrains Mono', monospace; color: var(--info); font-size: 0.72rem;
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+    .preview-frame {
+      max-width: 100%; max-height: 290px; object-fit: contain; border-radius: 3px;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.85); margin-bottom: 14px; display: none; margin-inline: auto;
     }
-    .verify-sources { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.45rem; }
-    .verify-link {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #cfe4ff;
-      background: rgba(96, 165, 250, 0.14); border: 1px solid rgba(96, 165, 250, 0.32);
-      padding: 0.22rem 0.55rem; border-radius: 4px; text-decoration: none;
-    }
-    .verify-link:hover { background: rgba(96, 165, 250, 0.28); color: #fff; }
+    .preview-frame.visible { display: block; }
+    .preview-year { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 4px; }
+    .preview-title { font-size: 1.15rem; color: var(--text); }
 
-    .edit-mode-banner {
-      display: none; align-items: center; justify-content: space-between; gap: 0.75rem;
-      padding: 0.65rem 1rem; border-radius: 8px; background: rgba(214, 178, 109, 0.12);
-      border: 1px solid var(--gold); color: var(--gold-bright);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; margin-bottom: 0.65rem;
-    }
-    .edit-mode-banner.is-active { display: flex; }
-
-    .workbench-grid {
-      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem;
-      margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px solid var(--border-subtle);
-      align-items: start;
+    .verify-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .verify-chip {
+      font-size: 0.72rem; padding: 4px 9px; border-radius: 6px;
+      background: var(--surface-2); border: 1px solid var(--border); color: var(--sky); text-decoration: none;
     }
 
-    .meta-form-stack { display: flex; flex-direction: column; gap: 0.82rem; }
-    .field-row-3 { display: grid; grid-template-columns: 0.85fr 1.05fr 1.1fr; gap: 0.65rem; }
-    .field-group { display: flex; flex-direction: column; gap: 0.3rem; }
-    .field-label {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.67rem;
-      text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted);
+    /* Registry List */
+    .registry-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; align-items: center; }
+    .registry-toolbar input { flex: 1; min-width: 190px; }
+    .registry-list { display: flex; flex-direction: column; gap: 8px; max-height: 540px; overflow-y: auto; padding-right: 4px; }
+    .reg-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+      transition: border-color 0.15s;
     }
-    .field-input, .field-select, .field-textarea {
-      width: 100%; background: var(--input-bg);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 7px; color: #ffffff;
-      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem;
-      padding: 0.6rem 0.8rem; outline: none;
-    }
-    .field-textarea {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.98rem; line-height: 1.65; resize: vertical; min-height: 92px;
-    }
-    .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: var(--gold); }
-
-    .ingest-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.35rem; }
-    .btn-ingest-github {
-      width: 100%;
-      background: linear-gradient(135deg, #d6b26d 0%, #b88b3b 100%);
-      color: #000000; border: none; border-radius: 999px;
-      padding: 0.88rem 1.4rem; font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.85rem; font-weight: 800; letter-spacing: 0.08em;
-      text-transform: uppercase; cursor: pointer;
-      box-shadow: 0 8px 25px var(--gold-glow);
-      transition: transform 0.15s ease, filter 0.2s ease;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-ingest-github:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
-    .btn-ingest-github:disabled { opacity: 0.45; cursor: not-allowed; }
-
-    .dual-sub-actions { display: grid; grid-template-columns: 1fr auto; gap: 0.55rem; }
-    .btn-resynth {
-      width: 100%; background: rgba(214, 178, 109, 0.1);
-      border: 1px solid rgba(214, 178, 109, 0.38); color: var(--gold-bright);
-      border-radius: 8px; padding: 0.58rem 0.9rem;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 500;
-      cursor: pointer; transition: all 0.2s ease;
-    }
-    .btn-resynth:hover:not(:disabled) { background: rgba(214, 178, 109, 0.2); border-color: var(--gold); }
-
-    /* Right Live Preview Stage */
-    .live-preview-stage {
-      background: #040406; border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px; padding: 1.4rem;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 340px;
-    }
-    .preview-canvas-wrap {
-      position: relative; height: 220px; aspect-ratio: 4 / 3; max-width: 100%;
-      border-radius: 4px; overflow: hidden; background: #09090c;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08);
-      transition: aspect-ratio 0.25s ease;
-    }
-    .preview-canvas-wrap.aspect-wide { aspect-ratio: 16 / 10; }
-    .preview-canvas-wrap.aspect-tall { aspect-ratio: 3 / 4; height: 235px; }
-    .preview-canvas-wrap.aspect-classic { aspect-ratio: 4 / 3; }
-
-    .wireframe-fallback {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: radial-gradient(circle at 50% 50%, rgba(214, 178, 109, 0.1) 0%, #060608 85%);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-      color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;
-    }
-    #preview-image-el {
-      position: relative; z-index: 2; width: 100%; height: 100%;
-      object-fit: cover; display: block; opacity: 0; transition: opacity 0.25s ease;
-    }
-    #preview-image-el.is-loaded { opacity: 1; }
-    .preview-placard { margin-top: 14px; text-align: center; }
-    .preview-year {
-      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
-      letter-spacing: 0.28em; color: var(--gold); display: block; margin-bottom: 4px;
-    }
-    .preview-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: var(--text-main); }
-    .preview-note-snippet {
-      margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06);
-      font-family: 'Newsreader', Georgia, serif; font-size: 0.88rem; line-height: 1.55;
-      color: rgba(237, 230, 214, 0.72); text-align: center; max-width: 320px;
-    }
-    .quality-badge {
-      margin-top: 10px; font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem; color: var(--success); opacity: 0.85; text-align: center;
-    }
-
-    /* Timeline Manager Card */
-    .timeline-manager-card {
-      background: var(--card-bg); border: 1px solid var(--border-subtle);
-      border-radius: 12px; padding: 1.3rem 1.4rem; margin-bottom: 1.5rem;
-    }
-    .manager-header {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;
-    }
-    .manager-title { font-size: 0.95rem; font-weight: 700; color: #ffffff; }
-    .manager-controls { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-    .registry-search {
-      background: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 999px; color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
-      padding: 0.42rem 0.9rem; outline: none; width: 175px;
-    }
-    .registry-search:focus { border-color: var(--gold); }
-
-    .unsaved-dot {
-      display: none; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--gold); box-shadow: 0 0 8px var(--gold);
-    }
-    .unsaved-dot.is-dirty { display: inline-block; }
-
-    .timeline-list {
-      display: flex; flex-direction: column; gap: 0.5rem;
-      max-height: 440px; overflow-y: auto; padding-right: 4px;
-    }
-    .timeline-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
-      padding: 0.55rem 0.8rem; background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; font-size: 0.82rem;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-    .timeline-row:hover { border-color: rgba(214, 178, 109, 0.28); background: rgba(255, 255, 255, 0.035); }
-    .timeline-row.is-editing { border-color: var(--gold); background: rgba(214, 178, 109, 0.09); }
-    .timeline-row.is-drag-target { border-top: 2px solid var(--gold); }
-
-    .timeline-row-left { display: flex; align-items: center; gap: 0.65rem; overflow: hidden; flex: 1; min-width: 0; }
-    .drag-handle { cursor: grab; color: var(--text-muted); font-size: 0.95rem; padding: 2px 3px; user-select: none; }
-    .seq-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); min-width: 22px; }
-    .row-thumb {
-      width: 40px; height: 40px; border-radius: 4px; object-fit: cover;
-      background: #060608; border: 1px solid rgba(255, 255, 255, 0.1); flex-shrink: 0;
-    }
-    .row-meta { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-    .row-year { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 0.71rem; font-weight: 600; }
-    .row-title { color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
-    .row-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .row-actions { display: flex; align-items: center; gap: 0.32rem; flex-shrink: 0; }
-    .mini-act-btn {
-      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-main); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; padding: 0.3rem 0.54rem; border-radius: 5px;
-      cursor: pointer; transition: all 0.18s ease;
-    }
-    .mini-act-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
-    .mini-act-btn:disabled { opacity: 0.28; cursor: not-allowed; }
-    .mini-act-btn.edit-btn { border-color: rgba(214, 178, 109, 0.35); color: var(--gold-bright); }
-    .mini-act-btn.del-btn { border-color: rgba(248, 113, 113, 0.3); color: var(--error); }
-    .mini-act-btn.del-btn:hover { background: rgba(248, 113, 113, 0.15); border-color: var(--error); color: #fff; }
-
-    /* Backup Card */
-    .backup-card {
-      background: var(--card-bg); border: 1px solid var(--border-subtle);
-      border-radius: 12px; padding: 1.25rem 1.4rem;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-    }
-    .backup-info h3 { font-size: 0.92rem; font-weight: 700; color: #ffffff; margin-bottom: 0.2rem; }
-    .backup-info p { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-muted); }
-    .backup-btn-group { display: flex; gap: 0.65rem; flex-wrap: wrap; }
-    .btn-crimson-pill {
-      background: var(--crimson); color: #ffffff; border: none; border-radius: 999px;
-      padding: 0.65rem 1.25rem; font-size: 0.78rem; font-weight: 700; cursor: pointer;
-      box-shadow: 0 6px 20px var(--crimson-glow); transition: filter 0.2s ease;
-    }
-    .btn-crimson-pill:hover { filter: brightness(1.12); }
+    .reg-item.dragging { opacity: 0.45; border-color: var(--gold); }
+    .drag-handle { cursor: grab; color: var(--muted); font-size: 0.95rem; user-select: none; padding: 0 4px; }
+    .reg-idx { font-size: 0.75rem; color: var(--muted); min-width: 28px; }
+    .reg-thumb { width: 42px; height: 42px; border-radius: 5px; object-fit: cover; background: #141418; flex-shrink: 0; }
+    .reg-meta { flex: 1; min-width: 0; }
+    .reg-badges { font-size: 0.7rem; color: var(--gold); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 2px; }
+    .badge-cdn { color: var(--emerald); }
+    .badge-local { color: var(--rose); }
+    .badge-note { color: #e2c779; }
+    .reg-title { font-size: 0.88rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reg-url { font-size: 0.7rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .reg-actions { display: flex; gap: 5px; flex-wrap: wrap; }
 
     @media (max-width: 860px) {
-      .key-bars-grid, .workbench-grid { grid-template-columns: 1fr; }
-      .field-row-3 { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 600px) {
-      .console-shell { padding: 1.25rem 0.9rem 3rem; }
-      .field-row-3 { grid-template-columns: 1fr; }
-      .dual-sub-actions { grid-template-columns: 1fr; }
-      .timeline-row { flex-direction: column; align-items: stretch; gap: 0.6rem; }
-      .row-actions { justify-content: flex-end; }
-      .registry-search, .repo-mini-input { width: 100%; }
+      .workbench { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr 1fr; }
+      .reg-item { flex-wrap: wrap; }
+      .reg-actions { width: 100%; justify-content: flex-end; }
     }
   </style>
 </head>
 <body>
-  <!-- PIN Security Gate -->
-  <div class="gate-overlay" id="gate-overlay">
-    <div class="gate-card">
-      <h1 class="gate-title">Virasat // Access Lock</h1>
-      <p class="gate-sub">Enter Curator PIN to Unlock Console</p>
-      <input type="password" id="gate-pin" class="gate-pin-input" maxlength="4" placeholder="••••" autocomplete="off" autofocus />
-      <button type="button" id="gate-submit-btn" class="gate-btn">Unlock Console</button>
-      <span class="gate-error" id="gate-error-msg"></span>
+
+  <!-- Security Lock Gate -->
+  <div id="lock-screen">
+    <div class="lock-box">
+      <h1 class="serif">Virasat Curator Studio</h1>
+      <p>Enter your curator PIN to unlock ingestion &amp; registry controls.</p>
+      <input type="password" id="pin-input" class="lock-input mono" maxlength="10" placeholder="••••" autofocus />
+      <button class="btn btn-gold" style="width:100%;" onclick="unlockConsole()">Unlock Console</button>
+      <div id="lock-error"></div>
     </div>
   </div>
 
-  <div class="console-shell">
-    <header class="top-bar">
-      <div class="brand-heading">
-        VIRASAT<span class="slash">//</span><span class="accent">VISUAL INGESTION</span>
+  <div class="shell" id="app-shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div>
+          <div class="brand-title">Virasat — Visual Ingestion Console</div>
+          <div class="brand-sub mono" id="sync-badge">Connecting to GitHub timeline.json...</div>
+        </div>
       </div>
       <div class="top-actions">
-        <a href="index.html" target="_blank" class="pill-btn">Open Gallery ↗</a>
-        <button type="button" id="lock-console-btn" class="pill-btn">Lock</button>
+        <a href="index.html" target="_blank" class="btn btn-sm">↗ Open Corridor</a>
+        <button class="btn btn-sm" onclick="fetchRegistry()">↻ Sync GitHub</button>
       </div>
-    </header>
+    </div>
 
-    <section class="synthesizer-card">
-      <div class="synth-header-row">
-        <div class="synth-title">
-          <span class="sparkle">✦</span>
-          <span>Gemini + Cloudinary Zero-Lag Studio</span>
-        </div>
-        <label class="auto-push-toggle">
-          <input type="checkbox" id="auto-commit-toggle" />
-          <span>Auto-Commit after AI Synthesis</span>
-        </label>
+    <!-- Credentials & Cloud Config -->
+    <div class="panel">
+      <div class="panel-title">
+        <span>1. API &amp; Storage Credentials (Saved Locally)</span>
+        <span class="mono" style="font-size:0.7rem;color:var(--emerald);" id="cdn-indicator"></span>
       </div>
-
-      <div class="key-bars-grid">
-        <div class="credential-box">
-          <input type="password" id="gemini-api-key" class="cred-input" placeholder="Paste Gemini API Key (AIzaSy...)" />
-          <button type="button" id="save-gemini-btn" class="save-cred-btn">Save Key</button>
-        </div>
-        <div class="credential-box">
-          <input type="password" id="github-pat" class="cred-input" placeholder="Paste GitHub PAT Token (ghp_...)" />
-          <button type="button" id="save-pat-btn" class="save-cred-btn">Save Token</button>
-        </div>
-      </div>
-
-      <!-- Cloudinary Image CDN Config (Unsigned Preset: Virasat) -->
-      <div class="repo-bar cdn-bar">
-        <div class="repo-inputs">
-          <span class="repo-label" style="color: var(--success);">CLOUDINARY CDN:</span>
-          <input type="text" id="cld-cloud-name" class="repo-mini-input" placeholder="Cloud Name (e.g. dxyz123)" />
-          <span class="repo-label">PRESET:</span>
-          <input type="text" id="cld-preset" class="repo-mini-input repo-branch-input" value="Virasat" placeholder="Virasat" />
-        </div>
-        <button type="button" id="save-cld-btn" class="save-cred-btn" style="padding: 0.34rem 0.85rem; font-size: 0.72rem;">
-          Save CDN
-        </button>
-      </div>
-
-      <!-- GitHub Repo Config -->
-      <div class="repo-bar">
-        <div class="repo-inputs">
-          <span class="repo-label">GITHUB REPO:</span>
-          <input type="text" id="github-repo" class="repo-mini-input" value="ani0707y/Virasat" placeholder="owner/repo" />
-          <span class="repo-label">BRANCH:</span>
-          <input type="text" id="github-branch" class="repo-mini-input repo-branch-input" value="main" placeholder="main" />
-        </div>
-        <button type="button" id="sync-repo-btn" class="pill-btn" style="padding: 0.34rem 0.85rem; font-size: 0.72rem;">
-          ↻ Sync Remote timeline.json
-        </button>
-      </div>
-
-      <div class="hint-bar">
-        <input
-          type="text"
-          id="curator-hint"
-          class="hint-input"
-          placeholder="Optional Hint for AI (e.g. 'Kunwar Singh' or 'Santhal Hool' — boosts accuracy on B&amp;W prints)"
-        />
-        <button type="button" id="google-verify-btn" class="pill-btn">
-          🔍 Verify on Google
-        </button>
-      </div>
-
-      <div class="drop-arena" id="drop-zone">
-        <input type="file" id="photo-file-input" class="file-input-hidden" accept="image/*" />
-        <div class="drop-emoji">🖼️</div>
-        <div class="drop-headline" id="drop-headline">Click or Drag Historical Exhibit Photo Here</div>
-        <div class="drop-subline">
-          Uploads 100% lossless original to Cloudinary CDN (fast AVIF/WebP in corridor, untouched full-res in Loupe).
-        </div>
-      </div>
-
-      <div class="status-strip" id="status-strip">
-        <span id="status-text">Ready. Enter your Cloudinary Cloud Name above, then drop a photo or migrate old assets below.</span>
-        <span id="file-pill" style="color: var(--gold);"></span>
-      </div>
-
-      <div class="verify-box" id="verify-box">
-        <div class="verify-box-title">
-          <span>✓ Google Search Grounding Verification</span>
-          <span id="verify-confidence"></span>
-        </div>
-        <div id="verify-note" style="color: #d7e5f8;"></div>
-        <div class="verify-sources" id="verify-sources"></div>
-      </div>
-
-      <div class="workbench-grid">
-        <form id="ingest-form" class="meta-form-stack" novalidate>
-          <div class="edit-mode-banner" id="edit-mode-banner">
-            <span id="edit-mode-label">Editing Existing Exhibit</span>
-            <button type="button" id="cancel-edit-btn" class="mini-act-btn">✕ Cancel Edit</button>
+      <div class="cred-grid">
+        <div class="cred-item">
+          <label>Gemini API Key</label>
+          <div class="input-row">
+            <input type="password" id="gemini-key" placeholder="AIza..." />
+            <button class="btn btn-sm" onclick="saveCred('virasat_gemini_key','gemini-key','Gemini Key')">Save</button>
           </div>
+        </div>
+        <div class="cred-item">
+          <label>GitHub PAT (repo scope)</label>
+          <div class="input-row">
+            <input type="password" id="github-pat" placeholder="ghp_..." />
+            <button class="btn btn-sm" onclick="saveCred('virasat_github_pat','github-pat','GitHub PAT')">Save</button>
+          </div>
+        </div>
+        <div class="cred-item">
+          <label>GitHub Repo (owner/repo)</label>
+          <div class="input-row">
+            <input type="text" id="github-repo" value="Ani0707y/Virasat" />
+            <button class="btn btn-sm" onclick="saveCred('virasat_github_repo','github-repo','Repo')">Save</button>
+          </div>
+        </div>
+        <div class="cred-item">
+          <label>Cloudinary Cloud Name &amp; Preset</label>
+          <div class="input-row">
+            <input type="text" id="cld-cloud" placeholder="Cloud Name" />
+            <input type="text" id="cld-preset" placeholder="Virasat" style="max-width:105px;" />
+            <button class="btn btn-sm btn-emerald" onclick="saveCdn()">Save CDN</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <div class="field-row-3">
-            <div class="field-group">
-              <label class="field-label" for="exhibit-year">Year</label>
-              <input type="text" id="exhibit-year" class="field-input" value="1857" placeholder="1857" required />
+    <!-- Ingestion Workbench -->
+    <div class="panel">
+      <div class="panel-title">
+        <span id="workbench-mode-label">2. Visual Ingestion &amp; Recall Synthesizer</span>
+        <button class="btn btn-sm" id="cancel-edit-btn" style="display:none;" onclick="resetForm()">✕ New Blank</button>
+      </div>
+
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+        <h3>Drop High-Res Artwork Here or Tap to Browse</h3>
+        <p>100% lossless original bytes → Cloudinary CDN (folder: <code>virasat</code>). Zero compression.</p>
+        <input type="file" id="file-input" accept="image/*" style="display:none;" />
+      </div>
+
+      <div class="form-group" style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
+        <div style="flex:1;min-width:190px;">
+          <label>Optional Curator Hint (Person, Event, or Alamy ID)</label>
+          <input type="text" id="curator-hint" placeholder="e.g., S.N. Sen 1857, Kunwar Singh, or GJFA9B" />
+        </div>
+        <div style="min-width:145px;">
+          <label>Note Style</label>
+          <select id="note-style">
+            <option value="hinglish" selected>Hinglish (Instant Recall)</option>
+            <option value="english">Crisp Simple English</option>
+          </select>
+        </div>
+        <button class="btn btn-sky" onclick="runGeminiSynthesizer()">✨ Run / Re-Run Gemini + Google</button>
+        <button class="btn" onclick="verifyOnGoogle()">🔍 Verify</button>
+      </div>
+
+      <div id="status-bar" class="status-bar"></div>
+
+      <div class="workbench">
+        <div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Year (A.D.)</label>
+              <input type="text" id="field-year" placeholder="1857" />
             </div>
-            <div class="field-group">
-              <label class="field-label" for="exhibit-aspect">Aspect</label>
-              <select id="exhibit-aspect" class="field-select">
-                <option value="classic">classic (4:3)</option>
+            <div class="form-group">
+              <label>Aspect</label>
+              <select id="field-aspect">
+                <option value="classic">classic (4:5)</option>
                 <option value="wide">wide (16:10)</option>
-                <option value="tall" selected>tall (3:4)</option>
+                <option value="tall">tall (3:4)</option>
               </select>
             </div>
-            <div class="field-group">
-              <label class="field-label" for="exhibit-chapter">Chapter</label>
-              <input type="text" id="exhibit-chapter" class="field-input" value="First War of Independence" placeholder="Chapter" />
+            <div class="form-group">
+              <label>Wing</label>
+              <input type="text" id="field-wing" value="Virasat Chronological Corridor" />
             </div>
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="exhibit-title">Visual Title (Glance Recall Inscription)</label>
-            <input type="text" id="exhibit-title" class="field-input" value="Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur" placeholder="Concise historical title" required />
+          <div class="form-group">
+            <label>Chapter / Era</label>
+            <input type="text" id="field-chapter" placeholder="The Revolt of 1857" />
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="exhibit-image">Target Asset URL / Path</label>
-            <input type="text" id="exhibit-image" class="field-input" value="assets/1857-kunwar-singh.jpg" placeholder="https://res.cloudinary.com/... or assets/..." required />
+          <div class="form-group">
+            <label>Visual Title (Glance Recall Inscription)</label>
+            <input type="text" id="field-title" placeholder="Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur" />
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="exhibit-insight">Personal Insight Note (Double-Click Companion)</label>
-            <textarea
-              id="exhibit-insight"
-              class="field-textarea"
-              placeholder="Write your personal exam/historical insight here. Shown in crisp literary serif when you double-click this painting..."
-            ></textarea>
+          <div class="form-group">
+            <label>Target Asset URL (Cloudinary CDN)</label>
+            <input type="text" id="field-image" class="mono" placeholder="Auto-filled on Cloudinary upload..." />
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="exhibit-tags">Key Recall Tags (Comma Separated)</label>
-            <input
-              type="text"
-              id="exhibit-tags"
-              class="field-input"
-              placeholder="e.g. Arrah Siege, Jagdishpur, 1857 Revolt, Bihar"
-            />
+          <div class="form-group">
+            <label>Personal Insight Note (Double-Click Companion)</label>
+            <textarea id="field-insight" placeholder="2-second sticky note in Hinglish or crisp English..."></textarea>
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="exhibit-context">Historical Context (Optional)</label>
-            <textarea
-              id="exhibit-context"
-              class="field-textarea"
-              style="min-height: 64px;"
-              placeholder="Optional brief background context..."
-            ></textarea>
+          <div class="form-group">
+            <label>Key Recall Tags (Comma Separated)</label>
+            <input type="text" id="field-tags" placeholder="Jagdishpur, Arrah House, Guerrilla Warfare" />
           </div>
 
-          <div class="ingest-actions">
-            <button type="submit" class="btn-ingest-github" id="btn-ingest-github">
-              <span>⚡</span>
-              <span id="ingest-btn-text">Upload to Cloudinary &amp; Commit JSON</span>
-            </button>
-            <div class="dual-sub-actions">
-              <button type="button" class="btn-resynth" id="btn-resynth">
-                ✦ Re-Run Gemini + Google Verify
-              </button>
-              <button type="button" class="pill-btn" id="reset-form-btn" style="border-radius: 8px; justify-content: center;">
-                New Blank
-              </button>
-            </div>
+          <div class="form-group">
+            <label>Historical Context (Optional, 1 Short Line)</label>
+            <textarea id="field-context" style="min-height:58px;" placeholder="Who, when, and why it matters..."></textarea>
           </div>
-        </form>
 
-        <div class="live-preview-stage">
-          <div class="preview-canvas-wrap aspect-tall" id="preview-canvas-box">
-            <div class="wireframe-fallback" id="wireframe-label">Drop Photo</div>
-            <img id="preview-image-el" alt="Live Exhibit Preview" src="" />
-          </div>
-          <div class="preview-placard">
-            <span class="preview-year" id="preview-year-stamp">A.D. 1857</span>
-            <h2 class="preview-title" id="preview-title-stamp">Babu Veer Kunwar Singh at Arrah &amp; Jagdishpur</h2>
-          </div>
-          <div class="preview-note-snippet" id="preview-note-snippet"></div>
-          <div class="quality-badge" id="quality-badge">Lossless Cloudinary CDN Mode</div>
+          <button class="btn btn-gold" id="commit-btn" style="width:100%;padding:12px;" onclick="ingestAndCommit()">⚡ UPLOAD TO CLOUDINARY &amp; COMMIT JSON</button>
+          <div id="verify-strip" class="verify-strip"></div>
+        </div>
+
+        <div class="preview-stage">
+          <img id="preview-img" class="preview-frame" alt="Preview" />
+          <div id="preview-empty" style="padding:70px 10px;color:var(--muted);font-size:0.8rem;">No image selected yet</div>
+          <div class="preview-year mono" id="preview-year">A.D. ————</div>
+          <div class="preview-title serif" id="preview-title">Untitled Exhibit</div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="timeline-manager-card">
-      <div class="manager-header">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span class="manager-title">Registered Exhibits (<span id="registry-count">0</span>)</span>
-          <span class="unsaved-dot" id="unsaved-dot" title="Unsaved order/changes — click Save Order to GitHub"></span>
-        </div>
-        <div class="manager-controls">
-          <input type="text" id="registry-search" class="registry-search" placeholder="Filter exhibits..." />
-          <button type="button" id="migrate-cld-btn" class="pill-btn is-cdn" title="Automatically upload all existing GitHub assets/... images to Cloudinary and update timeline.json">
-            ☁ Migrate Old Assets → Cloudinary
-          </button>
-          <button type="button" id="sort-chrono-btn" class="pill-btn">⇅ Sort Chronologically</button>
-          <button type="button" id="push-order-btn" class="pill-btn is-gold">💾 Save Order to GitHub</button>
-        </div>
+    <!-- Registered Exhibits Manager -->
+    <div class="panel">
+      <div class="panel-title">
+        <span>3. Registered Exhibits (<span id="reg-count">0</span>)</span>
+        <span class="mono" style="font-size:0.7rem;">Drag ⋮⋮ or tap ▲▼ to reorder</span>
       </div>
-      <div class="timeline-list" id="timeline-list"></div>
-    </section>
 
-    <section class="backup-card">
-      <div class="backup-info">
-        <h3>Permanent Source Backup</h3>
-        <p>One-click copy raw JSON array or download <code>timeline.json</code></p>
+      <div class="registry-toolbar">
+        <input type="text" id="filter-input" placeholder="Filter exhibits by title, year, or chapter..." oninput="renderRegistry()" />
+        <button class="btn" onclick="sortChronologically()">⇅ Sort Chronologically</button>
+        <button class="btn btn-gold" onclick="saveOrderToGitHub()">💾 Save Order to GitHub</button>
       </div>
-      <div class="backup-btn-group">
-        <button type="button" id="copy-json-btn" class="btn-crimson-pill">📋 Copy Synced JSON Array</button>
-        <button type="button" id="download-json-btn" class="pill-btn">⬇ Download timeline.json</button>
+
+      <div class="registry-list" id="registry-list"></div>
+    </div>
+
+    <!-- Backup -->
+    <div class="panel" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+      <div>
+        <div style="font-weight:500;font-size:0.9rem;">Permanent Source Backup</div>
+        <div style="font-size:0.75rem;color:var(--muted);">Copy or download the live synced <code>timeline.json</code> array anytime.</div>
       </div>
-    </section>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-rose" onclick="copyJsonBackup()">📋 Copy Synced JSON Array</button>
+        <button class="btn" onclick="downloadJsonBackup()">⬇ Download timeline.json</button>
+      </div>
+    </div>
   </div>
 
   <script>
     const REQUIRED_PIN = "7714";
 
-    const DEFAULT_TIMELINE = [
-      { "id": "1757-plassey", "year": "1757", "chapter": "Company Ascendancy", "wing": "Wing I — Mercantile Conquest", "title": "Battle of Plassey on the Banks of the Bhagirathi", "aspect": "classic", "image": "assets/1757-plassey.jpg" },
-      { "id": "1765-allahabad", "year": "1765", "chapter": "The Diwani Charter", "wing": "Wing I — Mercantile Conquest", "title": "Treaty of Allahabad & Grant of Diwani Rights", "aspect": "wide", "image": "assets/1765-allahabad.jpg" },
-      { "id": "1855-santhal-hool", "year": "1855", "chapter": "Indigenous Uprisings", "wing": "Wing II — Subaltern & Great Revolt", "title": "Sidhu & Kanhu Murmu Leading the Santhal Hool", "aspect": "tall", "image": "assets/1855-santhal-hool.jpg" },
-      { "id": "1857-kunwar-singh", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "Babu Veer Kunwar Singh at Arrah & Jagdishpur", "aspect": "classic", "image": "assets/1857-kunwar-singh.jpg" },
-      { "id": "1857-delhi-front", "year": "1857", "chapter": "First War of Independence", "wing": "Wing II — Subaltern & Great Revolt", "title": "The Delhi Front at Kashmiri Gate & Red Fort", "aspect": "wide", "image": "assets/1857-delhi-front.jpg" },
-      { "id": "1905-swadeshi", "year": "1905", "chapter": "Swadeshi Awakening", "wing": "Wing III — Mass Nationalist Awakening", "title": "Swadeshi Looms & Dawn Gatherings on the Hooghly", "aspect": "classic", "image": "assets/1905-swadeshi.jpg" },
-      { "id": "1930-dandi-march", "year": "1930", "chapter": "Civil Disobedience", "wing": "Wing III — Mass Nationalist Awakening", "title": "The Coastal Salt Satyagraha at Dandi", "aspect": "wide", "image": "assets/1930-dandi-march.jpg" },
-      { "id": "1942-quit-india", "year": "1942", "chapter": "Quit India Uprising", "wing": "Wing IV — Final Surge to Sovereignty", "title": "The Seven Student Martyrs at Patna Secretariat", "aspect": "classic", "image": "assets/1942-quit-india.jpg" }
-    ];
-
-    let activeRegistry = [...DEFAULT_TIMELINE];
+    // ZERO hardcoded DEFAULT_TIMELINE — always strictly live from GitHub timeline.json
+    let activeRegistry = [];
+    let isSyncedFromGitHub = false;
+    let editingIndex = -1;
     let uploadedOriginalFile = null;
-    let uploadedOriginalBase64 = null;
-    let uploadedFileName = "";
-    let editingExhibitId = null;
-    let draggedIndex = null;
+    let currentPreviewDataUrl = "";
+    let fileSha = null;
+    let dragSrcIndex = null;
 
-    function sanitizeCredential(raw) {
-      return String(raw || "").replace(/[^\x21-\x7E]/g, "").trim();
+    // --- Helpers ---
+    function sanitizeCredential(val) {
+      return String(val || "").replace(/[^\x21-\x7E]/g, "").trim();
     }
-
-    function hasNonAscii(raw) {
-      return /[^\x20-\x7E]/.test(String(raw || "").trim());
-    }
-
-    function parseYear(str) {
-      const m = String(str || "").match(/(\d{3,4})/);
-      return m ? parseInt(m[1], 10) : 0;
-    }
-
-    function formatYear(str) {
-      const t = String(str || "").trim();
-      if (!t) return "A.D. —";
-      if (/^(A\.?D\.?|B\.?C\.?)/i.test(t)) return t.toUpperCase();
-      return "A.D. " + t;
-    }
-
-    function generateId(yr, title) {
-      const y = parseYear(yr) || "0000";
-      const s = String(title || "exhibit").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 26);
-      return `${y}-${s || "item"}`;
-    }
-
-    function encodeBase64(str) {
+    function utf8ToBase64(str) {
       const bytes = new TextEncoder().encode(str);
       let bin = "";
-      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      bytes.forEach(b => bin += String.fromCharCode(b));
       return btoa(bin);
     }
-
-    function decodeBase64(b64) {
-      const bin = atob(String(b64).replace(/\s+/g, ""));
-      const bytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    function base64ToUtf8(b64) {
+      const bin = atob(b64.replace(/\s/g, ""));
+      const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
       return new TextDecoder().decode(bytes);
     }
-
-    function setStatus(msg, mode = "idle") {
-      const strip = document.getElementById("status-strip");
-      const text = document.getElementById("status-text");
-      if (!strip || !text) return;
-      strip.className = "status-strip";
-      if (mode === "working") strip.classList.add("is-working");
-      if (mode === "success") strip.classList.add("is-success");
-      if (mode === "error") strip.classList.add("is-error");
-      text.textContent = msg;
+    function setStatus(msg, type = "info") {
+      const el = document.getElementById("status-bar");
+      el.textContent = msg;
+      el.className = `status-bar show ${type}`;
+    }
+    function slugify(str) {
+      return (str || "exhibit").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48);
     }
 
-    function markDirty(isDirty) {
-      const dot = document.getElementById("unsaved-dot");
-      if (dot) dot.classList.toggle("is-dirty", Boolean(isDirty));
-    }
-
-    function syncCommitButtonLabel() {
-      const btnText = document.getElementById("ingest-btn-text");
-      const hasCloud = sanitizeCredential(document.getElementById("cld-cloud-name").value).length > 0;
-      if (editingExhibitId) {
-        btnText.textContent = "Save Changes & Commit to GitHub";
+    // --- Lock Gate ---
+    function unlockConsole() {
+      const pin = document.getElementById("pin-input").value.trim();
+      if (pin === REQUIRED_PIN) {
+        sessionStorage.setItem("virasat_admin_unlocked", "1");
+        document.getElementById("lock-screen").style.display = "none";
+        document.getElementById("app-shell").classList.add("unlocked");
+        initApp();
       } else {
-        btnText.textContent = hasCloud
-          ? "Upload to Cloudinary & Commit JSON"
-          : "Ingest & Commit to GitHub";
+        document.getElementById("lock-error").textContent = "Incorrect PIN.";
       }
     }
-
-    function setEditMode(item) {
-      const banner = document.getElementById("edit-mode-banner");
-      const label = document.getElementById("edit-mode-label");
-
-      if (!item) {
-        editingExhibitId = null;
-        banner.classList.remove("is-active");
-        syncCommitButtonLabel();
-        renderRegistry();
-        return;
-      }
-
-      editingExhibitId = item.id;
-      uploadedOriginalFile = null;
-      uploadedOriginalBase64 = null;
-      uploadedFileName = "";
-      document.getElementById("file-pill").textContent = "";
-      document.getElementById("drop-headline").textContent = "Drop a new photo to replace artwork (optional)";
-
-      document.getElementById("exhibit-year").value = String(item.year || "").replace(/^A\.?D\.?\s*/i, "");
-      document.getElementById("exhibit-aspect").value = ["classic", "wide", "tall"].includes(item.aspect) ? item.aspect : "classic";
-      document.getElementById("exhibit-chapter").value = item.chapter || "";
-      document.getElementById("exhibit-title").value = item.title || "";
-      document.getElementById("exhibit-image").value = item.image || "";
-      document.getElementById("exhibit-insight").value = item.insight || "";
-      document.getElementById("exhibit-tags").value = Array.isArray(item.tags) ? item.tags.join(", ") : (item.tags || "");
-      document.getElementById("exhibit-context").value = item.context || "";
-
-      label.textContent = `Editing: ${formatYear(item.year)} — ${item.title}`;
-      banner.classList.add("is-active");
-      syncCommitButtonLabel();
-      updatePreview();
-      renderRegistry();
-      window.scrollTo({ top: 180, behavior: "smooth" });
-      setStatus(`Editing "${item.title}". Update notes or fields, then click 'Save Changes'.`, "working");
+    document.getElementById("pin-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") unlockConsole();
+    });
+    if (sessionStorage.getItem("virasat_admin_unlocked") === "1") {
+      document.getElementById("lock-screen").style.display = "none";
+      document.getElementById("app-shell").classList.add("unlocked");
+      window.addEventListener("DOMContentLoaded", initApp);
     }
 
-    function updatePreview() {
-      const yrVal = document.getElementById("exhibit-year").value;
-      const titleVal = document.getElementById("exhibit-title").value;
-      const imgVal = document.getElementById("exhibit-image").value.trim();
-      const aspectVal = document.getElementById("exhibit-aspect").value || "classic";
-      const insightVal = document.getElementById("exhibit-insight").value.trim();
-
-      document.getElementById("preview-year-stamp").textContent = formatYear(yrVal);
-      document.getElementById("preview-title-stamp").textContent = titleVal || "Untitled Exhibit";
-      const snippet = document.getElementById("preview-note-snippet");
-      snippet.textContent = insightVal ? `"${insightVal.slice(0, 140)}${insightVal.length > 140 ? "…" : ""}"` : "";
-
-      const box = document.getElementById("preview-canvas-box");
-      box.className = `preview-canvas-wrap aspect-${aspectVal}`;
-
-      const imgEl = document.getElementById("preview-image-el");
-      const wf = document.getElementById("wireframe-label");
-
-      if (uploadedOriginalBase64) {
-        imgEl.classList.remove("is-loaded");
-        imgEl.onload = () => imgEl.classList.add("is-loaded");
-        imgEl.src = uploadedOriginalBase64;
-        return;
-      }
-
-      if (!imgVal) {
-        imgEl.classList.remove("is-loaded");
-        imgEl.removeAttribute("src");
-        wf.textContent = "Drop Photo";
-        return;
-      }
-
-      imgEl.classList.remove("is-loaded");
-      imgEl.onload = () => imgEl.classList.add("is-loaded");
-      imgEl.onerror = () => {
-        imgEl.classList.remove("is-loaded");
-        wf.textContent = "Ready to Upload";
-      };
-      imgEl.src = imgVal;
+    // --- Init & Credentials ---
+    function initApp() {
+      document.getElementById("gemini-key").value = localStorage.getItem("virasat_gemini_key") || "";
+      document.getElementById("github-pat").value = localStorage.getItem("virasat_github_pat") || "";
+      document.getElementById("github-repo").value = localStorage.getItem("virasat_github_repo") || "Ani0707y/Virasat";
+      document.getElementById("cld-cloud").value = localStorage.getItem("virasat_cld_cloud") || "";
+      document.getElementById("cld-preset").value = localStorage.getItem("virasat_cld_preset") || "Virasat";
+      updateCdnIndicator();
+      setupDropzone();
+      setupLivePreview();
+      fetchRegistry();
     }
 
-    function moveExhibit(index, direction) {
-      const targetIndex = index + direction;
-      if (targetIndex < 0 || targetIndex >= activeRegistry.length) return;
-      const temp = activeRegistry[index];
-      activeRegistry[index] = activeRegistry[targetIndex];
-      activeRegistry[targetIndex] = temp;
-      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
-      markDirty(true);
-      renderRegistry();
-      setStatus(`Moved "${temp.title}" to #${targetIndex + 1}. Click '💾 Save Order to GitHub' to publish.`, "working");
+    function saveCred(key, inputId, label) {
+      const clean = sanitizeCredential(document.getElementById(inputId).value);
+      document.getElementById(inputId).value = clean;
+      localStorage.setItem(key, clean);
+      setStatus(`${label} saved locally.`, "ok");
+      if (key === "virasat_github_pat" || key === "virasat_github_repo") fetchRegistry();
     }
 
-    function getThumbUrl(url) {
-      if (url && url.includes("res.cloudinary.com") && url.includes("/image/upload/") && !url.includes("/upload/f_auto")) {
-        return url.replace("/image/upload/", "/image/upload/f_auto,q_auto,w_120,c_fill/");
-      }
-      return url || "";
-    }
-
-    function updateMigrateButtonBadge() {
-      const btn = document.getElementById("migrate-cld-btn");
-      if (!btn) return;
-      const legacyCount = activeRegistry.filter(it => it.image && !it.image.includes("res.cloudinary.com") && !it.image.startsWith("data:")).length;
-      if (legacyCount > 0) {
-        btn.style.display = "inline-flex";
-        btn.textContent = `☁ Migrate ${legacyCount} Old Asset${legacyCount > 1 ? "s" : ""} → Cloudinary`;
-      } else {
-        btn.style.display = "none";
-      }
-    }
-
-    function renderRegistry() {
-      const listEl = document.getElementById("timeline-list");
-      const countEl = document.getElementById("registry-count");
-      const searchVal = (document.getElementById("registry-search")?.value || "").trim().toLowerCase();
-      if (!listEl || !countEl) return;
-
-      countEl.textContent = String(activeRegistry.length);
-      updateMigrateButtonBadge();
-      listEl.innerHTML = "";
-
-      activeRegistry.forEach((item, idx) => {
-        if (searchVal) {
-          const hay = `${item.year} ${item.title} ${item.chapter} ${item.image} ${item.insight || ""}`.toLowerCase();
-          if (!hay.includes(searchVal)) return;
-        }
-
-        const row = document.createElement("div");
-        row.className = "timeline-row" + (editingExhibitId === item.id ? " is-editing" : "");
-        row.draggable = !searchVal;
-
-        row.addEventListener("dragstart", () => { draggedIndex = idx; row.style.opacity = "0.5"; });
-        row.addEventListener("dragend", () => {
-          row.style.opacity = "1";
-          listEl.querySelectorAll(".timeline-row").forEach(r => r.classList.remove("is-drag-target"));
-        });
-        row.addEventListener("dragover", (e) => { e.preventDefault(); row.classList.add("is-drag-target"); });
-        row.addEventListener("dragleave", () => row.classList.remove("is-drag-target"));
-        row.addEventListener("drop", (e) => {
-          e.preventDefault();
-          row.classList.remove("is-drag-target");
-          if (draggedIndex === null || draggedIndex === idx) return;
-          const [moved] = activeRegistry.splice(draggedIndex, 1);
-          activeRegistry.splice(idx, 0, moved);
-          draggedIndex = null;
-          try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
-          markDirty(true);
-          renderRegistry();
-          setStatus(`Reordered "${moved.title}" to #${idx + 1}. Click '💾 Save Order to GitHub' to publish.`, "working");
-        });
-
-        const left = document.createElement("div");
-        left.className = "timeline-row-left";
-
-        const handle = document.createElement("span");
-        handle.className = "drag-handle";
-        handle.textContent = "⋮⋮";
-
-        const seq = document.createElement("span");
-        seq.className = "seq-num";
-        seq.textContent = `#${idx + 1}`;
-
-        const thumb = document.createElement("img");
-        thumb.className = "row-thumb";
-        thumb.src = getThumbUrl(item.image);
-        thumb.alt = "";
-        thumb.onerror = () => { thumb.style.visibility = "hidden"; };
-
-        const meta = document.createElement("div");
-        meta.className = "row-meta";
-
-        const hasNote = item.insight && item.insight.trim() ? " · ✎ Note" : "";
-        const isCld = item.image && item.image.includes("res.cloudinary.com") ? " · ☁ CDN" : " · Local";
-        const y = document.createElement("span");
-        y.className = "row-year";
-        y.textContent = `${formatYear(item.year)} · ${item.aspect || "classic"}${hasNote}${isCld}`;
-
-        const t = document.createElement("span");
-        t.className = "row-title";
-        t.textContent = item.title;
-
-        const sub = document.createElement("span");
-        sub.className = "row-sub";
-        sub.textContent = item.image;
-
-        meta.appendChild(y);
-        meta.appendChild(t);
-        meta.appendChild(sub);
-
-        left.appendChild(handle);
-        left.appendChild(seq);
-        left.appendChild(thumb);
-        left.appendChild(meta);
-
-        const actions = document.createElement("div");
-        actions.className = "row-actions";
-
-        const upBtn = document.createElement("button");
-        upBtn.type = "button";
-        upBtn.className = "mini-act-btn";
-        upBtn.textContent = "▲";
-        upBtn.disabled = idx === 0;
-        upBtn.addEventListener("click", () => moveExhibit(idx, -1));
-
-        const downBtn = document.createElement("button");
-        downBtn.type = "button";
-        downBtn.className = "mini-act-btn";
-        downBtn.textContent = "▼";
-        downBtn.disabled = idx === activeRegistry.length - 1;
-        downBtn.addEventListener("click", () => moveExhibit(idx, 1));
-
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.className = "mini-act-btn edit-btn";
-        editBtn.textContent = "Edit";
-        editBtn.addEventListener("click", () => setEditMode(item));
-
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.className = "mini-act-btn del-btn";
-        delBtn.textContent = "Remove";
-        delBtn.addEventListener("click", () => {
-          activeRegistry = activeRegistry.filter((x) => x.id !== item.id);
-          if (editingExhibitId === item.id) setEditMode(null);
-          try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
-          markDirty(true);
-          renderRegistry();
-          setStatus(`Removed "${item.title}". Click '💾 Save Order to GitHub' to publish.`, "working");
-        });
-
-        actions.appendChild(upBtn);
-        actions.appendChild(downBtn);
-        actions.appendChild(editBtn);
-        actions.appendChild(delBtn);
-
-        row.appendChild(left);
-        row.appendChild(actions);
-        listEl.appendChild(row);
-      });
-    }
-
-    function buildTempPreviewForGemini(dataUrl, maxDim = 1024) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          let w = img.width, h = img.height;
-          if (w > maxDim || h > maxDim) {
-            if (w >= h) { h = Math.round((h * maxDim) / w); w = maxDim; }
-            else { w = Math.round((w * maxDim) / h); h = maxDim; }
-          }
-          const canvas = document.createElement("canvas");
-          canvas.width = w; canvas.height = h;
-          canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-          resolve(canvas.toDataURL("image/jpeg", 0.86).split(",")[1]);
-        };
-        img.onerror = () => resolve(dataUrl.includes(",") ? dataUrl.split(",")[1] : dataUrl);
-        img.src = dataUrl;
-      });
-    }
-
-    async function getWorkingGeminiModels(apiKey) {
-      const preferredFull = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash", "gemini-flash-latest"];
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
-        if (res.ok) {
-          const data = await res.json();
-          const available = (data.models || [])
-            .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes("generateContent"))
-            .map(m => m.name.replace(/^models\//, ""))
-            .filter(name => name.includes("gemini") && !name.includes("tts") && !name.includes("audio") && !name.includes("embedding"));
-
-          const fullModels = available.filter(n => !n.includes("lite"));
-          const liteModels = available.filter(n => n.includes("lite"));
-          const orderedFull = preferredFull.filter(p => fullModels.includes(p));
-          const combined = [...new Set([...orderedFull, ...fullModels, ...liteModels])];
-          if (combined.length > 0) return combined;
-        }
-      } catch (e) {}
-      return preferredFull;
-    }
-
-    async function callGeminiModel(apiKey, modelName, parts, useSearch) {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
-      const payload = { contents: [{ parts }] };
-      if (useSearch) payload.tools = [{ google_search: {} }];
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.error?.message || `HTTP ${res.status}`);
-      }
-      return res.json();
-    }
-
-    function showVerificationDetails(data, parsed) {
-      const box = document.getElementById("verify-box");
-      const noteEl = document.getElementById("verify-note");
-      const confEl = document.getElementById("verify-confidence");
-      const sourcesEl = document.getElementById("verify-sources");
-      if (!box) return;
-
-      const gm = data.candidates?.[0]?.groundingMetadata || {};
-      const chunks = Array.isArray(gm.groundingChunks) ? gm.groundingChunks : [];
-      const queries = Array.isArray(gm.webSearchQueries) ? gm.webSearchQueries : [];
-
-      noteEl.textContent = parsed.verificationNote || (queries.length ? `Verified via Google Search: ${queries.join(" · ")}` : "Analyzed via Gemini Vision.");
-      confEl.textContent = parsed.confidence ? `Confidence: ${parsed.confidence}` : (chunks.length ? `${chunks.length} Web Source(s)` : "");
-
-      sourcesEl.innerHTML = "";
-      chunks.slice(0, 5).forEach((ch) => {
-        if (ch.web && ch.web.uri) {
-          const a = document.createElement("a");
-          a.className = "verify-link";
-          a.href = ch.web.uri;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.textContent = `↗ ${ch.web.title || ch.web.uri}`;
-          sourcesEl.appendChild(a);
-        }
-      });
-
-      box.classList.add("is-visible");
-    }
-
-    async function runGeminiSynthesizer() {
-      const apiKey = sanitizeCredential(document.getElementById("gemini-api-key").value);
-      const imgPath = document.getElementById("exhibit-image").value.trim();
-      const userHint = document.getElementById("curator-hint").value.trim();
-      const resynthBtn = document.getElementById("btn-resynth");
-
-      if (!apiKey) {
-        setStatus("Paste a valid Gemini API Key above and click 'Save Key'.", "error");
-        return false;
-      }
-      if (!uploadedOriginalBase64 && !imgPath) {
-        setStatus("Drop or select a photo first.", "error");
-        return false;
-      }
-
-      resynthBtn.disabled = true;
-      setStatus("✦ Searching Google & verifying historical artwork with Gemini...", "working");
-
-      const parts = [];
-      if (uploadedOriginalBase64) {
-        const tempVisionB64 = await buildTempPreviewForGemini(uploadedOriginalBase64, 1024);
-        parts.push({ inlineData: { mimeType: "image/jpeg", data: tempVisionB64 } });
-      }
-
-      const hintLine = userHint ? `Curator Hint / Context: "${userHint}"` : "Curator Hint: None provided.";
-      const fileRef = uploadedFileName || imgPath;
-
-      parts.push({
-        text: `You are an expert Historian & Museum Curator specializing in Modern Indian History (1750–1950, Spectrum/NCERT aligned).
-Step 1: Inspect the image and check the filename reference: "${fileRef}". If it contains an Alamy stock code (e.g. GJFA9B), use Google Search to verify that exact Alamy image ID first.
-Step 2: Cross-verify the exact Indian historical figure, uprising, treaty, or movement using Google Search.
-${hintLine}
-
-Return ONLY a raw JSON object (no markdown fences) with these exact keys:
-{
-  "year": "4-digit year string, e.g. 1857",
-  "title": "Dignified museum placard title under 8 words",
-  "chapter": "Short historical chapter",
-  "insight": "A crisp, insightful 2-sentence curator note for exam recall (Spectrum/UPSC style, zero fluff)",
-  "tags": ["Tag1", "Tag2", "Tag3", "Tag4"],
-  "context": "1-2 sentences of historical context",
-  "confidence": "High, Medium, or Low",
-  "verificationNote": "1 short sentence explaining how the subject/ID was verified"
-}`
-      });
-
-      const models = await getWorkingGeminiModels(apiKey);
-      let lastError = null;
-
-      for (const modelName of models) {
-        try {
-          let data;
-          try {
-            data = await callGeminiModel(apiKey, modelName, parts, true);
-          } catch (searchErr) {
-            data = await callGeminiModel(apiKey, modelName, parts, false);
-          }
-
-          const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
-
-          if (parsed.year) document.getElementById("exhibit-year").value = String(parsed.year).replace(/[^0-9]/g, "") || parsed.year;
-          if (parsed.title) document.getElementById("exhibit-title").value = parsed.title;
-          if (parsed.chapter) document.getElementById("exhibit-chapter").value = parsed.chapter;
-          if (parsed.insight) document.getElementById("exhibit-insight").value = parsed.insight;
-          if (Array.isArray(parsed.tags)) document.getElementById("exhibit-tags").value = parsed.tags.join(", ");
-          if (parsed.context) document.getElementById("exhibit-context").value = parsed.context;
-
-          showVerificationDetails(data, parsed);
-          updatePreview();
-          setStatus(`✦ Verified via ${modelName}: A.D. ${parsed.year} — "${parsed.title}"`, "success");
-          resynthBtn.disabled = false;
-          return true;
-        } catch (err) {
-          lastError = err;
-        }
-      }
-
-      resynthBtn.disabled = false;
-      setStatus(`Gemini Vision warning: ${lastError ? lastError.message : "Could not reach API"}.`, "error");
-      return false;
-    }
-
-    /* Unsigned Browser Upload to Cloudinary (100% Original Lossless File / Blob) */
-    async function uploadToCloudinary(fileOrBlob, cloudName, presetName, fileNameOverride) {
-      const url = `https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/image/upload`;
-      const fd = new FormData();
-      if (fileNameOverride && fileOrBlob instanceof Blob) {
-        fd.append("file", fileOrBlob, fileNameOverride);
-      } else {
-        fd.append("file", fileOrBlob);
-      }
-      fd.append("upload_preset", presetName);
-      fd.append("folder", "virasat");
-
-      const res = await fetch(url, { method: "POST", body: fd });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.error?.message || `Cloudinary upload failed (${res.status})`);
-      }
-      return data.secure_url;
-    }
-
-    /* 1-Click Migration: Moves all existing GitHub assets/... images to Cloudinary & commits timeline.json */
-    async function migrateOldAssetsToCloudinary() {
-      const cloudName = sanitizeCredential(document.getElementById("cld-cloud-name").value);
+    function saveCdn() {
+      const cloud = sanitizeCredential(document.getElementById("cld-cloud").value);
       const preset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
-      const btn = document.getElementById("migrate-cld-btn");
-
-      if (!cloudName) {
-        setStatus("Enter your Cloudinary Cloud Name above and click 'Save CDN' before migrating.", "error");
-        document.getElementById("cld-cloud-name").focus();
-        return;
-      }
-
-      const targets = activeRegistry.filter(it => it.image && !it.image.includes("res.cloudinary.com") && !it.image.startsWith("data:"));
-      if (targets.length === 0) {
-        setStatus("All exhibits are already hosted on Cloudinary CDN!", "success");
-        return;
-      }
-
-      btn.disabled = true;
-      let migrated = 0;
-      let failed = 0;
-
-      for (let i = 0; i < targets.length; i++) {
-        const item = targets[i];
-        setStatus(`☁ Migrating (${i + 1}/${targets.length}): "${item.title}" → Cloudinary...`, "working");
-        try {
-          const resp = await fetch(item.image, { cache: "no-store" });
-          if (!resp.ok) throw new Error(`Could not fetch ${item.image} (${resp.status})`);
-          const blob = await resp.blob();
-          const fname = item.image.split("/").pop() || `${item.id}.jpg`;
-          const secureUrl = await uploadToCloudinary(blob, cloudName, preset, fname);
-          item.image = secureUrl;
-          migrated++;
-          renderRegistry();
-        } catch (err) {
-          failed++;
-          console.warn("Migration skipped for", item.id, err);
-        }
-      }
-
-      try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
-      renderRegistry();
-
-      if (migrated > 0) {
-        const repo = document.getElementById("github-repo").value.trim();
-        const pat = sanitizeCredential(document.getElementById("github-pat").value);
-        if (repo && pat) {
-          try {
-            setStatus(`Committing ${migrated} migrated Cloudinary URLs to data/timeline.json...`, "working");
-            await pushTimelineArrayToGitHub(activeRegistry, `Migrate ${migrated} exhibits to Cloudinary CDN`);
-            markDirty(false);
-            setStatus(`✓ Migrated ${migrated} exhibit(s) to Cloudinary & updated GitHub timeline.json!${failed ? ` (${failed} skipped)` : ""}`, "success");
-          } catch (err) {
-            markDirty(true);
-            setStatus(`Migrated ${migrated} locally, but GitHub commit failed: ${err.message}`, "error");
-          }
-        } else {
-          markDirty(true);
-          setStatus(`✓ Migrated ${migrated} exhibit(s) to Cloudinary! Click '💾 Save Order to GitHub' after adding your PAT.`, "success");
-        }
-      } else {
-        setStatus(`Could not migrate any old assets (${failed} failed). Make sure you opened admin.html from your live GitHub Pages URL.`, "error");
-      }
-
-      btn.disabled = false;
+      document.getElementById("cld-cloud").value = cloud;
+      document.getElementById("cld-preset").value = preset;
+      localStorage.setItem("virasat_cld_cloud", cloud);
+      localStorage.setItem("virasat_cld_preset", preset);
+      updateCdnIndicator();
+      setStatus("Cloudinary CDN settings saved.", "ok");
     }
 
-    function handlePhotoSelected(file) {
-      if (!file || !file.type.startsWith("image/")) {
-        setStatus("Please select a valid image file (JPG, PNG, WEBP).", "error");
-        return;
+    function updateCdnIndicator() {
+      const cloud = localStorage.getItem("virasat_cld_cloud");
+      const preset = localStorage.getItem("virasat_cld_preset") || "Virasat";
+      document.getElementById("cdn-indicator").textContent = cloud
+        ? `☁ Active: ${cloud} (${preset})`
+        : "⚠ Set Cloudinary Cloud Name";
+    }
+
+    // --- Live Preview ---
+    function setupLivePreview() {
+      ["field-year", "field-title", "field-image"].forEach(id => {
+        document.getElementById(id).addEventListener("input", refreshPreviewCard);
+      });
+    }
+    function refreshPreviewCard() {
+      const yr = document.getElementById("field-year").value.trim();
+      const title = document.getElementById("field-title").value.trim();
+      const imgUrl = document.getElementById("field-image").value.trim();
+      document.getElementById("preview-year").textContent = yr ? `A.D. ${yr}` : "A.D. ————";
+      document.getElementById("preview-title").textContent = title || "Untitled Exhibit";
+      const imgEl = document.getElementById("preview-img");
+      const emptyEl = document.getElementById("preview-empty");
+      if (currentPreviewDataUrl) {
+        imgEl.src = currentPreviewDataUrl;
+        imgEl.classList.add("visible");
+        emptyEl.style.display = "none";
+      } else if (imgUrl && imgUrl.startsWith("http")) {
+        imgEl.src = imgUrl;
+        imgEl.classList.add("visible");
+        emptyEl.style.display = "none";
+      } else {
+        imgEl.classList.remove("visible");
+        emptyEl.style.display = "block";
       }
+    }
 
+    // --- Dropzone & Lossless File Handling ---
+    function setupDropzone() {
+      const dz = document.getElementById("dropzone");
+      const fi = document.getElementById("file-input");
+      dz.addEventListener("dragover", e => { e.preventDefault(); dz.classList.add("dragover"); });
+      dz.addEventListener("dragleave", () => dz.classList.remove("dragover"));
+      dz.addEventListener("drop", e => {
+        e.preventDefault(); dz.classList.remove("dragover");
+        if (e.dataTransfer.files[0]) handleFileSelect(e.dataTransfer.files[0]);
+      });
+      fi.addEventListener("change", e => {
+        if (e.target.files[0]) handleFileSelect(e.target.files[0]);
+      });
+    }
+
+    function handleFileSelect(file) {
       uploadedOriginalFile = file;
-      uploadedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-
       const reader = new FileReader();
-      reader.onload = async (e) => {
-        uploadedOriginalBase64 = e.target.result;
-        const hasCloud = sanitizeCredential(document.getElementById("cld-cloud-name").value).length > 0;
-        const previewPath = hasCloud ? `cloudinary://virasat/${uploadedFileName}` : `assets/${uploadedFileName}`;
-
-        document.getElementById("exhibit-image").value = previewPath;
-        document.getElementById("drop-headline").textContent = `Loaded (Original Lossless): ${uploadedFileName}`;
-        document.getElementById("file-pill").textContent = `${(file.size / 1024).toFixed(1)} KB`;
-
-        const imgProbe = new Image();
-        imgProbe.onload = () => {
-          document.getElementById("quality-badge").textContent = `✓ Original Lossless: ${imgProbe.naturalWidth}×${imgProbe.naturalHeight}px (${(file.size / 1024).toFixed(1)} KB)`;
-          const r = imgProbe.naturalWidth / imgProbe.naturalHeight;
-          if (r >= 1.42) document.getElementById("exhibit-aspect").value = "wide";
-          else if (r <= 0.85) document.getElementById("exhibit-aspect").value = "tall";
-          else document.getElementById("exhibit-aspect").value = "classic";
-          updatePreview();
+      reader.onload = ev => {
+        currentPreviewDataUrl = ev.target.result;
+        const probe = new Image();
+        probe.onload = () => {
+          const ratio = probe.naturalWidth / probe.naturalHeight;
+          document.getElementById("field-aspect").value = ratio > 1.18 ? "wide" : (ratio < 0.85 ? "tall" : "classic");
+          refreshPreviewCard();
+          setStatus(`Loaded untouched original: ${file.name} (${(file.size / 1024).toFixed(1)} KB, ${probe.naturalWidth}×${probe.naturalHeight}).`, "info");
+          if (localStorage.getItem("virasat_gemini_key")) runGeminiSynthesizer();
         };
-        imgProbe.src = uploadedOriginalBase64;
-        updatePreview();
-
-        const hasGeminiKey = sanitizeCredential(document.getElementById("gemini-api-key").value).length > 0;
-        if (hasGeminiKey && !editingExhibitId) {
-          const synthOk = await runGeminiSynthesizer();
-          const autoCommit = document.getElementById("auto-commit-toggle").checked;
-          if (synthOk && autoCommit) await commitFormToGitHub();
-        } else {
-          setStatus(`Lossless photo "${uploadedFileName}" loaded! Review details and click Upload & Commit.`, "success");
-        }
+        probe.src = currentPreviewDataUrl;
       };
       reader.readAsDataURL(file);
     }
 
-    async function fetchRemoteTimeline(repo, branch, rawPat) {
-      const cleanRepo = repo.trim().replace(/^\/+|\/+$/g, "");
-      const b = branch.trim() || "main";
-      const pat = sanitizeCredential(rawPat);
-      const url = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json?ref=${encodeURIComponent(b)}`;
-      const headers = { "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
-      if (pat) headers["Authorization"] = `Bearer ${pat}`;
+    // --- Cloudinary Upload (Dynamic Folder Mode: asset_folder) ---
+    async function uploadToCloudinary(blobOrFile, filename, meta = {}) {
+      const cloud = sanitizeCredential(localStorage.getItem("virasat_cld_cloud"));
+      const preset = sanitizeCredential(localStorage.getItem("virasat_cld_preset")) || "Virasat";
+      if (!cloud) throw new Error("Cloudinary Cloud Name missing. Save it in Section 1.");
 
-      const res = await fetch(url, { headers, cache: "no-store" });
-      if (res.status === 404) return { sha: null, exhibits: [...activeRegistry], cleanRepo, branch: b };
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(`GitHub GET ${res.status}: ${errBody.message || res.statusText}`);
+      const fd = new FormData();
+      fd.append("file", blobOrFile, filename);
+      fd.append("upload_preset", preset);
+      fd.append("asset_folder", "virasat");
+      const tags = ["virasat"];
+      if (meta.year) tags.push(`ad-${meta.year}`);
+      fd.append("tags", tags.join(","));
+      if (meta.title || meta.year) {
+        const ctx = [
+          `title=${(meta.title || "").replace(/[|=]/g, " ")}`,
+          `year=${meta.year || ""}`,
+          `chapter=${(meta.chapter || "").replace(/[|=]/g, " ")}`
+        ].join("|");
+        fd.append("context", ctx);
       }
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloud}/image/upload`, { method: "POST", body: fd });
       const data = await res.json();
-      const parsed = JSON.parse(decodeBase64(data.content || "W10="));
-      return { sha: data.sha, exhibits: Array.isArray(parsed) ? parsed : [], cleanRepo, branch: b };
+      if (!res.ok || !data.secure_url) throw new Error(data.error?.message || "Cloudinary upload failed");
+      return data.secure_url;
     }
 
-    async function uploadPhotoBinaryToGitHub(cleanRepo, branch, pat, assetPath, originalBase64DataUrl) {
-      const cleanPath = assetPath.replace(/^\/+/, "");
-      const url = `https://api.github.com/repos/${cleanRepo}/contents/${cleanPath}`;
-      const rawB64 = originalBase64DataUrl.includes(",") ? originalBase64DataUrl.split(",")[1] : originalBase64DataUrl;
+    // --- GitHub Registry Sync (Never falls back to dummy data) ---
+    function getGitHubHeaders() {
+      const pat = sanitizeCredential(localStorage.getItem("virasat_github_pat"));
+      if (!pat) throw new Error("GitHub PAT missing. Save it in Section 1.");
+      return { Authorization: `token ${pat}`, Accept: "application/vnd.github.v3+json" };
+    }
+    function getRepo() {
+      return sanitizeCredential(localStorage.getItem("virasat_github_repo")) || "Ani0707y/Virasat";
+    }
 
-      let existingSha = null;
+    async function fetchRegistry() {
+      const badge = document.getElementById("sync-badge");
+      badge.textContent = "Syncing live timeline.json from GitHub...";
       try {
-        const check = await fetch(`${url}?ref=${encodeURIComponent(branch)}`, {
-          headers: { "Authorization": `Bearer ${pat}`, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }
-        });
-        if (check.ok) existingSha = (await check.json()).sha;
-      } catch (e) {}
-
-      const payload = { message: `Ingest lossless artwork: ${cleanPath}`, content: rawB64, branch };
-      if (existingSha) payload.sha = existingSha;
-
-      const putRes = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${pat}`,
-          "Accept": "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!putRes.ok) {
-        const errBody = await putRes.json().catch(() => ({}));
-        throw new Error(`GitHub image upload failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
+        const repo = getRepo();
+        const pat = sanitizeCredential(localStorage.getItem("virasat_github_pat"));
+        const headers = pat ? { Authorization: `token ${pat}`, Accept: "application/vnd.github.v3+json" } : {};
+        const res = await fetch(`https://api.github.com/repos/${repo}/contents/data/timeline.json?ref=main&t=${Date.now()}`, { headers });
+        if (!res.ok) throw new Error(`GitHub GET ${res.status}`);
+        const data = await res.json();
+        fileSha = data.sha;
+        const parsed = JSON.parse(base64ToUtf8(data.content));
+        if (!Array.isArray(parsed)) throw new Error("timeline.json is not a valid JSON array");
+        activeRegistry = parsed;
+        isSyncedFromGitHub = true;
+        badge.textContent = `✓ Live GitHub Synced (${activeRegistry.length} exhibits)`;
+        badge.style.color = "var(--emerald)";
+        renderRegistry();
+      } catch (err) {
+        isSyncedFromGitHub = false;
+        badge.textContent = `✕ Sync failed (${err.message}) — Commits locked for safety`;
+        badge.style.color = "var(--rose)";
+        setStatus(`Could not load live timeline.json (${err.message}). Check GitHub PAT & tap Sync GitHub.`, "err");
       }
     }
 
-    async function pushTimelineArrayToGitHub(listToPush, commitMsg) {
-      const repo = document.getElementById("github-repo").value.trim();
-      const branch = document.getElementById("github-branch").value.trim() || "main";
-      const pat = sanitizeCredential(document.getElementById("github-pat").value);
-      if (!repo || !pat) throw new Error("Paste a valid GitHub PAT Token & Repo above and click 'Save Token' first.");
-
-      const cleanRepo = repo.replace(/^\/+|\/+$/g, "");
-      const remote = await fetchRemoteTimeline(cleanRepo, branch, pat);
-
-      const putUrl = `https://api.github.com/repos/${cleanRepo}/contents/data/timeline.json`;
-      const putPayload = { message: commitMsg, content: encodeBase64(JSON.stringify(listToPush, null, 2) + "\n"), branch };
-      if (remote.sha) putPayload.sha = remote.sha;
-
-      const putRes = await fetch(putUrl, {
-        method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${pat}`,
-          "Accept": "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(putPayload)
-      });
-
-      if (!putRes.ok) {
-        const errBody = await putRes.json().catch(() => ({}));
-        throw new Error(`timeline.json PUT failed (${putRes.status}): ${errBody.message || putRes.statusText}`);
+    async function commitRegistryToGitHub(message) {
+      if (!isSyncedFromGitHub) throw new Error("Not synced with GitHub yet. Tap 'Sync GitHub' first so live data isn't overwritten.");
+      const repo = getRepo();
+      const headers = { ...getGitHubHeaders(), "Content-Type": "application/json" };
+      const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/data/timeline.json?ref=main&t=${Date.now()}`, { headers });
+      if (checkRes.ok) {
+        const checkData = await checkRes.json();
+        fileSha = checkData.sha;
       }
-      return { cleanRepo, branch };
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/data/timeline.json`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          message,
+          content: utf8ToBase64(JSON.stringify(activeRegistry, null, 2)),
+          sha: fileSha,
+          branch: "main"
+        })
+      });
+      const out = await res.json();
+      if (!res.ok) throw new Error(out.message || `GitHub PUT ${res.status}`);
+      fileSha = out.content.sha;
+      renderRegistry();
     }
 
-    async function commitFormToGitHub(e) {
-      if (e) e.preventDefault();
-
-      const repo = document.getElementById("github-repo").value.trim();
-      const branch = document.getElementById("github-branch").value.trim() || "main";
-      const rawPat = document.getElementById("github-pat").value;
-      const pat = sanitizeCredential(rawPat);
-      const cloudName = sanitizeCredential(document.getElementById("cld-cloud-name").value);
-      const cloudPreset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
-
-      const yr = document.getElementById("exhibit-year").value.trim();
-      const title = document.getElementById("exhibit-title").value.trim();
-      const chapter = document.getElementById("exhibit-chapter").value.trim();
-      const aspect = document.getElementById("exhibit-aspect").value || "classic";
-      let img = document.getElementById("exhibit-image").value.trim();
-      const insight = document.getElementById("exhibit-insight").value.trim();
-      const tagsRaw = document.getElementById("exhibit-tags").value.trim();
-      const context = document.getElementById("exhibit-context").value.trim();
-      const ingestBtn = document.getElementById("btn-ingest-github");
-
-      if (hasNonAscii(rawPat)) {
-        setStatus("Error: Your GitHub PAT contains invalid characters. Paste a fresh token and click 'Save Token'.", "error");
-        return;
-      }
-      if (!yr || !title || (!img && !uploadedOriginalFile)) {
-        setStatus("Please ensure Year, Visual Title, and Photo are set.", "error");
-        return;
-      }
-
-      ingestBtn.disabled = true;
+    // --- Ingest / Update Exhibit ---
+    async function ingestAndCommit() {
+      const btn = document.getElementById("commit-btn");
+      btn.disabled = true;
       try {
+        if (!isSyncedFromGitHub) await fetchRegistry();
+        if (!isSyncedFromGitHub) throw new Error("GitHub sync required before committing.");
+
+        const year = document.getElementById("field-year").value.trim();
+        const title = document.getElementById("field-title").value.trim();
+        const chapter = document.getElementById("field-chapter").value.trim() || "The Revolt of 1857";
+        const wing = document.getElementById("field-wing").value.trim() || "Virasat Chronological Corridor";
+        const aspect = document.getElementById("field-aspect").value;
+        const insight = document.getElementById("field-insight").value.trim();
+        const context = document.getElementById("field-context").value.trim();
+        const tags = document.getElementById("field-tags").value.split(",").map(s => s.trim()).filter(Boolean);
+        let image = document.getElementById("field-image").value.trim();
+
+        if (!year || !title) throw new Error("Year and Visual Title are required.");
+
         if (uploadedOriginalFile) {
-          if (cloudName) {
-            setStatus(`1/2 Uploading lossless photo to Cloudinary (${cloudName} / ${cloudPreset})...`, "working");
-            img = await uploadToCloudinary(uploadedOriginalFile, cloudName, cloudPreset);
-            document.getElementById("exhibit-image").value = img;
-          } else if (repo && pat) {
-            const fallbackPath = img.startsWith("assets/") ? img : `assets/${uploadedFileName}`;
-            setStatus(`1/2 Uploading lossless photo to GitHub ${fallbackPath}...`, "working");
-            await uploadPhotoBinaryToGitHub(repo.replace(/^\/+|\/+$/g, ""), branch, pat, fallbackPath, uploadedOriginalBase64);
-            img = fallbackPath;
-          }
-          uploadedOriginalFile = null;
+          setStatus("Uploading untouched original image to Cloudinary CDN...", "info");
+          const ext = uploadedOriginalFile.name.split(".").pop() || "jpg";
+          const cleanName = `${year}-${slugify(title)}.${ext}`;
+          image = await uploadToCloudinary(uploadedOriginalFile, cleanName, { year, title, chapter });
+          document.getElementById("field-image").value = image;
+        } else if (!image) {
+          throw new Error("Drop an image or paste a Cloudinary URL first.");
         }
 
-        const tagsArr = tagsRaw ? tagsRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
-        const targetId = editingExhibitId || generateId(yr, title);
-        const updatedEntry = {
-          id: targetId,
-          year: String(parseYear(yr) || yr),
-          chapter: chapter || "Modern Indian History",
-          wing: "Virasat Chronological Corridor",
-          title: title,
-          aspect: aspect,
-          image: img,
-          insight: insight,
-          tags: tagsArr,
-          context: context
+        const entry = {
+          id: editingIndex >= 0 ? activeRegistry[editingIndex].id : `${year}-${slugify(title).slice(0, 26)}`,
+          year: String(year),
+          chapter,
+          wing,
+          title,
+          aspect,
+          image,
+          insight,
+          tags,
+          context
         };
 
-        const existingIdx = activeRegistry.findIndex(x => x.id === targetId);
-        if (existingIdx !== -1) {
-          activeRegistry[existingIdx] = updatedEntry;
+        if (editingIndex >= 0) {
+          activeRegistry[editingIndex] = entry;
+          await commitRegistryToGitHub(`Update exhibit: A.D. ${year} - ${title}`);
+          setStatus(`Updated & synced A.D. ${year} — "${title}"`, "ok");
         } else {
-          const newYearNum = parseYear(updatedEntry.year);
-          let insertAt = activeRegistry.length;
-          for (let i = 0; i < activeRegistry.length; i++) {
-            if (parseYear(activeRegistry[i].year) > newYearNum) { insertAt = i; break; }
-          }
-          activeRegistry.splice(insertAt, 0, updatedEntry);
+          activeRegistry.push(entry);
+          await commitRegistryToGitHub(`Ingest exhibit: A.D. ${year} - ${title}`);
+          setStatus(`Ingested A.D. ${year} — "${title}" to Cloudinary + GitHub!`, "ok");
         }
-
-        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (err) {}
-        renderRegistry();
-
-        if (!repo || !pat) {
-          markDirty(true);
-          setStatus("Photo uploaded & saved locally! Paste GitHub PAT above to commit timeline.json.", "error");
-          return;
-        }
-
-        setStatus(`2/2 Committing data/timeline.json (${activeRegistry.length} exhibits)...`, "working");
-        const actionWord = editingExhibitId ? "Update" : "Ingest";
-        const { cleanRepo } = await pushTimelineArrayToGitHub(activeRegistry, `${actionWord} exhibit ${updatedEntry.year}: ${updatedEntry.title}`);
-
-        markDirty(false);
-        setEditMode(null);
-        setStatus(`✓ Live! "${updatedEntry.year} — ${updatedEntry.title}" synced to ${cleanRepo}.`, "success");
+        resetForm();
       } catch (err) {
-        setStatus(`Error: ${err.message}`, "error");
+        setStatus(`Commit failed: ${err.message}`, "err");
       } finally {
-        ingestBtn.disabled = false;
+        btn.disabled = false;
       }
     }
 
-    function checkPin() {
-      const pinInput = document.getElementById("gate-pin");
-      const errEl = document.getElementById("gate-error-msg");
-      if (pinInput.value === REQUIRED_PIN) {
-        document.getElementById("gate-overlay").classList.add("is-unlocked");
-        try { sessionStorage.setItem("virasat_admin_unlocked", "1"); } catch (e) {}
-      } else {
-        errEl.textContent = "Incorrect PIN. Access denied.";
-        pinInput.value = "";
-        pinInput.focus();
-      }
-    }
+    // --- Registry Manager ---
+    function renderRegistry() {
+      const q = document.getElementById("filter-input").value.toLowerCase().trim();
+      const list = document.getElementById("registry-list");
+      document.getElementById("reg-count").textContent = activeRegistry.length;
 
-    window.addEventListener("DOMContentLoaded", async () => {
-      try {
-        if (sessionStorage.getItem("virasat_admin_unlocked") === "1") {
-          document.getElementById("gate-overlay").classList.add("is-unlocked");
-        }
-        const savedGemini = localStorage.getItem("virasat_gemini_key");
-        if (savedGemini) document.getElementById("gemini-api-key").value = sanitizeCredential(savedGemini);
-        const savedPat = localStorage.getItem("virasat_github_pat");
-        if (savedPat) document.getElementById("github-pat").value = sanitizeCredential(savedPat);
-        const savedRepo = localStorage.getItem("virasat_github_repo");
-        if (savedRepo) document.getElementById("github-repo").value = savedRepo;
-        const savedCloud = localStorage.getItem("virasat_cld_cloud");
-        if (savedCloud) document.getElementById("cld-cloud-name").value = sanitizeCredential(savedCloud);
-        const savedPreset = localStorage.getItem("virasat_cld_preset");
-        if (savedPreset) document.getElementById("cld-preset").value = sanitizeCredential(savedPreset);
-        const cachedList = localStorage.getItem("virasat_timeline_cache");
-        if (cachedList) {
-          const parsed = JSON.parse(cachedList);
-          if (Array.isArray(parsed) && parsed.length > 0) activeRegistry = parsed;
-        }
-      } catch (e) {}
+      list.innerHTML = "";
+      activeRegistry.forEach((item, idx) => {
+        const hay = `${item.year} ${item.title} ${item.chapter} ${item.image}`.toLowerCase();
+        if (q && !hay.includes(q)) return;
 
-      try {
-        const res = await fetch("data/timeline.json", { cache: "no-store" });
-        if (res.ok) {
-          const liveJson = await res.json();
-          if (Array.isArray(liveJson) && liveJson.length > 0) activeRegistry = liveJson;
-        }
-      } catch (e) {}
+        const isCdn = item.image && item.image.startsWith("https://res.cloudinary.com/");
+        const thumbUrl = isCdn ? item.image.replace("/upload/", "/upload/f_auto,q_auto,w_120,c_limit/") : item.image;
 
-      syncCommitButtonLabel();
-      renderRegistry();
-      updatePreview();
-
-      document.getElementById("gate-submit-btn").addEventListener("click", checkPin);
-      document.getElementById("gate-pin").addEventListener("keydown", (e) => { if (e.key === "Enter") checkPin(); });
-      document.getElementById("lock-console-btn").addEventListener("click", () => {
-        try { sessionStorage.removeItem("virasat_admin_unlocked"); } catch (e) {}
-        document.getElementById("gate-pin").value = "";
-        document.getElementById("gate-overlay").classList.remove("is-unlocked");
-      });
-
-      document.getElementById("save-gemini-btn").addEventListener("click", () => {
-        const clean = sanitizeCredential(document.getElementById("gemini-api-key").value);
-        document.getElementById("gemini-api-key").value = clean;
-        try { localStorage.setItem("virasat_gemini_key", clean); } catch (e) {}
-        setStatus("✓ Gemini API Key saved.", "success");
-      });
-
-      document.getElementById("save-pat-btn").addEventListener("click", () => {
-        const clean = sanitizeCredential(document.getElementById("github-pat").value);
-        document.getElementById("github-pat").value = clean;
-        const repoVal = document.getElementById("github-repo").value.trim();
-        try {
-          localStorage.setItem("virasat_github_pat", clean);
-          if (repoVal) localStorage.setItem("virasat_github_repo", repoVal);
-        } catch (e) {}
-        setStatus("✓ GitHub PAT Token & Repo saved.", "success");
-      });
-
-      document.getElementById("save-cld-btn").addEventListener("click", () => {
-        const cloud = sanitizeCredential(document.getElementById("cld-cloud-name").value);
-        const preset = sanitizeCredential(document.getElementById("cld-preset").value) || "Virasat";
-        document.getElementById("cld-cloud-name").value = cloud;
-        document.getElementById("cld-preset").value = preset;
-        try {
-          localStorage.setItem("virasat_cld_cloud", cloud);
-          localStorage.setItem("virasat_cld_preset", preset);
-        } catch (e) {}
-        syncCommitButtonLabel();
-        setStatus(cloud ? `✓ Cloudinary CDN saved (${cloud} / ${preset}).` : "Cleared Cloudinary Cloud Name (using GitHub assets fallback).", "success");
-      });
-
-      document.getElementById("cld-cloud-name").addEventListener("input", syncCommitButtonLabel);
-      document.getElementById("migrate-cld-btn").addEventListener("click", migrateOldAssetsToCloudinary);
-
-      document.getElementById("google-verify-btn").addEventListener("click", () => {
-        const hint = document.getElementById("curator-hint").value.trim();
-        const title = document.getElementById("exhibit-title").value.trim();
-        const img = uploadedFileName || document.getElementById("exhibit-image").value.trim();
-        const alamyMatch = img.match(/alamy[_-]?([A-Za-z0-9]+)/i);
-        const query = alamyMatch ? `alamy "${alamyMatch[1]}"` : (hint || title || "Modern Indian History");
-        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank", "noopener,noreferrer");
-      });
-
-      const dropZone = document.getElementById("drop-zone");
-      const fileInput = document.getElementById("photo-file-input");
-
-      dropZone.addEventListener("click", () => fileInput.click());
-      fileInput.addEventListener("change", (e) => {
-        if (e.target.files && e.target.files[0]) handlePhotoSelected(e.target.files[0]);
-      });
-      dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("is-dragover"); });
-      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("is-dragover"));
-      dropZone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        dropZone.classList.remove("is-dragover");
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) handlePhotoSelected(e.dataTransfer.files[0]);
-      });
-
-      ["exhibit-year", "exhibit-title", "exhibit-image", "exhibit-chapter", "exhibit-aspect", "exhibit-insight"].forEach((id) => {
-        const el = document.getElementById(id);
-        el.addEventListener("input", () => {
-          if (id === "exhibit-image") { uploadedOriginalBase64 = null; uploadedOriginalFile = null; }
-          updatePreview();
-        });
-        el.addEventListener("change", updatePreview);
-      });
-
-      document.getElementById("btn-resynth").addEventListener("click", runGeminiSynthesizer);
-      document.getElementById("ingest-form").addEventListener("submit", commitFormToGitHub);
-      document.getElementById("cancel-edit-btn").addEventListener("click", () => {
-        setEditMode(null);
-        setStatus("Cancelled edit mode.", "idle");
-      });
-      document.getElementById("reset-form-btn").addEventListener("click", () => {
-        setEditMode(null);
-        uploadedOriginalFile = null;
-        uploadedOriginalBase64 = null;
-        uploadedFileName = "";
-        ["exhibit-year", "exhibit-title", "exhibit-chapter", "exhibit-image", "exhibit-insight", "exhibit-tags", "exhibit-context"].forEach(id => {
-          document.getElementById(id).value = "";
-        });
-        document.getElementById("file-pill").textContent = "";
-        document.getElementById("verify-box").classList.remove("is-visible");
-        updatePreview();
-        setStatus("Cleared form for a new exhibit.", "idle");
-      });
-
-      document.getElementById("registry-search").addEventListener("input", renderRegistry);
-
-      document.getElementById("sort-chrono-btn").addEventListener("click", () => {
-        activeRegistry.sort((a, b) => parseYear(a.year) - parseYear(b.year));
-        try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
-        markDirty(true);
-        renderRegistry();
-        setStatus("Sorted chronologically (preserving same-year sequence). Click '💾 Save Order to GitHub' to publish.", "working");
-      });
-
-      document.getElementById("push-order-btn").addEventListener("click", async () => {
-        const btn = document.getElementById("push-order-btn");
-        btn.disabled = true;
-        setStatus(`Pushing custom sequence (${activeRegistry.length} exhibits) to GitHub...`, "working");
-        try {
-          const { cleanRepo, branch } = await pushTimelineArrayToGitHub(activeRegistry, `Update exhibition sequence (${activeRegistry.length} exhibits)`);
-          markDirty(false);
-          setStatus(`✓ Custom sequence live on ${cleanRepo}@${branch}!`, "success");
-        } catch (err) {
-          setStatus(`GitHub Push Error: ${err.message}`, "error");
-        } finally {
-          btn.disabled = false;
-        }
-      });
-
-      document.getElementById("sync-repo-btn").addEventListener("click", async () => {
-        const repo = document.getElementById("github-repo").value.trim();
-        const branch = document.getElementById("github-branch").value.trim() || "main";
-        const pat = document.getElementById("github-pat").value;
-        setStatus(`Syncing data/timeline.json from ${repo}...`, "working");
-        try {
-          const remote = await fetchRemoteTimeline(repo, branch, pat);
-          activeRegistry = remote.exhibits;
-          try { localStorage.setItem("virasat_timeline_cache", JSON.stringify(activeRegistry)); } catch (e) {}
-          markDirty(false);
+        const row = document.createElement("div");
+        row.className = "reg-item";
+        row.draggable = true;
+        row.dataset.index = idx;
+        row.innerHTML = `
+          <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+          <span class="reg-idx mono">#${idx + 1}</span>
+          <img class="reg-thumb" src="${thumbUrl || ''}" onerror="this.style.opacity=0.2" alt="" />
+          <div class="reg-meta">
+            <div class="reg-badges mono">
+              <span>A.D. ${item.year}</span>
+              <span>• ${item.aspect}</span>
+              ${item.insight ? `<span class="badge-note">• ✎ Note</span>` : `<span style="color:var(--muted)">• No Note</span>`}
+              <span class="${isCdn ? 'badge-cdn' : 'badge-local'}">• ${isCdn ? '☁ CDN' : '⚠ Local'}</span>
+            </div>
+            <div class="reg-title">${item.title}</div>
+            <div class="reg-url mono">${item.image || 'Missing'}</div>
+          </div>
+          <div class="reg-actions">
+            <button class="btn btn-sm" onclick="moveItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''}>▲</button>
+            <button class="btn btn-sm" onclick="moveItem(${idx}, 1)" ${idx === activeRegistry.length - 1 ? 'disabled' : ''}>▼</button>
+            <button class="btn btn-sm" onclick="editItem(${idx})">Edit</button>
+            <button class="btn btn-sm btn-rose" onclick="removeItem(${idx})">Remove</button>
+          </div>
+        `;
+        row.addEventListener("dragstart", () => { dragSrcIndex = idx; row.classList.add("dragging"); });
+        row.addEventListener("dragend", () => row.classList.remove("dragging"));
+        row.addEventListener("dragover", e => e.preventDefault());
+        row.addEventListener("drop", e => {
+          e.preventDefault();
+          if (dragSrcIndex === null || dragSrcIndex === idx) return;
+          const [moved] = activeRegistry.splice(dragSrcIndex, 1);
+          activeRegistry.splice(idx, 0, moved);
+          dragSrcIndex = null;
           renderRegistry();
-          setStatus(`✓ Synced ${activeRegistry.length} exhibits from ${repo}@${branch}.`, "success");
-        } catch (err) {
-          setStatus(err.message, "error");
-        }
+        });
+        list.appendChild(row);
       });
+    }
 
-      document.getElementById("copy-json-btn").addEventListener("click", async () => {
-        const jsonStr = JSON.stringify(activeRegistry, null, 2);
+    function moveItem(idx, dir) {
+      const target = idx + dir;
+      if (target < 0 || target >= activeRegistry.length) return;
+      [activeRegistry[idx], activeRegistry[target]] = [activeRegistry[target], activeRegistry[idx]];
+      renderRegistry();
+    }
+
+    function sortChronologically() {
+      activeRegistry = activeRegistry
+        .map((item, i) => ({ item, i }))
+        .sort((a, b) => (parseInt(a.item.year, 10) - parseInt(b.item.year, 10)) || (a.i - b.i))
+        .map(x => x.item);
+      renderRegistry();
+      setStatus("Sorted chronologically (preserving same-year custom order). Tap 'Save Order to GitHub' to publish.", "info");
+    }
+
+    async function saveOrderToGitHub() {
+      try {
+        setStatus("Saving exhibit order to GitHub...", "info");
+        await commitRegistryToGitHub("Reorder exhibits in timeline.json");
+        setStatus("Order saved & synced to GitHub!", "ok");
+      } catch (err) { setStatus(`Save order failed: ${err.message}`, "err"); }
+    }
+
+    function editItem(idx) {
+      const item = activeRegistry[idx];
+      editingIndex = idx;
+      uploadedOriginalFile = null;
+      currentPreviewDataUrl = "";
+      document.getElementById("workbench-mode-label").textContent = `Editing #${idx + 1}: ${item.title}`;
+      document.getElementById("cancel-edit-btn").style.display = "inline-flex";
+      document.getElementById("commit-btn").textContent = "💾 UPDATE EXHIBIT & COMMIT JSON";
+      document.getElementById("field-year").value = item.year || "";
+      document.getElementById("field-aspect").value = item.aspect || "classic";
+      document.getElementById("field-wing").value = item.wing || "Virasat Chronological Corridor";
+      document.getElementById("field-chapter").value = item.chapter || "";
+      document.getElementById("field-title").value = item.title || "";
+      document.getElementById("field-image").value = item.image || "";
+      document.getElementById("field-insight").value = item.insight || "";
+      document.getElementById("field-tags").value = (item.tags || []).join(", ");
+      document.getElementById("field-context").value = item.context || "";
+      document.getElementById("curator-hint").value = item.title || "";
+      refreshPreviewCard();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function removeItem(idx) {
+      if (!confirm(`Remove "${activeRegistry[idx].title}" from timeline.json?`)) return;
+      const removed = activeRegistry.splice(idx, 1)[0];
+      try {
+        await commitRegistryToGitHub(`Remove exhibit: ${removed.title}`);
+        setStatus(`Removed "${removed.title}" and synced.`, "ok");
+      } catch (err) { setStatus(`Remove failed: ${err.message}`, "err"); }
+    }
+
+    function resetForm() {
+      editingIndex = -1;
+      uploadedOriginalFile = null;
+      currentPreviewDataUrl = "";
+      document.getElementById("file-input").value = "";
+      document.getElementById("workbench-mode-label").textContent = "2. Visual Ingestion & Recall Synthesizer";
+      document.getElementById("cancel-edit-btn").style.display = "none";
+      document.getElementById("commit-btn").textContent = "⚡ UPLOAD TO CLOUDINARY & COMMIT JSON";
+      ["field-year", "field-chapter", "field-title", "field-image", "field-insight", "field-tags", "field-context", "curator-hint"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+      document.getElementById("field-wing").value = "Virasat Chronological Corridor";
+      document.getElementById("verify-strip").innerHTML = "";
+      refreshPreviewCard();
+    }
+
+    // --- Gemini Vision + Google Search Grounding (Instant-Recall Prompt) ---
+    async function getWorkingGeminiModels(apiKey) {
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        const data = await res.json();
+        const names = (data.models || [])
+          .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
+          .map(m => m.name.replace("models/", ""))
+          .filter(n => !n.includes("tts") && !n.includes("image-generation"));
+        const priority = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
+        const full = priority.filter(p => names.includes(p));
+        const others = names.filter(n => !full.includes(n) && !n.includes("lite"));
+        const lites = names.filter(n => n.includes("lite"));
+        return [...full, ...others, ...lites];
+      } catch { return ["gemini-2.5-flash", "gemini-2.0-flash"]; }
+    }
+
+    async function imageSourceToBase64(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          const maxDim = 1024;
+          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * scale);
+          c.height = Math.round(img.height * scale);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL("image/jpeg", 0.85).split(",")[1]);
+        };
+        img.onerror = () => reject(new Error("Could not load image for Gemini Vision"));
+        img.src = src;
+      });
+    }
+
+    async function runGeminiSynthesizer() {
+      const apiKey = sanitizeCredential(localStorage.getItem("virasat_gemini_key"));
+      if (!apiKey) return setStatus("Save your Gemini API Key first.", "err");
+
+      const existingUrl = document.getElementById("field-image").value.trim();
+      const imgSrc = currentPreviewDataUrl || (existingUrl.startsWith("http")
+        ? existingUrl.replace("/upload/", "/upload/f_jpg,q_85,w_1024,c_limit/")
+        : "");
+      if (!imgSrc) return setStatus("Drop a photo or Edit an existing exhibit first.", "err");
+
+      setStatus("Synthesizing instant-recall sticky notes with Gemini + Google Search...", "info");
+      const hint = document.getElementById("curator-hint").value.trim() || document.getElementById("field-title").value.trim();
+      const fname = uploadedOriginalFile ? uploadedOriginalFile.name : "";
+      const style = document.getElementById("note-style").value;
+
+      let b64;
+      try { b64 = await imageSourceToBase64(imgSrc); }
+      catch (e) { return setStatus(e.message, "err"); }
+
+      const models = await getWorkingGeminiModels(apiKey);
+
+      const styleInstruction = style === "hinglish"
+        ? `Write "insight" and "context" in natural, punchy HINGLISH (conversational Hindi in English script + crisp English historical terms, e.g., "1957 me Govt of India ne officially likhwayi thi (Foreword: Maulana Azad). Sen ka point: Shuru mutiny se hui, par end hote-hote national struggle ban gayi."). NO formal textbook English.`
+        : `Write "insight" and "context" in super-simple, punchy everyday English (like a personal sticky note, zero academic jargon or textbook essays).`;
+
+      const prompt = `You are a sharp Modern Indian History study partner helping a student build personal visual sticky-notes for 2-second instant recall.
+Analyze this image accurately. Filename: "${fname}". Hint: "${hint}".
+If the filename has an Alamy/stock ID, use Google Search to verify the exact person, event, or book.
+
+Strict Output Rules:
+1. "title": Crisp, memorable exhibit title (e.g., "S.N. Sen: Eighteen Fifty-Seven" or "General Bakht Khan: Delhi Commander").
+2. "insight": ${styleInstruction} Max 2 short lines. Focus ONLY on the exact memory hook, key argument, turning point, or exam trap so it clicks in 2 seconds.
+3. "tags": 3 to 4 ultra-specific recall hooks (e.g., "Official History 1957", "Maulana Azad Foreword", "Mutiny to National Struggle"). NEVER use generic filler tags like "UPSC History" or "Indian History".
+4. "context": 1 short, crystal-clear line (who, when, and why it matters).
+
+Return ONLY valid JSON:
+{
+  "year": "1857",
+  "title": "...",
+  "chapter": "The Revolt of 1857",
+  "wing": "Virasat Chronological Corridor",
+  "insight": "...",
+  "tags": ["...", "...", "..."],
+  "context": "..."
+}`;
+
+      for (const model of models.slice(0, 4)) {
         try {
-          await navigator.clipboard.writeText(jsonStr);
-          setStatus("✓ Copied formatted JSON array to clipboard!", "success");
-        } catch (err) {
-          const ta = document.createElement("textarea");
-          ta.value = jsonStr;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          setStatus("✓ Copied formatted JSON array to clipboard!", "success");
-        }
-      });
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }],
+              tools: [{ google_search: {} }]
+            })
+          });
+          if (!res.ok) continue;
+          const data = await res.json();
+          const rawText = data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (!jsonMatch) continue;
+          const parsed = JSON.parse(jsonMatch[0]);
 
-      document.getElementById("download-json-btn").addEventListener("click", () => {
-        const blob = new Blob([JSON.stringify(activeRegistry, null, 2) + "\n"], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "timeline.json";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        setStatus("✓ Downloaded timeline.json", "success");
-      });
-    });
+          if (parsed.year) document.getElementById("field-year").value = parsed.year;
+          if (parsed.title) document.getElementById("field-title").value = parsed.title;
+          if (parsed.chapter) document.getElementById("field-chapter").value = parsed.chapter;
+          if (parsed.wing) document.getElementById("field-wing").value = parsed.wing;
+          if (parsed.insight) document.getElementById("field-insight").value = parsed.insight;
+          if (Array.isArray(parsed.tags)) document.getElementById("field-tags").value = parsed.tags.join(", ");
+          if (parsed.context) document.getElementById("field-context").value = parsed.context;
+          refreshPreviewCard();
+
+          const chunks = data.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+          const strip = document.getElementById("verify-strip");
+          strip.innerHTML = chunks.slice(0, 4).filter(c => c.web?.uri).map(c =>
+            `<a class="verify-chip" href="${c.web.uri}" target="_blank">↗ ${c.web.title || "Verify Source"}</a>`
+          ).join("");
+
+          setStatus(`Gemini (${model}) synthesized recall note for A.D. ${parsed.year} — "${parsed.title}"`, "ok");
+          return;
+        } catch {}
+      }
+      setStatus("Gemini Vision could not parse this image. Add a quick Hint and tap Re-Run.", "err");
+    }
+
+    function verifyOnGoogle() {
+      const q = document.getElementById("field-title").value.trim() || document.getElementById("curator-hint").value.trim() || "Modern Indian History 1857";
+      window.open(`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(q)}`, "_blank");
+    }
+
+    // --- Backup ---
+    function copyJsonBackup() {
+      navigator.clipboard.writeText(JSON.stringify(activeRegistry, null, 2));
+      setStatus("Copied live timeline.json array to clipboard!", "ok");
+    }
+    function downloadJsonBackup() {
+      const blob = new Blob([JSON.stringify(activeRegistry, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "timeline.json";
+      a.click();
+    }
   </script>
 </body>
 </html>
