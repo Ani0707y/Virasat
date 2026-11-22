@@ -34,6 +34,23 @@
     "context": "Introduced in late 1856, these paper cartridges required sepoys to bite off the greased end before loading. \n\nThe perceived religious desecration united Hindu and Muslim soldiers against the British East India Company."
   },
   {
+    "id": "1857-mangal-pandey-and-the-outb",
+    "year": "1857",
+    "chapter": "Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Mangal Pandey at Barrackpore",
+    "aspect": "wide",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160998/virasat/vxm5yp3vssekpautco0f.jpg",
+    "insight": "On 29 March 1857, Sepoy Mangal Pandey of the 34th Bengal Native Infantry openly rebelled against his British officers at Barrackpore over the greased Enfield cartridges. \n\nHis trial and hanging became an immediate symbol of anti-colonial resistance, directly precipitating the widespread uprisings across northern India.",
+    "tags": [
+      "Revolt of 1857",
+      "Mangal Pandey",
+      "Barrackpore",
+      "Bengal Native Infantry"
+    ],
+    "context": "Simmering discontent over religious desecration via grease-coated cartridges culminated when Mangal Pandey fired at Lieutenant Baugh on the parade ground. \n\nThe subsequent disbanding of the 34th BNI and Pandey's execution galvanized cantonments across northern and central India."
+  },
+  {
     "id": "1857-babu-veer-kunwar-singh-at-",
     "year": "1857",
     "chapter": "First War of Independence",
@@ -193,32 +210,6 @@
     "context": "Following the British annexation of Jhansi in 1854 under the Doctrine of Lapse, Rani Lakshmibai assumed leadership of the rebel troops during the uprising. \n\nShe defended the fort of Jhansi before falling in combat near Gwalior in June 1858."
   },
   {
-    "id": "1857-mangal-pandey-at-barrackpo",
-    "year": "1857",
-    "chapter": "Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Mangal Pandey at Barrackpore",
-    "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795179978/yki7bc7lfqdidupawii2.jpg"
-  },
-  {
-    "id": "1857-mangal-pandey-and-the-outb",
-    "year": "1857",
-    "chapter": "Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Mangal Pandey at Barrackpore",
-    "aspect": "wide",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795160998/virasat/vxm5yp3vssekpautco0f.jpg",
-    "insight": "On 29 March 1857, Sepoy Mangal Pandey of the 34th Bengal Native Infantry openly rebelled against his British officers at Barrackpore over the greased Enfield cartridges. \n\nHis trial and hanging became an immediate symbol of anti-colonial resistance, directly precipitating the widespread uprisings across northern India.",
-    "tags": [
-      "Revolt of 1857",
-      "Mangal Pandey",
-      "Barrackpore",
-      "Bengal Native Infantry"
-    ],
-    "context": "Simmering discontent over religious desecration via grease-coated cartridges culminated when Mangal Pandey fired at Lieutenant Baugh on the parade ground. \n\nThe subsequent disbanding of the 34th BNI and Pandey's execution galvanized cantonments across northern and central India."
-  },
-  {
     "id": "1857-sir-colin-campbell-command",
     "year": "1857",
     "chapter": "The Revolt of 1857",
@@ -238,11 +229,19 @@
   {
     "id": "1858-queen-victoria-s-proclamat",
     "year": "1858",
-    "chapter": "Aftermath of the 1857 Revolt",
+    "chapter": "Beginning of Crown Rule (1858)",
     "wing": "Virasat Chronological Corridor",
-    "title": "Queen Victoria's Proclamation of 1858",
+    "title": "Queen Victoria's Proclamation at Allahabad",
     "aspect": "tall",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795180000/erfeapko0ghd2myvygbc.jpg"
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161010/virasat/yifkszdrajdcryuz44gb.jpg",
+    "insight": "Read by Lord Canning at the grand Durbar in Allahabad on 1 November 1858, this royal proclamation marked the official transfer of governance from the East India Company to the British Crown. \n\nOften hailed as the 'Magna Carta of the people of India', it disavowed further territorial annexation and promised religious non-interference.",
+    "tags": [
+      "Queen Victoria's Proclamation",
+      "Lord Canning",
+      "Government of India Act 1858",
+      "Allahabad Durbar"
+    ],
+    "context": "Following the suppression of the Revolt of 1857, the British Crown assumed direct control over Indian administration, designating Lord Canning as the first Viceroy. \n\nThe declaration aimed to placate Indian subjects by guaranteeing customary rights and equal protection under the law."
   },
   {
     "id": "1858-sir-hugh-rose-commander-of",
