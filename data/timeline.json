@@ -261,6 +261,23 @@
     "context": "As the commander of the Central India Field Force, Sir Hugh Rose orchestrated the suppression of the 1857 uprising in Bundelkhand. His military campaign restored British authority across central provinces following the fall of major rebel strongholds."
   },
   {
+    "id": "1883-the-expansion-of-england-s",
+    "year": "1883",
+    "chapter": "Colonial Historiography",
+    "wing": "Virasat Chronological Corridor",
+    "title": "The Expansion of England: Sir John Seeley",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161012/virasat/y1db4zygyuqxnadlwam8.jpg",
+    "insight": "Cambridge historian Sir John Seeley ne British Empire ke expansion ko justify karte hue famous claim kiya ki Britain ne aadhi duniya ko 'in a fit of absence of mind' conquer kar liya tha, maano koi deliberate imperial design tha hi nahi.\n\n1857 Revolt par unka colonial viewpoint exam-favourite quote ban gaya: unhone ise 'wholly unpatriotic and selfish Sepoy Mutiny with no native leadership and no popular support' keh kar completely dismiss kar diya tha.",
+    "tags": [
+      "Fit of Absence of Mind",
+      "Wholly Unpatriotic Sepoy Mutiny",
+      "Colonial Historiography",
+      "Cambridge Regius Professor"
+    ],
+    "context": "1883 mein published, John Robert Seeley ki lectures series ne British imperialist ideology aur historiography ko deep legitimacy provide ki thi. \n\nIsne 1857 ke uprising ko nationalist struggle manne se inkar kar British rule ko civilizing mission ke roop mein frame kiya."
+  },
+  {
     "id": "1909-v-d-savarkar-narrator-of-t",
     "year": "1909",
     "chapter": "Revolutionary Nationalism and the 1857 Legacy",
@@ -326,22 +343,5 @@
       "Feudal Reaction Hypothesis"
     ],
     "context": "Historian R.C. Majumdar dwara 1957 me publish ki gayi landmark critical study (Calcutta).\n\nIs book ne V.D. Savarkar ke nationalist narrative ke contrast me scientific historiography present ki."
-  },
-  {
-    "id": "1883-the-expansion-of-england-s",
-    "year": "1883",
-    "chapter": "Colonial Historiography",
-    "wing": "Virasat Chronological Corridor",
-    "title": "The Expansion of England: Sir John Seeley",
-    "aspect": "classic",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795161012/virasat/y1db4zygyuqxnadlwam8.jpg",
-    "insight": "Cambridge historian Sir John Seeley ne British Empire ke expansion ko justify karte hue famous claim kiya ki Britain ne aadhi duniya ko 'in a fit of absence of mind' conquer kar liya tha, maano koi deliberate imperial design tha hi nahi.\n\n1857 Revolt par unka colonial viewpoint exam-favourite quote ban gaya: unhone ise 'wholly unpatriotic and selfish Sepoy Mutiny with no native leadership and no popular support' keh kar completely dismiss kar diya tha.",
-    "tags": [
-      "Fit of Absence of Mind",
-      "Wholly Unpatriotic Sepoy Mutiny",
-      "Colonial Historiography",
-      "Cambridge Regius Professor"
-    ],
-    "context": "1883 mein published, John Robert Seeley ki lectures series ne British imperialist ideology aur historiography ko deep legitimacy provide ki thi. \n\nIsne 1857 ke uprising ko nationalist struggle manne se inkar kar British rule ko civilizing mission ke roop mein frame kiya."
   }
 ]
