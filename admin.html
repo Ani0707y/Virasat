@@ -104,7 +104,7 @@
       transition: border-color 0.2s;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--gold); }
-    textarea { resize: vertical; min-height: 115px; line-height: 1.55; }
+    textarea { resize: vertical; min-height: 150px; line-height: 1.55; }
 
     /* Buttons */
     .btn {
@@ -164,6 +164,12 @@
     .preview-frame.visible { display: block; }
     .preview-year { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 4px; }
     .preview-title { font-size: 1.15rem; color: var(--text); }
+
+    .verify-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .verify-chip {
+      font-size: 0.72rem; padding: 4px 9px; border-radius: 6px;
+      background: var(--surface-2); border: 1px solid var(--border); color: var(--sky); text-decoration: none;
+    }
 
     /* Registry List */
     .registry-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; align-items: center; }
@@ -231,7 +237,7 @@
       </div>
       <div class="cred-grid">
         <div class="cred-item">
-          <label>Groq API Key (Qwen 3.8 Vision)</label>
+          <label>Groq API Key (Vision + Live Web Search)</label>
           <div class="input-row">
             <input type="password" id="groq-key" placeholder="gsk_..." />
             <button class="btn btn-sm btn-sky" onclick="saveCred('virasat_groq_key','groq-key','Groq API Key')">Save</button>
@@ -265,7 +271,7 @@
     <!-- Ingestion Workbench -->
     <div class="panel">
       <div class="panel-title">
-        <span id="workbench-mode-label">2. Visual Ingestion &amp; Groq Qwen-3.8 Recall Synthesizer</span>
+        <span id="workbench-mode-label">2. Visual Ingestion &amp; Deep-Research Synthesizer</span>
         <button class="btn btn-sm" id="cancel-edit-btn" style="display:none;" onclick="resetForm()">✕ New Blank</button>
       </div>
 
@@ -277,17 +283,17 @@
 
       <div class="form-group" style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;">
         <div style="flex:1;min-width:190px;">
-          <label>Optional Curator Hint (Person, Event, Book, or Year)</label>
+          <label>Curator Hint (Person, Event, Book, or Year — improves accuracy)</label>
           <input type="text" id="curator-hint" placeholder="e.g., Lord Canning, R.C. Majumdar, or Kunwar Singh" />
         </div>
         <div style="min-width:165px;">
           <label>Note Style</label>
           <select id="note-style">
-            <option value="hinglish" selected>Hinglish (Research + Recall)</option>
+            <option value="hinglish" selected>Hinglish (Deep Recall)</option>
             <option value="english">Crisp Simple English</option>
           </select>
         </div>
-        <button class="btn btn-sky" id="ai-btn" onclick="runGroqSynthesizer()">⚡ Analyze with Groq Qwen-3.8</button>
+        <button class="btn btn-sky" id="ai-btn" onclick="runDeepResearchPipeline()">🔬 Deep Research (Vision + Live Web)</button>
         <button class="btn" onclick="verifyOnGoogle()">🔍 Google Verify</button>
       </div>
 
@@ -330,21 +336,22 @@
           </div>
 
           <div class="form-group">
-            <label>Personal Insight Note (Double-Click Companion)</label>
-            <textarea id="field-insight" placeholder="Research-backed crisp recall note (core thesis, famous quote, key facts)..."></textarea>
+            <label>Personal Insight Note (Fact-Checked High-Yield Points)</label>
+            <textarea id="field-insight" placeholder="Web-verified key points, dates, acts, quotes, and recall hooks..."></textarea>
           </div>
 
           <div class="form-group">
             <label>Key Recall Tags (Comma Separated)</label>
-            <input type="text" id="field-tags" placeholder="First Viceroy, 1858 Act, Clemency Canning, Doctrine of Lapse Withdrawn" />
+            <input type="text" id="field-tags" placeholder="First Viceroy, 1858 Act, Clemency Canning, Portfolio System 1861" />
           </div>
 
           <div class="form-group">
-            <label>Historical Context (2 Crisp Lines)</label>
-            <textarea id="field-context" style="min-height:68px;" placeholder="Background, exact date/location, and why it matters..."></textarea>
+            <label>Historical Context (Fact-Checked Background)</label>
+            <textarea id="field-context" style="min-height:76px;" placeholder="Verified background, timeline, and historical significance..."></textarea>
           </div>
 
           <button class="btn btn-gold" id="commit-btn" style="width:100%;padding:12px;" onclick="ingestAndCommit()">⚡ UPLOAD TO CLOUDINARY &amp; COMMIT JSON</button>
+          <div id="verify-strip" class="verify-strip"></div>
         </div>
 
         <div class="preview-stage">
@@ -418,6 +425,9 @@
     }
     function slugify(str) {
       return (str || "exhibit").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48);
+    }
+    function cleanCitations(str) {
+      return String(str || "").replace(/【[^】]*】/g, "").replace(/\[\d+\]/g, "").trim();
     }
 
     // --- Lock Gate ---
@@ -535,7 +545,7 @@
           document.getElementById("field-aspect").value = ratio > 1.18 ? "wide" : (ratio < 0.85 ? "tall" : "classic");
           refreshPreviewCard();
           setStatus(`Loaded untouched original: ${file.name} (${(file.size / 1024).toFixed(1)} KB, ${probe.naturalWidth}×${probe.naturalHeight}).`, "info");
-          if (localStorage.getItem("virasat_groq_key")) runGroqSynthesizer();
+          if (localStorage.getItem("virasat_groq_key")) runDeepResearchPipeline();
         };
         probe.src = currentPreviewDataUrl;
       };
@@ -805,42 +815,20 @@
       uploadedOriginalFile = null;
       currentPreviewDataUrl = "";
       document.getElementById("file-input").value = "";
-      document.getElementById("workbench-mode-label").textContent = "2. Visual Ingestion & Groq Qwen-3.8 Recall Synthesizer";
+      document.getElementById("workbench-mode-label").textContent = "2. Visual Ingestion & Deep-Research Synthesizer";
       document.getElementById("cancel-edit-btn").style.display = "none";
       document.getElementById("commit-btn").textContent = "⚡ UPLOAD TO CLOUDINARY & COMMIT JSON";
       ["field-year", "field-chapter", "field-title", "field-image", "field-insight", "field-tags", "field-context", "curator-hint"].forEach(id => {
         document.getElementById(id).value = "";
       });
       document.getElementById("field-wing").value = "Virasat Chronological Corridor";
+      document.getElementById("verify-strip").innerHTML = "";
       refreshPreviewCard();
     }
 
-    // --- Active Groq Vision Models (Qwen 3.8 27B -> Qwen 3.6 27B + live discovery) ---
-    async function getGroqVisionModels(apiKey) {
-      const preferred = [
-        "qwen/qwen3.8-27b",
-        "qwen/qwen3.6-27b"
-      ];
-      try {
-        const res = await fetch("https://api.groq.com/openai/v1/models", {
-          headers: { Authorization: `Bearer ${apiKey}` }
-        });
-        if (!res.ok) return preferred;
-        const data = await res.json();
-        const ids = (data.data || []).map(m => m.id);
-        const found = preferred.filter(p => ids.includes(p));
-        const extraVision = ids.filter(id =>
-          !found.includes(id) &&
-          /qwen3\.[6-9]|vision|vl|llama-4/i.test(id) &&
-          !/guard|whisper|tts|orpheus/i.test(id)
-        );
-        const finalList = [...found, ...extraVision];
-        return finalList.length ? finalList : preferred;
-      } catch {
-        return preferred;
-      }
-    }
-
+    // --- 2-Stage Deep Research Pipeline ---
+    // Stage 1: Qwen 3.8 27B Vision (Identifies exact subject + visible text on artwork)
+    // Stage 2: OpenAI GPT-OSS 120B + Live Browser Search (Exa) -> Fact-checked comprehensive recall notes
     async function imageSourceToDataUrl(src) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -854,7 +842,7 @@
           c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
           resolve(c.toDataURL("image/jpeg", 0.85));
         };
-        img.onerror = () => reject(new Error("Could not load image for Groq Vision"));
+        img.onerror = () => reject(new Error("Could not load image for Vision ID"));
         img.src = src;
       });
     }
@@ -871,27 +859,7 @@
       return JSON.parse(cleaned.slice(start, end + 1));
     }
 
-    async function callGroqVision(apiKey, model, prompt, imageDataUrl, useJsonMode) {
-      const payload = {
-        model,
-        temperature: 0.3,
-        max_tokens: 900,
-        messages: [
-          {
-            role: "system",
-            content: "You are a deeply knowledgeable Modern Indian History researcher and study mentor. Always return strictly valid JSON matching the requested schema."
-          },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: prompt },
-              { type: "image_url", image_url: { url: imageDataUrl } }
-            ]
-          }
-        ]
-      };
-      if (useJsonMode) payload.response_format = { type: "json_object" };
-
+    async function groqChat(apiKey, payload) {
       const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -900,19 +868,128 @@
         },
         body: JSON.stringify(payload)
       });
-
       if (!res.ok) {
         const errTxt = await res.text().catch(() => "");
-        throw new Error(`${model} HTTP ${res.status}: ${errTxt.slice(0, 140)}`);
+        throw new Error(`${payload.model} HTTP ${res.status}: ${errTxt.slice(0, 140)}`);
       }
-      const data = await res.json();
-      const rawText = data.choices?.[0]?.message?.content || "";
-      const parsed = extractCleanJson(rawText);
-      if (!parsed || !parsed.title) throw new Error(`${model} returned non-JSON output`);
-      return parsed;
+      return res.json();
     }
 
-    async function runGroqSynthesizer() {
+    async function stage1IdentifyImage(apiKey, imageDataUrl, fname, hint) {
+      const visionModels = ["qwen/qwen3.8-27b", "qwen/qwen3.6-27b"];
+      const idPrompt = `Look carefully at this historical image from Modern Indian History.
+Filename: "${fname}". Curator hint: "${hint}".
+Identify ONLY what is genuinely shown—do NOT invent facts. If a Curator Hint is provided, trust it strongly unless the image clearly shows printed text contradicting it.
+Return ONLY valid JSON:
+{
+  "subject": "Exact name of person, event, landmark, or book + author",
+  "visible_text": "Any exact title/caption/year printed on the image, or empty string",
+  "category": "portrait | event | book | weapon | landmark | document"
+}`;
+
+      for (const model of visionModels) {
+        try {
+          const data = await groqChat(apiKey, {
+            model,
+            temperature: 0.1,
+            max_tokens: 350,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: "You are a precise museum archivist. Identify the image accurately and return strictly valid JSON." },
+              {
+                role: "user",
+                content: [
+                  { type: "text", text: idPrompt },
+                  { type: "image_url", image_url: { url: imageDataUrl } }
+                ]
+              }
+            ]
+          });
+          const parsed = extractCleanJson(data.choices?.[0]?.message?.content || "");
+          if (parsed && parsed.subject) return { ...parsed, visionModel: model };
+        } catch {}
+      }
+      if (hint) return { subject: hint, visible_text: "", category: "historical", visionModel: "hint-only" };
+      throw new Error("Vision identification failed. Add a Curator Hint and retry.");
+    }
+
+    async function stage2WebResearch(apiKey, idInfo, hint, style) {
+      const styleGuide = style === "hinglish"
+        ? `Write "insight" and "context" in crystal-clear, natural HINGLISH (conversational Hindi written in English script mixed with exact English historical terms, dates, acts, and quotes). Easy to scan in 5 seconds, zero textbook fluff.`
+        : `Write "insight" and "context" in crisp, direct everyday English—zero dry textbook filler, packed with verified facts.`;
+
+      const researchPrompt = `You are a strict, fact-checked Modern Indian History researcher (UPSC / History archive standard).
+Use your browser_search tool to verify EVERY date, act, quote, battle, and key fact about this subject BEFORE writing:
+- Subject: "${idInfo.subject}"
+- Visible text on artwork: "${idInfo.visible_text || "none"}"
+- Category: "${idInfo.category}"
+- Curator Hint: "${hint || "none"}"
+
+CRITICAL ACCURACY & COMPLETENESS RULES:
+1. ZERO HALLUCINATION: Verify facts via browser_search. Do NOT guess, mix up people/acts, or fabricate quotes.
+2. "year": The TRUE 4-digit historical year (for books = exact first publication year, e.g., R.C. Majumdar = "1957", S.N. Sen = "1957", Savarkar = "1909"; for Viceroys/events = their defining landmark year, e.g., Lord Canning = "1858", Battle of Plassey = "1757").
+3. "chapter": Exact chapter/era (e.g., "The Revolt of 1857", "Historiography of 1857", "Crown Rule & 1858 Act", "Civil Disobedience").
+4. "title": Crisp, memorable museum exhibit title.
+5. "insight": ${styleGuide} MUST NOT miss any crucial high-yield point! Format as 4 to 5 concise, high-impact bullet points separated by "\\n" (starting each line with "• "). Cover ALL essential facts: exact dates/tenure, major acts/events/reforms, famous nicknames or verbatim thesis/quotes (for historians/books), and why this subject is a turning point in Modern Indian History.
+6. "tags": 4 to 5 ultra-specific recall hooks (exact Acts, years, places, nicknames, or famous quotes — NEVER generic filler like "Indian History" or "UPSC").
+7. "context": 2 crisp, fact-checked sentences giving the broader historical backdrop and legacy.
+
+Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON):
+{
+  "year": "<4-digit YYYY>",
+  "title": "<crisp title>",
+  "chapter": "<accurate chapter>",
+  "wing": "Virasat Chronological Corridor",
+  "insight": "• Point 1\\n• Point 2\\n• Point 3\\n• Point 4",
+  "tags": ["<hook 1>", "<hook 2>", "<hook 3>", "<hook 4>"],
+  "context": "<2 verified sentences>"
+}`;
+
+      const researchModels = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
+      let lastErr = "";
+
+      for (const model of researchModels) {
+        try {
+          setStatus(`Stage 2/2: Live web fact-checking "${idInfo.subject}" via ${model.split("/").pop()} + Browser Search...`, "info");
+          const data = await groqChat(apiKey, {
+            model,
+            temperature: 0.15,
+            max_tokens: 1400,
+            reasoning_effort: "low",
+            tools: [{ type: "browser_search" }],
+            messages: [
+              { role: "system", content: "You are a rigorous Modern Indian History fact-checker. Always verify dates, acts, and quotes with browser_search and return strictly valid JSON." },
+              { role: "user", content: researchPrompt }
+            ]
+          });
+          const msg = data.choices?.[0]?.message || {};
+          const parsed = extractCleanJson(msg.content || "");
+          if (parsed && parsed.title) {
+            return { parsed, researchModel: model, executedTools: msg.executed_tools || [] };
+          }
+        } catch (err) {
+          lastErr = err.message;
+        }
+      }
+
+      // Final fallback: Qwen 3.8 reasoning mode if GPT-OSS browser_search is temporarily busy
+      setStatus(`Fallback: Deep reasoning synthesis for "${idInfo.subject}" via Qwen 3.8...`, "info");
+      const fbData = await groqChat(apiKey, {
+        model: "qwen/qwen3.8-27b",
+        temperature: 0.2,
+        max_tokens: 1200,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You are a rigorous Modern Indian History fact-checker. Never guess or mix up facts. Return strictly valid JSON." },
+          { role: "user", content: researchPrompt.replace("Use your browser_search tool to verify", "Carefully recall and verify") }
+        ]
+      });
+      const fbParsed = extractCleanJson(fbData.choices?.[0]?.message?.content || "");
+      if (!fbParsed || !fbParsed.title) throw new Error(lastErr || "Research synthesis returned invalid JSON");
+      return { parsed: fbParsed, researchModel: "qwen/qwen3.8-27b (fallback)", executedTools: [] };
+    }
+
+    async function runDeepResearchPipeline() {
       const apiKey = sanitizeCredential(localStorage.getItem("virasat_groq_key"));
       if (!apiKey) return setStatus("Save your Groq API Key (gsk_...) in Section 1 first.", "err");
 
@@ -920,76 +997,55 @@
       const imgSrc = currentPreviewDataUrl || (existingUrl.startsWith("http")
         ? existingUrl.replace("/upload/", "/upload/f_jpg,q_85,w_1024,c_limit/")
         : "");
-      if (!imgSrc) return setStatus("Drop a photo or Edit an existing exhibit first.", "err");
+      const hint = document.getElementById("curator-hint").value.trim() || document.getElementById("field-title").value.trim();
+
+      if (!imgSrc && !hint) return setStatus("Drop a photo, Edit an exhibit, or enter a Curator Hint first.", "err");
 
       const aiBtn = document.getElementById("ai-btn");
       aiBtn.disabled = true;
-      setStatus("Analyzing artwork with Groq Qwen 3.8 Vision...", "info");
+      document.getElementById("verify-strip").innerHTML = "";
 
-      const hint = document.getElementById("curator-hint").value.trim() || document.getElementById("field-title").value.trim();
-      const fname = uploadedOriginalFile ? uploadedOriginalFile.name : "";
-      const style = document.getElementById("note-style").value;
-
-      let imageDataUrl;
-      try { imageDataUrl = await imageSourceToDataUrl(imgSrc); }
-      catch (e) { aiBtn.disabled = false; return setStatus(e.message, "err"); }
-
-      const models = await getGroqVisionModels(apiKey);
-
-      const styleInstruction = style === "hinglish"
-        ? `Write "insight" and "context" in natural, punchy HINGLISH (conversational Hindi written in English script mixed with exact English historical terms). Easy to read and remember instantly—zero robotic textbook prose.`
-        : `Write "insight" and "context" in crisp, super-clear everyday English—zero dry academic jargon, straight to the point.`;
-
-      const prompt = `Analyze this Modern Indian History image carefully.
-Filename: "${fname}". Curator hint: "${hint}".
-
-STRICT RULES:
-1. "year": Determine the TRUE historical year as a 4-digit string (e.g., for a book cover, use its exact first publication year like "1957" for R.C. Majumdar / S.N. Sen, "1909" for Savarkar, "1946" for Discovery of India; for a person/event/portrait, use the exact landmark year like "1757", "1855", "1857", "1858", "1930", "1942"). NEVER default to 1857 unless the image is genuinely from 1857!
-2. "chapter": Accurate chapter/era name matching the image (e.g., "Historiography of 1857", "The Revolt of 1857", "Crown Rule & 1858 Act", "Swadeshi Movement").
-3. "title": Crisp, memorable exhibit title.
-4. "insight": ${styleInstruction} MUST be well-researched and substantive: 3 to 4 crisp sentences (roughly 55–85 words, split into 2 short paragraphs separated by \\n\\n). Include the exact core argument/famous quote (for books) OR key role, turning point, and memorable recall hook (for people/events). NEVER write a lazy 1-liner!
-5. "tags": 4 specific, high-yield recall hooks (exact quotes, acts, places, or key concepts — avoid generic filler like "Indian History" or "UPSC").
-6. "context": 2 short, factual lines giving concrete background (who, exact year/place, and historical significance).
-
-Return ONLY a valid JSON object:
-{
-  "year": "<4-digit YYYY>",
-  "title": "<crisp title>",
-  "chapter": "<accurate chapter>",
-  "wing": "Virasat Chronological Corridor",
-  "insight": "<paragraph 1>\\n\\n<paragraph 2>",
-  "tags": ["<hook 1>", "<hook 2>", "<hook 3>", "<hook 4>"],
-  "context": "<2 short factual lines>"
-}`;
-
-      let lastErr = "";
-      for (const model of models) {
-        for (const useJsonMode of [true, false]) {
-          try {
-            setStatus(`Synthesizing with Groq (${model.split("/").pop()})...`, "info");
-            const parsed = await callGroqVision(apiKey, model, prompt, imageDataUrl, useJsonMode);
-
-            if (parsed.year) document.getElementById("field-year").value = String(parsed.year).replace(/[^0-9]/g, "").slice(0, 4) || parsed.year;
-            if (parsed.title) document.getElementById("field-title").value = parsed.title;
-            if (parsed.chapter) document.getElementById("field-chapter").value = parsed.chapter;
-            if (parsed.wing) document.getElementById("field-wing").value = parsed.wing;
-            if (parsed.insight) document.getElementById("field-insight").value = parsed.insight;
-            if (Array.isArray(parsed.tags)) document.getElementById("field-tags").value = parsed.tags.join(", ");
-            if (parsed.context) document.getElementById("field-context").value = parsed.context;
-            refreshPreviewCard();
-
-            setStatus(`⚡ Groq (${model.split("/").pop()}) synthesized: A.D. ${parsed.year} — "${parsed.title}"`, "ok");
-            aiBtn.disabled = false;
-            return;
-          } catch (err) {
-            lastErr = err.message;
-            if (/HTTP (401|403|404|429|503)/.test(lastErr)) break;
-          }
+      try {
+        let idInfo;
+        if (imgSrc) {
+          setStatus("Stage 1/2: Identifying artwork with Qwen 3.8 Vision...", "info");
+          const imageDataUrl = await imageSourceToDataUrl(imgSrc);
+          const fname = uploadedOriginalFile ? uploadedOriginalFile.name : "";
+          idInfo = await stage1IdentifyImage(apiKey, imageDataUrl, fname, hint);
+        } else {
+          idInfo = { subject: hint, visible_text: "", category: "historical", visionModel: "hint-only" };
         }
-      }
 
-      aiBtn.disabled = false;
-      setStatus(`Groq Vision error (${lastErr}). Verify your Groq API key in Section 1.`, "err");
+        const style = document.getElementById("note-style").value;
+        const { parsed, researchModel, executedTools } = await stage2WebResearch(apiKey, idInfo, hint, style);
+
+        if (parsed.year) document.getElementById("field-year").value = String(parsed.year).replace(/[^0-9]/g, "").slice(0, 4) || parsed.year;
+        if (parsed.title) document.getElementById("field-title").value = cleanCitations(parsed.title);
+        if (parsed.chapter) document.getElementById("field-chapter").value = cleanCitations(parsed.chapter);
+        if (parsed.wing) document.getElementById("field-wing").value = cleanCitations(parsed.wing);
+        if (parsed.insight) document.getElementById("field-insight").value = cleanCitations(parsed.insight);
+        if (Array.isArray(parsed.tags)) document.getElementById("field-tags").value = parsed.tags.map(cleanCitations).join(", ");
+        if (parsed.context) document.getElementById("field-context").value = cleanCitations(parsed.context);
+        refreshPreviewCard();
+
+        // Extract any verified web links returned by Groq browser_search
+        const urls = [];
+        executedTools.forEach(t => {
+          const results = t?.search_results?.results || [];
+          results.forEach(r => { if (r.url) urls.push({ url: r.url, title: r.title || r.url }); });
+        });
+        if (urls.length) {
+          document.getElementById("verify-strip").innerHTML = urls.slice(0, 4).map(u =>
+            `<a class="verify-chip" href="${u.url}" target="_blank">↗ ${u.title.slice(0, 42)}</a>`
+          ).join("");
+        }
+
+        setStatus(`✓ Fact-checked via ${researchModel.split("/").pop()} (Live Web): A.D. ${parsed.year} — "${parsed.title}"`, "ok");
+      } catch (err) {
+        setStatus(`Research pipeline error: ${err.message}`, "err");
+      } finally {
+        aiBtn.disabled = false;
+      }
     }
 
     function verifyOnGoogle() {
