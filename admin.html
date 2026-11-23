@@ -286,7 +286,7 @@
           <label>Optional Curator Hint (Person, Event, Book, or Alamy ID)</label>
           <input type="text" id="curator-hint" placeholder="e.g., R.C. Majumdar 1957, Kunwar Singh, or GJFA9B" />
         </div>
-        <div style="min-width:160px;">
+        <div style="min-width:165px;">
           <label>Note Style</label>
           <select id="note-style">
             <option value="hinglish" selected>Hinglish (Research + Recall)</option>
@@ -394,6 +394,7 @@
 
   <script>
     const REQUIRED_PIN = "7714";
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     let activeRegistry = [];
     let isSyncedFromGitHub = false;
@@ -823,7 +824,7 @@
       refreshPreviewCard();
     }
 
-    // --- Strictly Gemini Vision Models (Excludes Gemma, TTS, Image-Gen, Embeddings) ---
+    // --- Full Top-Tier Gemini Models ONLY (Zero lite / Zero gemma) ---
     async function getWorkingGeminiModels(apiKey) {
       try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
@@ -833,6 +834,7 @@
           .map(m => m.name.replace("models/", ""))
           .filter(n =>
             n.startsWith("gemini-") &&
+            !n.includes("lite") &&
             !n.includes("tts") &&
             !n.includes("image") &&
             !n.includes("audio") &&
@@ -840,19 +842,13 @@
             !n.includes("robotics") &&
             !n.includes("computer-use")
           );
-        const preferred = [
-          "gemini-2.5-flash",
-          "gemini-2.5-pro",
-          "gemini-2.0-flash",
-          "gemini-flash-latest"
-        ];
+        const preferred = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
         const ordered = preferred.filter(p => names.includes(p));
-        const otherFull = names.filter(n => !ordered.includes(n) && !n.includes("lite"));
-        const lites = names.filter(n => !ordered.includes(n) && n.includes("lite"));
-        const finalList = [...ordered, ...otherFull, ...lites];
-        return finalList.length ? finalList : ["gemini-2.5-flash", "gemini-2.0-flash"];
+        const otherFull = names.filter(n => !ordered.includes(n) && !n.includes("latest"));
+        const finalList = [...ordered, ...otherFull];
+        return finalList.length ? finalList : ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
       } catch {
-        return ["gemini-2.5-flash", "gemini-2.0-flash"];
+        return ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
       }
     }
 
@@ -882,15 +878,11 @@
       return JSON.parse(cleaned.slice(start, end + 1));
     }
 
-    async function callGeminiOnce(apiKey, model, prompt, b64, useSearch) {
+    async function callGeminiOnce(apiKey, model, prompt, b64) {
       const body = {
-        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }]
+        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }],
+        tools: [{ google_search: {} }]
       };
-      if (useSearch) {
-        body.tools = [{ google_search: {} }];
-      } else {
-        body.generationConfig = { responseMimeType: "application/json" };
-      }
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -919,7 +911,7 @@
 
       const gBtn = document.getElementById("gemini-btn");
       gBtn.disabled = true;
-      setStatus("Researching artwork with Gemini Vision + Google Search...", "info");
+      setStatus("Researching artwork with full Gemini Vision + Google Search...", "info");
 
       const hint = document.getElementById("curator-hint").value.trim() || document.getElementById("field-title").value.trim();
       const fname = uploadedOriginalFile ? uploadedOriginalFile.name : "";
@@ -958,12 +950,14 @@ Return ONLY a valid JSON object (no markdown fences, no extra text):
   "context": "<2 short factual lines>"
 }`;
 
+      const retryDelays = [2500, 5000];
       let lastErr = "";
+
       for (const model of models.slice(0, 3)) {
-        // Attempt 1: With Google Search grounding; Attempt 2: Direct JSON mode if search/parse fails
-        for (const useSearch of [true, false]) {
+        for (let attempt = 0; attempt <= retryDelays.length; attempt++) {
           try {
-            const { parsed, data } = await callGeminiOnce(apiKey, model, prompt, b64, useSearch);
+            setStatus(`Researching with ${model} + Google Search${attempt > 0 ? ` (Retry ${attempt})` : ""}...`, "info");
+            const { parsed, data } = await callGeminiOnce(apiKey, model, prompt, b64);
 
             if (parsed.year) document.getElementById("field-year").value = String(parsed.year).replace(/[^0-9]/g, "").slice(0, 4) || parsed.year;
             if (parsed.title) document.getElementById("field-title").value = parsed.title;
@@ -980,17 +974,25 @@ Return ONLY a valid JSON object (no markdown fences, no extra text):
               `<a class="verify-chip" href="${c.web.uri}" target="_blank">↗ ${c.web.title || "Verify Source"}</a>`
             ).join("");
 
-            setStatus(`Gemini (${model}${useSearch ? " + Google Search" : ""}) researched: A.D. ${parsed.year} — "${parsed.title}"`, "ok");
+            setStatus(`Gemini (${model} + Google Search) researched: A.D. ${parsed.year} — "${parsed.title}"`, "ok");
             gBtn.disabled = false;
             return;
           } catch (err) {
             lastErr = err.message;
+            const isBusy = /HTTP (503|429)/.test(lastErr);
+            if (isBusy && attempt < retryDelays.length) {
+              const waitMs = retryDelays[attempt];
+              setStatus(`${model} busy (503/429) — auto-retrying in ${waitMs / 1000}s...`, "info");
+              await sleep(waitMs);
+              continue;
+            }
+            break;
           }
         }
       }
 
       gBtn.disabled = false;
-      setStatus(`Gemini Vision failed (${lastErr}). Check API key or try adding a Curator Hint.`, "err");
+      setStatus(`All full Gemini models busy (${lastErr}). Tap Re-Run in a few seconds.`, "err");
     }
 
     function verifyOnGoogle() {
