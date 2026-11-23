@@ -42,8 +42,8 @@
     /* Lock Gate */
     #lock-screen {
       position: fixed; inset: 0; z-index: 9999;
-      background: rgba(5, 5, 7, 0.96);
-      backdrop-filter: blur(16px);
+      background: rgba(5, 5, 7, 0.97);
+      backdrop-filter: blur(18px);
       display: flex; align-items: center; justify-content: center;
       padding: 20px;
     }
@@ -104,7 +104,7 @@
       transition: border-color 0.2s;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--gold); }
-    textarea { resize: vertical; min-height: 150px; line-height: 1.55; }
+    textarea { resize: vertical; min-height: 155px; line-height: 1.55; }
 
     /* Buttons */
     .btn {
@@ -203,12 +203,12 @@
 </head>
 <body>
 
-  <!-- Security Lock Gate -->
+  <!-- Strict Security Lock Gate (Always asks for PIN on load) -->
   <div id="lock-screen">
     <div class="lock-box">
       <h1 class="serif">Virasat Curator Studio</h1>
       <p>Enter your curator PIN to unlock ingestion &amp; registry controls.</p>
-      <input type="password" id="pin-input" class="lock-input mono" maxlength="10" placeholder="••••" autofocus />
+      <input type="password" id="pin-input" class="lock-input mono" inputmode="numeric" maxlength="10" placeholder="••••" autofocus />
       <button class="btn btn-gold" style="width:100%;" onclick="unlockConsole()">Unlock Console</button>
       <div id="lock-error"></div>
     </div>
@@ -226,6 +226,7 @@
       <div class="top-actions">
         <a href="index.html" target="_blank" class="btn btn-sm">↗ Open Corridor</a>
         <button class="btn btn-sm" onclick="fetchRegistry()">↻ Sync GitHub</button>
+        <button class="btn btn-sm btn-rose" onclick="lockConsole()">🔒 Lock</button>
       </div>
     </div>
 
@@ -271,7 +272,7 @@
     <!-- Ingestion Workbench -->
     <div class="panel">
       <div class="panel-title">
-        <span id="workbench-mode-label">2. Visual Ingestion &amp; Deep-Research Synthesizer</span>
+        <span id="workbench-mode-label">2. Visual Ingestion &amp; UPSC / BPSC Deep-Research Synthesizer</span>
         <button class="btn btn-sm" id="cancel-edit-btn" style="display:none;" onclick="resetForm()">✕ New Blank</button>
       </div>
 
@@ -286,14 +287,14 @@
           <label>Curator Hint (Person, Event, Book, or Year — improves accuracy)</label>
           <input type="text" id="curator-hint" placeholder="e.g., Lord Canning, R.C. Majumdar, or Kunwar Singh" />
         </div>
-        <div style="min-width:165px;">
+        <div style="min-width:175px;">
           <label>Note Style</label>
           <select id="note-style">
-            <option value="hinglish" selected>Hinglish (Deep Recall)</option>
+            <option value="hinglish" selected>Hinglish (UPSC/BPSC Recall)</option>
             <option value="english">Crisp Simple English</option>
           </select>
         </div>
-        <button class="btn btn-sky" id="ai-btn" onclick="runDeepResearchPipeline()">🔬 Deep Research (Vision + Live Web)</button>
+        <button class="btn btn-sky" id="ai-btn" onclick="runDeepResearchPipeline()">🔬 Deep Research (UPSC + BPSC)</button>
         <button class="btn" onclick="verifyOnGoogle()">🔍 Google Verify</button>
       </div>
 
@@ -336,8 +337,8 @@
           </div>
 
           <div class="form-group">
-            <label>Personal Insight Note (Fact-Checked High-Yield Points)</label>
-            <textarea id="field-insight" placeholder="Web-verified key points, dates, acts, quotes, and recall hooks..."></textarea>
+            <label>Personal Insight Note (UPSC / BPSC Fact-Checked Points)</label>
+            <textarea id="field-insight" placeholder="Web-verified UPSC/BPSC prelims &amp; mains points, dates, Acts, quotes, and Bihar angle..."></textarea>
           </div>
 
           <div class="form-group">
@@ -347,7 +348,7 @@
 
           <div class="form-group">
             <label>Historical Context (Fact-Checked Background)</label>
-            <textarea id="field-context" style="min-height:76px;" placeholder="Verified background, timeline, and historical significance..."></textarea>
+            <textarea id="field-context" style="min-height:76px;" placeholder="Verified background, chronology, and exam significance..."></textarea>
           </div>
 
           <button class="btn btn-gold" id="commit-btn" style="width:100%;padding:12px;" onclick="ingestAndCommit()">⚡ UPLOAD TO CLOUDINARY &amp; COMMIT JSON</button>
@@ -397,6 +398,7 @@
 
     let activeRegistry = [];
     let isSyncedFromGitHub = false;
+    let isAppInitialized = false;
     let editingIndex = -1;
     let uploadedOriginalFile = null;
     let currentPreviewDataUrl = "";
@@ -430,26 +432,34 @@
       return String(str || "").replace(/【[^】]*】/g, "").replace(/\[\d+\]/g, "").trim();
     }
 
-    // --- Lock Gate ---
+    // --- Strict Lock Gate (Always requires PIN on every page load/refresh) ---
     function unlockConsole() {
-      const pin = document.getElementById("pin-input").value.trim();
+      const pinEl = document.getElementById("pin-input");
+      const pin = pinEl.value.trim();
       if (pin === REQUIRED_PIN) {
-        sessionStorage.setItem("virasat_admin_unlocked", "1");
+        pinEl.value = "";
+        document.getElementById("lock-error").textContent = "";
         document.getElementById("lock-screen").style.display = "none";
         document.getElementById("app-shell").classList.add("unlocked");
-        initApp();
+        if (!isAppInitialized) {
+          isAppInitialized = true;
+          initApp();
+        }
       } else {
         document.getElementById("lock-error").textContent = "Incorrect PIN.";
+        pinEl.value = "";
+        pinEl.focus();
       }
+    }
+    function lockConsole() {
+      document.getElementById("app-shell").classList.remove("unlocked");
+      document.getElementById("lock-screen").style.display = "flex";
+      document.getElementById("pin-input").value = "";
+      document.getElementById("pin-input").focus();
     }
     document.getElementById("pin-input").addEventListener("keydown", e => {
       if (e.key === "Enter") unlockConsole();
     });
-    if (sessionStorage.getItem("virasat_admin_unlocked") === "1") {
-      document.getElementById("lock-screen").style.display = "none";
-      document.getElementById("app-shell").classList.add("unlocked");
-      window.addEventListener("DOMContentLoaded", initApp);
-    }
 
     // --- Init & Credentials ---
     function initApp() {
@@ -815,7 +825,7 @@
       uploadedOriginalFile = null;
       currentPreviewDataUrl = "";
       document.getElementById("file-input").value = "";
-      document.getElementById("workbench-mode-label").textContent = "2. Visual Ingestion & Deep-Research Synthesizer";
+      document.getElementById("workbench-mode-label").textContent = "2. Visual Ingestion & UPSC / BPSC Deep-Research Synthesizer";
       document.getElementById("cancel-edit-btn").style.display = "none";
       document.getElementById("commit-btn").textContent = "⚡ UPLOAD TO CLOUDINARY & COMMIT JSON";
       ["field-year", "field-chapter", "field-title", "field-image", "field-insight", "field-tags", "field-context", "curator-hint"].forEach(id => {
@@ -826,9 +836,9 @@
       refreshPreviewCard();
     }
 
-    // --- 2-Stage Deep Research Pipeline ---
+    // --- 2-Stage UPSC / BPSC Deep Research Pipeline ---
     // Stage 1: Qwen 3.8 27B Vision (Identifies exact subject + visible text on artwork)
-    // Stage 2: OpenAI GPT-OSS 120B + Live Browser Search (Exa) -> Fact-checked comprehensive recall notes
+    // Stage 2: OpenAI GPT-OSS 120B + Live Browser Search (Exa) -> UPSC + BPSC Prelims & Mains fact-checked notes
     async function imageSourceToDataUrl(src) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -915,24 +925,28 @@ Return ONLY valid JSON:
 
     async function stage2WebResearch(apiKey, idInfo, hint, style) {
       const styleGuide = style === "hinglish"
-        ? `Write "insight" and "context" in crystal-clear, natural HINGLISH (conversational Hindi written in English script mixed with exact English historical terms, dates, acts, and quotes). Easy to scan in 5 seconds, zero textbook fluff.`
-        : `Write "insight" and "context" in crisp, direct everyday English—zero dry textbook filler, packed with verified facts.`;
+        ? `Write "insight" and "context" in crystal-clear, natural HINGLISH (conversational Hindi in English script + exact English UPSC/BPSC terminology, Acts, dates, committees, and quotes). Easy to revise in 5 seconds, zero textbook fluff.`
+        : `Write "insight" and "context" in crisp, direct everyday English—packed with verified UPSC/BPSC Prelims & Mains facts, zero dry filler.`;
 
-      const researchPrompt = `You are a strict, fact-checked Modern Indian History researcher (UPSC / History archive standard).
-Use your browser_search tool to verify EVERY date, act, quote, battle, and key fact about this subject BEFORE writing:
+      const researchPrompt = `You are an elite UPSC CSE & BPSC (Bihar PSC) Modern Indian History faculty & fact-checker (Spectrum / Bipan Chandra / NCERT standard).
+Use your browser_search tool to verify EVERY date, Act, British commander, commission, quote, and Bihar/BPSC link for this subject BEFORE writing:
 - Subject: "${idInfo.subject}"
 - Visible text on artwork: "${idInfo.visible_text || "none"}"
 - Category: "${idInfo.category}"
 - Curator Hint: "${hint || "none"}"
 
-CRITICAL ACCURACY & COMPLETENESS RULES:
-1. ZERO HALLUCINATION: Verify facts via browser_search. Do NOT guess, mix up people/acts, or fabricate quotes.
+CRITICAL UPSC + BPSC ACCURACY & HIGH-YIELD RULES:
+1. ZERO HALLUCINATION: Verify every single date, Act, name, and quote via browser_search. Never confuse Viceroys, Acts, or historians.
 2. "year": The TRUE 4-digit historical year (for books = exact first publication year, e.g., R.C. Majumdar = "1957", S.N. Sen = "1957", Savarkar = "1909"; for Viceroys/events = their defining landmark year, e.g., Lord Canning = "1858", Battle of Plassey = "1757").
-3. "chapter": Exact chapter/era (e.g., "The Revolt of 1857", "Historiography of 1857", "Crown Rule & 1858 Act", "Civil Disobedience").
-4. "title": Crisp, memorable museum exhibit title.
-5. "insight": ${styleGuide} MUST NOT miss any crucial high-yield point! Format as 4 to 5 concise, high-impact bullet points separated by "\\n" (starting each line with "• "). Cover ALL essential facts: exact dates/tenure, major acts/events/reforms, famous nicknames or verbatim thesis/quotes (for historians/books), and why this subject is a turning point in Modern Indian History.
-6. "tags": 4 to 5 ultra-specific recall hooks (exact Acts, years, places, nicknames, or famous quotes — NEVER generic filler like "Indian History" or "UPSC").
-7. "context": 2 crisp, fact-checked sentences giving the broader historical backdrop and legacy.
+3. "chapter": Exact Spectrum/UPSC chapter name (e.g., "The Revolt of 1857", "Historiography of 1857", "Crown Rule & Constitutional Acts", "Gandhian Era").
+4. "title": Crisp, memorable exhibit title.
+5. "insight": ${styleGuide} Format as 4 to 6 high-yield exam bullet points separated by "\\n" (each starting with "• "). MUST cover ALL Prelims + Mains exam-askable points:
+   - Exact tenure/dates, key Acts & provisions (e.g. Portfolio System, Doctrine of Lapse withdrawal, IPC, High Courts, Universities).
+   - For Revolt centres/leaders: exact centre, Indian leader, AND the British officer who suppressed it (classic match-the-following PYQ!).
+   - For historians/books: exact publication year, commissioning body/foreword if any, and their exact famous thesis/quote (e.g. "Neither first, nor national, nor a war of independence").
+   - BIHAR / BPSC ANGLE: Whenever the topic has ANY connection to Bihar (Arrah, Jagdishpur, Danapur, Patna, Peer Ali, Kunwar Singh, Amar Singh, Santhal, Champaran, etc.), explicitly include that BPSC-specific fact!
+6. "tags": 4 to 5 ultra-specific Prelims recall hooks (exact Acts, years, nicknames, commanders, or famous quotes — NEVER generic filler like "Indian History" or "UPSC").
+7. "context": 2 crisp, fact-checked sentences giving the Mains-ready historical significance and turning point.
 
 Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON):
 {
@@ -940,9 +954,9 @@ Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON)
   "title": "<crisp title>",
   "chapter": "<accurate chapter>",
   "wing": "Virasat Chronological Corridor",
-  "insight": "• Point 1\\n• Point 2\\n• Point 3\\n• Point 4",
-  "tags": ["<hook 1>", "<hook 2>", "<hook 3>", "<hook 4>"],
-  "context": "<2 verified sentences>"
+  "insight": "• Point 1\\n• Point 2\\n• Point 3\\n• Point 4\\n• Point 5",
+  "tags": ["<hook 1>", "<hook 2>", "<hook 3>", "<hook 4>", "<hook 5>"],
+  "context": "<2 verified Mains-ready sentences>"
 }`;
 
       const researchModels = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
@@ -950,15 +964,15 @@ Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON)
 
       for (const model of researchModels) {
         try {
-          setStatus(`Stage 2/2: Live web fact-checking "${idInfo.subject}" via ${model.split("/").pop()} + Browser Search...`, "info");
+          setStatus(`Stage 2/2: UPSC/BPSC live web fact-checking "${idInfo.subject}" via ${model.split("/").pop()}...`, "info");
           const data = await groqChat(apiKey, {
             model,
             temperature: 0.15,
-            max_tokens: 1400,
+            max_tokens: 1500,
             reasoning_effort: "low",
             tools: [{ type: "browser_search" }],
             messages: [
-              { role: "system", content: "You are a rigorous Modern Indian History fact-checker. Always verify dates, acts, and quotes with browser_search and return strictly valid JSON." },
+              { role: "system", content: "You are a strict UPSC CSE & BPSC Modern Indian History fact-checker. Always verify dates, Acts, commanders, and quotes with browser_search and return strictly valid JSON." },
               { role: "user", content: researchPrompt }
             ]
           });
@@ -972,15 +986,15 @@ Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON)
         }
       }
 
-      // Final fallback: Qwen 3.8 reasoning mode if GPT-OSS browser_search is temporarily busy
-      setStatus(`Fallback: Deep reasoning synthesis for "${idInfo.subject}" via Qwen 3.8...`, "info");
+      // Final fallback: Qwen 3.8 if GPT-OSS browser_search is temporarily busy
+      setStatus(`Fallback: Deep UPSC/BPSC synthesis for "${idInfo.subject}" via Qwen 3.8...`, "info");
       const fbData = await groqChat(apiKey, {
         model: "qwen/qwen3.8-27b",
         temperature: 0.2,
-        max_tokens: 1200,
+        max_tokens: 1300,
         response_format: { type: "json_object" },
         messages: [
-          { role: "system", content: "You are a rigorous Modern Indian History fact-checker. Never guess or mix up facts. Return strictly valid JSON." },
+          { role: "system", content: "You are a strict UPSC CSE & BPSC Modern Indian History fact-checker. Never guess or mix up facts. Return strictly valid JSON." },
           { role: "user", content: researchPrompt.replace("Use your browser_search tool to verify", "Carefully recall and verify") }
         ]
       });
@@ -1028,7 +1042,6 @@ Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON)
         if (parsed.context) document.getElementById("field-context").value = cleanCitations(parsed.context);
         refreshPreviewCard();
 
-        // Extract any verified web links returned by Groq browser_search
         const urls = [];
         executedTools.forEach(t => {
           const results = t?.search_results?.results || [];
@@ -1040,7 +1053,7 @@ Return ONLY a valid JSON object (no markdown fences, no commentary outside JSON)
           ).join("");
         }
 
-        setStatus(`✓ Fact-checked via ${researchModel.split("/").pop()} (Live Web): A.D. ${parsed.year} — "${parsed.title}"`, "ok");
+        setStatus(`✓ UPSC/BPSC Fact-checked via ${researchModel.split("/").pop()}: A.D. ${parsed.year} — "${parsed.title}"`, "ok");
       } catch (err) {
         setStatus(`Research pipeline error: ${err.message}`, "err");
       } finally {
