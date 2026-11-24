@@ -416,24 +416,6 @@
     "context": "The 1857 revolt marked the first large‑scale challenge to British rule, with leaders like Shah Mal mobilising local agrarian communities. \n\nHis martyrdom in Baghpat exemplifies the widespread, though often overlooked, participation of rural Jats in the struggle for independence."
   },
   {
-    "id": "1857-agra-telegraph-dispatch-9-",
-    "year": "1857",
-    "chapter": "The Revolt of 1857",
-    "wing": "Virasat Chronological Corridor",
-    "title": "Agra Telegraph Dispatch – 9 May 1857",
-    "aspect": "classic",
-    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795455008/iznu69vu6a7z1g2zzb29.jpg",
-    "insight": "• 9 May 1857: Agra telegraph office reports 85 prisoners received; sentence of 11 reduced to 5 years by Gen. Hewitt.\n\n• 1 Feb 1855: Indian electric telegraph service officially opened, enabling rapid communication during the revolt.\n\n• Gen. Sir Henry Havelock and Gen. Sir James Outram were the principal British commanders who suppressed the Agra uprising, with Havelock’s forces arriving on 10 May 1857.\n\n• The telegram illustrates the use of telegraph as a tool of colonial control, allowing the East India Company to coordinate military responses and legal decisions in real time.\n\n• In Bihar, the telegraph network reached Patna in 1855, and the 1857 revolt saw local leaders like Kunwar Singh and Amar Singh use the lines to coordinate resistance, highlighting the dual role of telegraph in both suppression and rebellion.",
-    "tags": [
-      "1 Feb 1855",
-      "Gen. Hewitt",
-      "Agra 9 May 1857",
-      "Indian Telegraph Act 1854",
-      "Kunwar Singh"
-    ],
-    "context": "The Agra telegram shows how the newly established electric telegraph enabled the British to administer swift judicial and military responses during the 1857 revolt. It also underscores the strategic importance of telegraph lines in both colonial control and in the coordination of rebel forces across North India."
-  },
-  {
     "id": "1857-telegraph-key-the-silent-w",
     "year": "1857",
     "chapter": "The Revolt of 1857",
@@ -450,6 +432,24 @@
       "Silent weapon"
     ],
     "context": "Telegraph lines gave the British a strategic edge in the 1857 Revolt, allowing instant dispatch of orders and intelligence, which turned the tide in key battles. Its impact was felt in Bihar too, where rebels both targeted and repurposed the lines, highlighting the technology's dual role as weapon and target."
+  },
+  {
+    "id": "1857-agra-telegraph-dispatch-9-",
+    "year": "1857",
+    "chapter": "The Revolt of 1857",
+    "wing": "Virasat Chronological Corridor",
+    "title": "Agra Telegraph Dispatch – 9 May 1857",
+    "aspect": "classic",
+    "image": "https://res.cloudinary.com/gl0wtsev/image/upload/v1795455008/iznu69vu6a7z1g2zzb29.jpg",
+    "insight": "• 9 May 1857: Agra telegraph office reports 85 prisoners received; sentence of 11 reduced to 5 years by Gen. Hewitt.\n\n• 1 Feb 1855: Indian electric telegraph service officially opened, enabling rapid communication during the revolt.\n\n• Gen. Sir Henry Havelock and Gen. Sir James Outram were the principal British commanders who suppressed the Agra uprising, with Havelock’s forces arriving on 10 May 1857.\n\n• The telegram illustrates the use of telegraph as a tool of colonial control, allowing the East India Company to coordinate military responses and legal decisions in real time.\n\n• In Bihar, the telegraph network reached Patna in 1855, and the 1857 revolt saw local leaders like Kunwar Singh and Amar Singh use the lines to coordinate resistance, highlighting the dual role of telegraph in both suppression and rebellion.",
+    "tags": [
+      "1 Feb 1855",
+      "Gen. Hewitt",
+      "Agra 9 May 1857",
+      "Indian Telegraph Act 1854",
+      "Kunwar Singh"
+    ],
+    "context": "The Agra telegram shows how the newly established electric telegraph enabled the British to administer swift judicial and military responses during the 1857 revolt. It also underscores the strategic importance of telegraph lines in both colonial control and in the coordination of rebel forces across North India."
   },
   {
     "id": "1858-maulavi-ahmadullah-shah-fa",
